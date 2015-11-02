@@ -1,0 +1,5 @@
+Pour ajouter un fichier
+ - git pull
+ - git add "fichier" ou dossier
+ - git commit " "
+ - git push 
