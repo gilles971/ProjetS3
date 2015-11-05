@@ -13,6 +13,8 @@ public class Partie {
 	
 	// Section des attributs	
 	
+	private int nbrTour;						// Modifié pour S3
+
 	private String historique;
 	private int compteur;
 	private boolean victoire;
@@ -39,6 +41,8 @@ public class Partie {
 		this.raisonMort = null;
 		this.vueFenetre = new Vue("Jeu de la chasse au Wumpus", this);
 		this.grille = new ParametrageGrille(this.joueur, this.monde);
+
+		this.nbrTour=0;						//Modifié pour S3
 	}	
 	
 	
@@ -457,7 +461,7 @@ public class Partie {
 	
 	/**methode qui permet de jouer le jeu de la chasse au Wumpus et qui gere donc le deroulement de la Partie
 	 */
-	public void jouer() {
+	public ArrayList<Integer> jouer() {				//Modifié pour S3
 		
 	/*	Case[][] c = this.monde.getPlateau();		// #debug
 		
@@ -578,9 +582,24 @@ public class Partie {
 				{
 					System.out.println(this.grille.positionActuelle());
 				}
-			}			
+			}
+
+		nbrTour ++;					//Modifié pour S3				
+			
 		}
+		
 		sc.close();
+
+		ArrayList<Integer> liste = new ArrayList<Integer>();
+			if(victoire){
+				liste.add(1);
+			else{
+				liste.add(0):
+			}
+		liste.add(nbrTour);
+
+		return liste;
+
 	}	
 
 

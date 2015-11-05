@@ -34,7 +34,7 @@ public class MainJeu {
 		p.disposerPlateau();
 		p.setGrille();
 		
-		p.jouer();		
+		ArrayList<Integer> liste = p.jouer();			//Modifié pour S3
 		
 		System.out.println("\nFin de la partie.\n\nPour rejouer, veuillez relancer l'executable du jeu !");			
 		
