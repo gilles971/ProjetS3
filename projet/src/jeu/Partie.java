@@ -586,7 +586,7 @@ public class Partie {
 
 		nbrTour ++;					//Modifié pour S3				
 			
-		}
+		} 
 		
 		sc.close();
 
@@ -594,7 +594,7 @@ public class Partie {
 			if(victoire){
 				liste.add(1);
 			else{
-				liste.add(0):
+				liste.add(0):			//Modifié pour S3
 			}
 		liste.add(nbrTour);
 
