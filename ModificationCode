@@ -1,0 +1,7 @@
+1) Rajout d'un compteur pour le nombre de tour
+2) Il le met à jour à chaque tour de jeu
+3) Il crée une arrayList afin de récupérer le nombre de tour et la condition de victoire.
+4) 1 si on à gagné 0 sinon
+5) La méthode jouer retourne une liste qui est composé des infos précédent.
+
+
