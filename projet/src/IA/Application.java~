@@ -1,0 +1,10 @@
+import java.util.Scanner;
+public class Application {
+
+	public static void main(String[] args) {
+		Traducteur trad = new Traducteur();
+		System.out.println("Vous sentez un courant d'air !!");
+		int test = trad.scanEntreeDeplacement();
+		System.out.println(test);
+}
+}
