@@ -1,4 +1,3 @@
-package project;
 
 public class Case {
 	private boolean courantDair;
@@ -8,6 +7,7 @@ public class Case {
 	private boolean puit;
 	private boolean wumpus;
 	private boolean safe;
+	private boolean visite;
 	
 	public Case(){
 		this.courantDair=false;
@@ -17,6 +17,7 @@ public class Case {
 		this.puit=false;
 		this.wumpus=false;
 		this.safe=false;
+		this.visite = false;
 	}
 
 	public boolean getCourantDair() {
@@ -75,7 +76,13 @@ public class Case {
 		this.safe = safe;
 	}
 	
-	
+	public boolean getVisite() {
+		return visite;
+	}
+
+	public void setVisite(boolean visite) {
+		this.visite = visite;
+	}
 	
 	
 }

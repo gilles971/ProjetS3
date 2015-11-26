@@ -1,6 +1,4 @@
 
-package IA;
-
 public abstract class IA {
 private String[][] labyrinth;
 private int currentX;
