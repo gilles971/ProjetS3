@@ -10,6 +10,9 @@ private int boundX;
 private int boundY;
 
 public IAa(int boundX, int boundY, int arrows) {
+	
+	labyrinth = new Case[boundX][boundY];
+	
 	for (int i=0; i<boundX; i++) {
 		for (int j=0; j<boundY; j++) {
 			labyrinth[i][j] = new Case();
@@ -47,12 +50,12 @@ public Case deplacementLePlusViable() {
 	int minimum = Collections.min(listInt);
 
 	for(int i=0; i<listInt.size(); i++){
-		if(listInt(i) != minimum){
+		if(listInt.get(i) != minimum){
 			listCellAdja.remove(i);
 		}
 	}
 
-	return listCellAdja((int)(Math.random()*listCellAdja.size()));
+	return listCellAdja.get((int)(Math.random()*listCellAdja.size()));
 }
 
 
@@ -79,7 +82,7 @@ public ArrayList<Case> getCelluleAdjacente() {
 /**
 *En fonction des données reçues, on met à jour la variable labyrinth
 */
-pubic void miseAJour(ArrayList<String> message){
+public void miseAJour(ArrayList<String> message){
 
 	labyrinth[currentX][currentY].setSafe(true);
 	labyrinth[currentX][currentY].setVisite(true);
@@ -91,7 +94,7 @@ pubic void miseAJour(ArrayList<String> message){
 			for (int j=0; j<boundY; j++) {
 				//Si la case est à une distance supérieur à 2, 
 				//il n'y a pas de danger
-				if(	Math.abs(i -currentX)+Math.abs(y-currentY) > 2 ){
+				if(	Math.abs(i -currentX)+Math.abs(j-currentY) > 2 ){
 					labyrinth[i][j].setDangersWumpus(false);
 				}
 
@@ -103,7 +106,7 @@ pubic void miseAJour(ArrayList<String> message){
 			for (int j=0; j<boundY; j++) {
 				//Si la case est à une distance inferieur ou égale à 2, 
 				//il n'y a pas de danger
-				if(	Math.abs(i -currentX)+Math.abs(y-currentY) <= 2 ){
+				if(	Math.abs(i -currentX)+Math.abs(j-currentY) <= 2 ){
 					labyrinth[i][j].setDangersWumpus(false);
 				}
 
@@ -118,8 +121,8 @@ pubic void miseAJour(ArrayList<String> message){
 			for (int j=0; j<boundY; j++) {
 				//Si la case est à une distance supérieur à 1, 
 				//il n'y a pas de danger
-				if(	Math.abs(i -currentX)+Math.abs(y-currentY) > 1 ){
-					labyrinth[i][j].setCourantDair(false);
+				if(	Math.abs(i -currentX)+Math.abs(j-currentY) > 1 ){
+					labyrinth[i][j].setDangersPuit(false);
 				}
 
 			}
@@ -130,8 +133,8 @@ pubic void miseAJour(ArrayList<String> message){
 			for (int j=0; j<boundY; j++) {
 				//Si la case est à une distance inferieur ou égale à 1, 
 				//il n'y a pas de danger
-				if(	Math.abs(i -currentX)+Math.abs(y-currentY) <= 1 ){
-					labyrinth[i][j].setCourantDair(false);
+				if(	Math.abs(i -currentX)+Math.abs(j-currentY) <= 1 ){
+					labyrinth[i][j].setDangersPuit(false);
 				}
 
 			}
@@ -153,23 +156,67 @@ public String jouer(int x, int y, ArrayList<String> message){
 
 	//Cherche la case avec le deplacement le plus viable
 	Case caseDirection = this.deplacementLePlusViable();
-
-	if(labyrinth[x-1][y] == caseDirection){	//Case du bas
-		return "d s";
+	
+	if (currentY-1 >= 0) {
+		if(labyrinth[x][y-1] == caseDirection){	//Case de gauche
+			return "d o";
+		}
 	}
-	if(labyrinth[x+1][y] == caseDirection){ //Case du haut
-		return "d n";
+	if (currentY+1 <= 4) {
+		if(labyrinth[x][y+1] == caseDirection){	//Case de droite
+			return "d e";
+		}
 	}
-	if(labyrinth[x][y-1] == caseDirection){	//Case de gauche
-		return "d o";
+	if (currentX-1 >= 0) {
+		if(labyrinth[x-1][y] == caseDirection){	//Case du bas
+			return "d s";
+		}
 	}
-	if(labyrinth[x][y+1] == caseDirection){	//Case de droite
-		return "d e";
+	if (currentX+1 <= 4) {
+		if(labyrinth[x+1][y] == caseDirection){ //Case du haut
+			return "d n";
+		}
 	}
+	
 
 	return "Oups";
-}	
-
-
 }
 
+// ---------------------------------------------------------------------- //
+
+/**
+ * Retourne currentX
+ * @return currentX
+ */
+		public int getCurrentX() {
+			return currentX;
+		}
+
+/**
+*Retourne currentY 
+* @return
+*/
+		public int getCurrentY() {
+			return currentY;
+		}
+
+/**
+ *Affiche le tableau		
+ */
+		public void afficheLabPuit(){
+			for (int i=0; i<boundX; i++) {
+				System.out.print("\n");
+				for (int j=0; j<boundY; j++) {
+					System.out.print(this.labyrinth[i][j].getDangersPuit()+ " ");
+				}
+			}
+		}
+		
+		public void afficheLabWumpus(){
+			for (int i=0; i<boundX; i++) {
+				System.out.print("\n");
+				for (int j=0; j<boundY; j++) {
+					System.out.print(this.labyrinth[i][j].getDangersWumpus()+ " ");
+				}
+			}
+		}
