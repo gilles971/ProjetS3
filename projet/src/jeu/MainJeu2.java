@@ -1,10 +1,11 @@
 
 package jeu;
+
+import IA.*;
 import java.util.Scanner;
 
-import jeu.*;
 
-public class MainJeu {
+public class MainJeu2 {
 
 	public static void main(String[] args) {
 
@@ -21,7 +22,6 @@ public class MainJeu {
 		pseudo = sc.nextLine();
 		
 		Joueur j = new Joueur(pseudo);		
-		Partie p = new Partie2(j);
 		
 		System.out.println("Monde de base selectionne par defaut compose de :\n"
 				+ "1 Plateau de 5x5 cases\n"				
@@ -29,13 +29,24 @@ public class MainJeu {
 				+ "2 Trous\n"
 				+ "1 Sac d'or\n"
 				+ "1 fleche \n");
+                Partie thread1 = new Partie(j, "hunt the wumpus");
+
+		thread1.setMonde(new Monde(5,1,2,0,1));
+		thread1.disposerPlateau();
+		thread1.setGrille();
 		
-		p.setMonde(new Monde(5,1,2,0,1));
-		p.disposerPlateau();
-		p.setGrille();
+		//ArrayList<Integer> li =p.jouer();			//Modifié pour S3
 		
-		ArrayList<Integer> liste = p.jouer();			//Modifié pour S3
-		
+		thread1.start();
+		try {
+			thread1.sleep(500);
+			}
+		catch (InterruptedException e) {
+			System.out.println(e.getMessage());
+			}
+		Threaducteur thread2 = new Threaducteur("translate the wumpus");
+		thread2.start();
+		while (thread1.getState() != Thread.State.TERMINATED);
 		System.out.println("\nFin de la partie.\n\nPour rejouer, veuillez relancer l'executable du jeu !");			
 		
 		sc.close();
