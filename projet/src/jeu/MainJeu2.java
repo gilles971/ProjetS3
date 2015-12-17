@@ -29,7 +29,7 @@ public class MainJeu2 {
 				+ "2 Trous\n"
 				+ "1 Sac d'or\n"
 				+ "1 fleche \n");
-                Partie thread1 = new Partie(j, "hunt the wumpus");
+                Partie2 thread1 = new Partie2(j, "hunt the wumpus");
 
 		thread1.setMonde(new Monde(5,1,2,0,1));
 		thread1.disposerPlateau();
