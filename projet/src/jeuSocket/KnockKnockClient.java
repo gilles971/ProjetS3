@@ -1,4 +1,4 @@
-package testroom;
+package jeuSocket;
 
 /*
  * Copyright (c) 1995, 2013, Oracle and/or its affiliates. All rights reserved.
@@ -36,7 +36,6 @@ import java.net.*;
 
 public class KnockKnockClient {
     public static void main(String[] args) throws IOException {
-    	int state = 0;
         
         if (args.length != 2) {
             System.err.println(
@@ -60,14 +59,10 @@ public class KnockKnockClient {
 
             while ((fromServer = in.readLine()) != null) {
                 System.out.println("Server: " + fromServer);
-                if (fromServer.equals("Bye."))
+                if (fromServer.equals("Vous avez perdu"))
                     break;
                 
-                //fromUser = stdIn.readLine();
-                fromUser = "what?";
-                if (state == 0) { fromUser = "Who's there?"; state++; }
-                else if (state == 1) { fromUser = fromServer+" who?"; state++; }
-                else if (state == 2) { fromUser = "y"; state = 0; }
+                fromUser = stdIn.readLine();
                 if (fromUser != null) {
                     System.out.println("Client: " + fromUser);
                     out.println(fromUser);

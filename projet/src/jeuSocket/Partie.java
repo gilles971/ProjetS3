@@ -4,12 +4,14 @@
  * @version 1.0
  */
 
-package jeu;
+package jeuSocket;
 
+import IA.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 
-public class Partie {
+public class Partie extends Thread {
 	
 	// Section des attributs	
 	
@@ -31,7 +33,8 @@ public class Partie {
 	/**Constructeur de la classe Partie permet d'initialiser la grille de jeu
 *@param j qui represente le joueur de la partie
 */
-	public Partie(Joueur j) {
+	public Partie(Joueur j, String name) {
+		super(name);
 		this.joueur = j;
 		this.historique = "";
 		this.nbSacRamasses = 0; 
@@ -39,16 +42,21 @@ public class Partie {
 		this.victoire = false;
 		this.monde = null;				
 		this.raisonMort = null;
-		this.vueFenetre = new Vue("Jeu de la chasse au Wumpus", this);
+		this.vueFenetre = new Vue("Jeu de la chasse au Wumpus", (Partie) this);
 		this.grille = new ParametrageGrille(this.joueur, this.monde);
 
 		this.nbrTour=0;						//Modifié pour S3
 	}	
 	
-	
 	// Section des getters and setters
 	
-
+	/**methode qui permet de recuperer la Vue
+*@return la vue de la partie
+*/
+	public Vue getVue() {
+		return this.vueFenetre;
+	}
+	
 	/**methode qui permet de recuperer la valeur de l'attribut victoire
 *@return true si le joueur a gagne et false dans le cas ou le joueur a perdu ou s'il n'a pas encore gagne
 */
@@ -392,31 +400,32 @@ public class Partie {
 	 * c'est a dire si un piege se trouve a proximite et 
 	 * d'afficher les messages au joueur
 	 */
-	public void verifMarque() {
+	public String verifMarque() {
 		
 		Case[][] plat = this.monde.getPlateau();
+		String ret = "";
 		
 		System.out.println();
 		if (plat[this.joueur.getCoordX()][this.joueur.getCoordY()].getMarqueTrou()) {
 			
-			System.out.println("Vous sentez un courant d'air !!");
+			ret = ret + "Vous sentez un courant d'air !!\n";
 		}		
 		if (plat[this.joueur.getCoordX()][this.joueur.getCoordY()].getMarqueWumpus()) {
 			
-			System.out.println("\nVous sentez une odeur infame...");
+			ret = ret + "Vous sentez une odeur infame...\n";
 		}
 		if ( (plat[this.joueur.getCoordX()][this.joueur.getCoordY()].getPassageJoueur()) &&
 			 !this.historique.equals("") // evite l'affichage de l'info avant meme que le joueur ait fait un seul deplacement
 		   ) {
 			
-			System.out.println("Vous etes deja passe par la.");
+			ret = ret + "Vous etes deja passe par la.\n";
 		}
 		if ( !(plat[this.joueur.getCoordX()][this.joueur.getCoordY()].getMarqueWumpus()) &&
 			 !(plat[this.joueur.getCoordX()][this.joueur.getCoordY()].getMarqueTrou()) ) {
 				
-			System.out.println("C'est trop calme...");
+			return "C'est trop calme...";
 		}
-		System.out.println();
+		return ret;
 	}
 	
 	
@@ -456,151 +465,6 @@ public class Partie {
 		
 		this.setMonde(monde);	
 	}
-	
-	
-	
-	/**methode qui permet de jouer le jeu de la chasse au Wumpus et qui gere donc le deroulement de la Partie
-	 */
-	public ArrayList<Integer> jouer() {				//Modifié pour S3
-		
-	/*	Case[][] c = this.monde.getPlateau();		// #debug
-		
-		for(int poire=0; poire<5;poire++){
-			System.out.println();
-			for(int pomme=0;pomme<5;pomme++){
-				if(c[pomme][poire].getMarqueTrou() == true){
-					System.out.print("-T-");
-				}else{
-					if(c[pomme][poire].getMarqueWumpus() == true){
-						System.out.print("-W-");
-					}else{
-						System.out.print("- -");
-					}
-				}
-				
-			}
-		}*/
-		
-		
-		
-		boolean fait = false;
-		String com = "";
-		Scanner sc = new Scanner(System.in);
-		
-		System.out.println(this.joueur.toString());
-		System.out.println(grille.commandes());	
-		this.verifMarque();
-		
-		System.out.println(this.grille.positionActuelle());
-		
-		while ( (!(this.getVictoire()) ) && (this.joueur.getVivant()) )
-		{			
-			while(!fait)
-			{				
-				sc.nextLine();
-				
-				System.out.println("Choisissez une commande :\n");
-				
-				sc.reset();
-				com = sc.nextLine();
-				
-				while (
-					   !(com.equals("d n")) && 
-					   !(com.equals("d o")) &&
-					   !(com.equals("d e")) &&
-					   !(com.equals("d s")) &&
-					   !(com.equals("t n")) &&
-					   !(com.equals("t o")) &&
-					   !(com.equals("t e")) &&
-					   !(com.equals("t s")) &&
-					   !(com.equals("h"))
-					  ) 
-				{	
-					sc.reset();
-					System.out.println("Commande invalide. Retapez une commande");
-					com = sc.nextLine();					
-				}
-								
-				if (
-					com.equals("d n") ||
-					com.equals("d o") ||
-					com.equals("d e") ||
-					com.equals("d s")
-				   )
-				{
-					fait = this.deplacer(com);
-				}				
-				else if (
-						 com.equals("t n") ||
-						 com.equals("t o") ||
-						 com.equals("t e") ||
-						 com.equals("t s")
-					    )
-				{					
-					fait = this.tirer(com);
-				}
-				else if (com.equals("h")){
-					System.out.println("Voici l'historique de vos actions :"+"\n"+historique);
-				}
-			
-			
-				// mise a jour de la fenetre
-				if (this.getVictoire()) {
-					this.vueFenetre.updateVictoire();
-				}
-				else if (!(this.joueur.getVivant())){
-					this.vueFenetre.updateDefaite();
-				}
-				else {
-					this.vueFenetre.updateGrille(this.grille.recupAffGrille());
-				}
-				
-				fait = false;
-			
-				if (victoire)
-				{				
-					System.out.println("Vous avez gagne !!!");
-					fait = true;
-				}
-			
-				if (!(this.joueur.getVivant())) 
-				{				
-					com = getRaisonMort();
-					fait = true;
-				
-					if (com.equals("Wumpus")) 
-					{					
-						System.out.println("Wumpus suicide ! Try again !");
-					}
-				
-					else if (com.equals("trou"))
-					{						
-						System.out.println("Le trou a vaincu !");
-					}
-				}	
-				if ( !victoire && this.joueur.getVivant())
-				{
-					System.out.println(this.grille.positionActuelle());
-				}
-			}
-
-		nbrTour ++;					//Modifié pour S3				
-			
-		} 
-		
-		sc.close();
-
-		ArrayList<Integer> liste = new ArrayList<Integer>();
-			if(victoire){
-				liste.add(1);
-			else{
-				liste.add(0):			//Modifié pour S3
-			}
-		liste.add(nbrTour);
-
-		return liste;
-
-	}	
 
 
 }
