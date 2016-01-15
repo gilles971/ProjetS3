@@ -20,19 +20,20 @@ public Threaducteur(String name) {
 public void run() {
 	returner.keyPress(13);
 	returner.keyRelease(13);
+	String newLine = System.getProperty("line.separator");
 	while(true) {
-		/*System.out.println('\u000A');*/
-		System.out.println("d n\n\r");
-		returner.keyPress(13);
+		System.out.println(newLine+newLine+newLine);
+		//System.out.println("d n"+newLine);
+		/*returner.keyPress(13);
                 returner.keyRelease(13);
 		returner.keyPress(13);
-                returner.keyRelease(13);
+                returner.keyRelease(13);*/
 		try {
 			sleep(500);
 			}
 		catch (InterruptedException e) {
 			System.out.println(e.getMessage());
-			}
+			}/*
 		System.out.println("d e\n");
                 returner.keyPress(13);
                 returner.keyRelease(13);
@@ -65,7 +66,7 @@ public void run() {
                         }
                 catch (InterruptedException e) {
                         System.out.println(e.getMessage());
-                        }
+                        }*/
 		}
 	}
 }

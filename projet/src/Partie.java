@@ -6,12 +6,10 @@
 
 package jeu;
 
-import IA.*;
-import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.ArrayList;
 
-
-public class Partie2 extends Thread {
+public class Partie {
 	
 	// Section des attributs	
 	
@@ -33,8 +31,7 @@ public class Partie2 extends Thread {
 	/**Constructeur de la classe Partie permet d'initialiser la grille de jeu
 *@param j qui represente le joueur de la partie
 */
-	public Partie2(Joueur j, String name) {
-		super(name);
+	public Partie(Joueur j) {
 		this.joueur = j;
 		this.historique = "";
 		this.nbSacRamasses = 0; 
@@ -48,9 +45,7 @@ public class Partie2 extends Thread {
 		this.nbrTour=0;						//Modifié pour S3
 	}	
 	
-	public void run() {
-		this.jouer();
-	}
+	
 	// Section des getters and setters
 	
 
@@ -466,7 +461,7 @@ public class Partie2 extends Thread {
 	
 	/**methode qui permet de jouer le jeu de la chasse au Wumpus et qui gere donc le deroulement de la Partie
 	 */
-	public ArrayList<Integer> jouer() {			//Modifié pour S3
+	public ArrayList<Integer> jouer() {				//Modifié pour S3
 		
 	/*	Case[][] c = this.monde.getPlateau();		// #debug
 		
@@ -485,7 +480,7 @@ public class Partie2 extends Thread {
 				
 			}
 		}*/
-		System.out.println("hello world");
+		
 		
 		
 		boolean fait = false;
@@ -499,19 +494,15 @@ public class Partie2 extends Thread {
 		System.out.println(this.grille.positionActuelle());
 		
 		while ( (!(this.getVictoire()) ) && (this.joueur.getVivant()) )
-		{
-			System.out.println("broken");			
+		{			
 			while(!fait)
-			{			
-				System.out.println("nope");	
+			{				
 				sc.nextLine();
 				
 				System.out.println("Choisissez une commande :\n");
-
+				
 				sc.reset();
-				System.out.println("reseted\n");	
 				com = sc.nextLine();
-				System.out.println("nextLined\n");
 				
 				while (
 					   !(com.equals("d n")) && 
@@ -602,7 +593,8 @@ public class Partie2 extends Thread {
 		ArrayList<Integer> liste = new ArrayList<Integer>();
 			if(victoire){
 				liste.add(1);
-			} else{
+			}
+			else{
 				liste.add(0);			//Modifié pour S3
 			}
 		liste.add(nbrTour);

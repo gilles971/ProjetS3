@@ -1,3 +1,4 @@
+package IA;
 
 public class Case {
 	private boolean courantDair;

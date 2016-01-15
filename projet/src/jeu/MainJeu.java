@@ -3,6 +3,7 @@ package jeu;
 import java.util.Scanner;
 
 import jeu.*;
+import java.util.ArrayList;
 
 public class MainJeu {
 
@@ -21,7 +22,7 @@ public class MainJeu {
 		pseudo = sc.nextLine();
 		
 		Joueur j = new Joueur(pseudo);		
-		Partie p = new Partie2(j);
+		Partie p = new Partie(j, "hunt the wumpus");
 		
 		System.out.println("Monde de base selectionne par defaut compose de :\n"
 				+ "1 Plateau de 5x5 cases\n"				

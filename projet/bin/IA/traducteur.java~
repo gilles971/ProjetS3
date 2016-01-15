@@ -1,0 +1,18 @@
+import java.util.Scanner; 
+
+
+String com = "";
+Scanner sc = new Scanner(System.in);
+String com = sc.nextLine();
+		
+
+	public scanEntree(String str) {
+		if (com.equals("Vous sentez un courant d'air !!")) {
+
+}
+		if (com.equals("\nVous sentez une odeur infame...")) 
+		if (com.equals("Vous etes deja passe par la."))
+		if (com.equals("C'est trop calme..."))
+
+
+
