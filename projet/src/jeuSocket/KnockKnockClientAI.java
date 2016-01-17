@@ -66,18 +66,21 @@ public class KnockKnockClientAI {
                 System.out.println("Server: " + fromServer);
                 ArrayList<String> info = new ArrayList<String>();
                 
-                String[] temp = fromServer.split("\t");
+                String[] temp = fromServer.split("\\s+");
                 for (int i = 0; i<temp.length; i++) {
                     info.add(temp[i]);
                 }
                 if (fromServer.equals("Vous avez perdu"))
                     break;
                 
-                
-                
-                fromAI = artificialIntelligence.jouer(Integer.parseInt(info.get(0)), 
-                                                      Integer.parseInt(info.get(1)), 
-                                                      info);//stdIn.readLine();
+                if(!fromServer.equals("welcome to hunt the wumpus"))
+                    fromAI = artificialIntelligence.jouer(Integer.parseInt(info.get(0)), 
+                                                          Integer.parseInt(info.get(1)), 
+                                                          info);//stdIn.readLine();
+                                                      
+                else
+                    fromAI = "\n";
+                    
                 if (fromAI != null) {
                     System.out.println("Client: " + fromAI);
                     out.println(fromAI);
