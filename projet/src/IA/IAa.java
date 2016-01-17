@@ -1,4 +1,4 @@
-package project;
+package IA;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -176,6 +176,12 @@ public void miseAJour(ArrayList<String> message){
 			}
 		}
 	}
+	
+	//Si on a raté, on perd une flèche
+	if(message.contains("rate")) {
+		this.arrows --;
+	}
+	
 	
 	//On va regarder le nombre de dangersPuit et dangersWumpus
 	int compteurPuit=0;

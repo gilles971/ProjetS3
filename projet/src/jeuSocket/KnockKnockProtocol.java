@@ -116,6 +116,6 @@ public class KnockKnockProtocol {
 			}
 		}			
         
-        return p.getJoueur.getCoordX()+"\t"+p.getJoueur.getCoordY()+"\t"+p.verifMarque();
+        return p.getJoueur().getCoordX()+"\t"+p.getJoueur().getCoordY()+"\t"+p.verifMarque();
     }
 }

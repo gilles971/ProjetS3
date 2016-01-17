@@ -37,7 +37,7 @@ import IA.IAa;
 import java.io.*;
 import java.net.*;
 
-public class KnockKnockClient {
+public class KnockKnockClientAI {
     public static void main(String[] args) throws IOException {
         
         if (args.length != 2) {
@@ -77,7 +77,7 @@ public class KnockKnockClient {
                 
                 fromAI = artificialIntelligence.jouer(Integer.parseInt(info.get(0)), 
                                                       Integer.parseInt(info.get(1)), 
-                                                      info.get(2));//stdIn.readLine();
+                                                      info);//stdIn.readLine();
                 if (fromAI != null) {
                     System.out.println("Client: " + fromAI);
                     out.println(fromAI);
