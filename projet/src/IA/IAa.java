@@ -215,9 +215,7 @@ public void miseAJour(ArrayList<String> message){
 /**
 *Méthode appelé pour jouer
 */
-public String jouer(int x, int y, String hint){
-	
-	ArrayList<String> message = new ArrayList<String>(hint.split("\\s+");
+public String jouer(int x, int y, ArrayList<String> message){
 
 	this.currentX=x;
 	this.currentY=y;

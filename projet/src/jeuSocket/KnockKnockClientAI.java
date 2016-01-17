@@ -1,5 +1,8 @@
 package jeuSocket;
 
+import java.util.ArrayList;
+import IA.IAa;
+
 /*
  * Copyright (c) 1995, 2013, Oracle and/or its affiliates. All rights reserved.
  *
@@ -61,13 +64,20 @@ public class KnockKnockClient {
 
             while ((fromServer = in.readLine()) != null) {
                 System.out.println("Server: " + fromServer);
-                ArrayList<String> info = new ArrayList<String>(fromServer.split("\t"));
+                ArrayList<String> info = new ArrayList<String>();
+                
+                String[] temp = fromServer.split("\t");
+                for (int i = 0; i<temp.length; i++) {
+                    info.add(temp[i]);
+                }
                 if (fromServer.equals("Vous avez perdu"))
                     break;
                 
                 
                 
-                fromAI = artificialIntelligence.jouer(Integer.parseInt(info.get(0)), Integer.parseInt(info.get(1)), info.get(2));//stdIn.readLine();
+                fromAI = artificialIntelligence.jouer(Integer.parseInt(info.get(0)), 
+                                                      Integer.parseInt(info.get(1)), 
+                                                      info.get(2));//stdIn.readLine();
                 if (fromAI != null) {
                     System.out.println("Client: " + fromAI);
                     out.println(fromAI);
