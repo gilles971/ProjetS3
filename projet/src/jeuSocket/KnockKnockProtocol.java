@@ -47,9 +47,18 @@ public class KnockKnockProtocol {
     private String[] clues = { "c'est trop calme", "je sens un courant d'air", "raté!", "Je sens le Wumpus", "Entrez votre nom" };
     private String[] ends = { "Vous êtes tombé",
             "Miam Wumpus suicide" };
+            
+    private Joueur j;
+    private Partie p;
     
-    Joueur j = new Joueur("j1");		
-	Partie p = new Partie(j, "hunt the wumpus");
+    public KnockKnockProtocol () {
+    	j = new Joueur("j1");		
+		p = new Partie(j, "hunt the wumpus");
+	
+		p.setMonde(new Monde(5,1,2,0,1));
+		p.disposerPlateau();
+		p.setGrille();
+    }
     
     public String processInput(String theInput) {
     	
