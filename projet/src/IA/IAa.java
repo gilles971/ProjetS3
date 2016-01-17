@@ -124,7 +124,7 @@ public void miseAJour(ArrayList<String> message){
 	labyrinth[currentX][currentY].setVisite(true);
 
 	//Si on sent une odeur infame
-	if(message.contains("Odeur")){
+	if(message.contains("odeur")){
 		labyrinth[currentX][currentY].setOdeurInfame(true);
 		for (int i=0; i<boundX; i++) {
 			for (int j=0; j<boundY; j++) {
@@ -151,7 +151,7 @@ public void miseAJour(ArrayList<String> message){
 	}	
 
 	//Si on sent un courant d'air
-	if(message.contains("Courant")){
+	if(message.contains("courant")){
 		labyrinth[currentX][currentY].setCourantDair(true);
 		for (int i=0; i<boundX; i++) {
 			for (int j=0; j<boundY; j++) {
@@ -215,7 +215,9 @@ public void miseAJour(ArrayList<String> message){
 /**
 *Méthode appelé pour jouer
 */
-public String jouer(int x, int y, ArrayList<String> message){
+public String jouer(int x, int y, String hint){
+	
+	ArrayList<String> message = new ArrayList<String>(hint.split("\\s+");
 
 	this.currentX=x;
 	this.currentY=y;
