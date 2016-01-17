@@ -73,7 +73,7 @@ public class KnockKnockClientAI {
                 if (fromServer.equals("Vous avez perdu"))
                     break;
                 
-                if(!fromServer.equals("welcome to hunt the wumpus"))
+                if(info(0).equals("0") || info(0).equals("1") || info(0).equals("2") || info(0).equals("3") || info(0).equals("4"))
                     fromAI = artificialIntelligence.jouer(Integer.parseInt(info.get(0)), 
                                                           Integer.parseInt(info.get(1)), 
                                                           info);//stdIn.readLine();
