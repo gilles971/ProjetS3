@@ -69,6 +69,9 @@ public class KnockKnockProtocol {
 		p.verifMarque();
 		
 		System.out.println(p.getGrille().positionActuelle());
+		if(theInput == null) {
+			return "welcome to hunt the wumpus";
+		}
 							
 		if (
 				theInput.equals("d n") ||
