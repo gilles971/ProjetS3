@@ -34,7 +34,7 @@ package jeuSocket;
 import java.net.*;
 import java.io.*;
 
-public class KnockKnockProtocol {
+public class ServerProtocol {
     private static final int WAITING = 0;
     private static final int SENTCLUE = 1;
     private static final int ANOTHER = 2;
@@ -51,7 +51,7 @@ public class KnockKnockProtocol {
     private Joueur j;
     private Partie p;
     
-    public KnockKnockProtocol () {
+    public ServerProtocol () {
     	j = new Joueur("j1");		
 		p = new Partie(j, "hunt the wumpus");
 	

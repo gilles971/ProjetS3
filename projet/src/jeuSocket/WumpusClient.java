@@ -1,8 +1,5 @@
 package jeuSocket;
 
-import java.util.ArrayList;
-import IA.IAa;
-
 /*
  * Copyright (c) 1995, 2013, Oracle and/or its affiliates. All rights reserved.
  *
@@ -37,7 +34,7 @@ import IA.IAa;
 import java.io.*;
 import java.net.*;
 
-public class KnockKnockClientAI {
+public class WumpusClient {
     public static void main(String[] args) throws IOException {
         
         if (args.length != 2) {
@@ -48,8 +45,6 @@ public class KnockKnockClientAI {
 
         String hostName = args[0];
         int portNumber = Integer.parseInt(args[1]);
-        
-        IAa artificialIntelligence = new IAa(5, 5, 1);
 
         try (
             Socket kkSocket = new Socket(hostName, portNumber);
@@ -60,31 +55,17 @@ public class KnockKnockClientAI {
             BufferedReader stdIn =
                 new BufferedReader(new InputStreamReader(System.in));
             String fromServer;
-            String fromAI;
+            String fromUser;
 
             while ((fromServer = in.readLine()) != null) {
                 System.out.println("Server: " + fromServer);
-                ArrayList<String> info = new ArrayList<String>();
-                
-                String[] temp = fromServer.split("\\s+");
-                for (int i = 0; i<temp.length; i++) {
-                    info.add(temp[i]);
-                }
                 if (fromServer.equals("Vous avez perdu"))
                     break;
                 
-                if((info.get(0).equals("0") || info.get(0).equals("1") || info.get(0).equals("2") || info.get(0).equals("3") || info.get(0).equals("4")) &&
-                   (info.get(1).equals("0") || info.get(1).equals("1") || info.get(2).equals("2") || info.get(3).equals("3") || info.get(4).equals("4")))
-                    fromAI = artificialIntelligence.jouer(Integer.parseInt(info.get(0)), 
-                                                          Integer.parseInt(info.get(1)), 
-                                                          info);//stdIn.readLine();
-                                                      
-                else
-                    fromAI = "\n";
-                    
-                if (fromAI != null) {
-                    System.out.println("Client: " + fromAI);
-                    out.println(fromAI);
+                fromUser = stdIn.readLine();
+                if (fromUser != null) {
+                    System.out.println("Client: " + fromUser);
+                    out.println(fromUser);
                 }
             }
         } catch (UnknownHostException e) {

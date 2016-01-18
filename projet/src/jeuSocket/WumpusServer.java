@@ -34,7 +34,7 @@ package jeuSocket;
 import java.net.*;
 import java.io.*;
 
-public class KnockKnockServer {
+public class WumpusServer {
     public static void main(String[] args) throws IOException {
         
         if (args.length != 1) {
@@ -56,12 +56,12 @@ public class KnockKnockServer {
             String inputLine, outputLine;
             
             // Initiate conversation with client
-            KnockKnockProtocol kkp = new KnockKnockProtocol();
+            ServerProtocol sp = new ServerProtocol();
             outputLine = "welcome to hunt the wumpus";//kkp.processInput(null);
             out.println(outputLine);
 
             while ((inputLine = in.readLine()) != null) {
-                outputLine = kkp.processInput(inputLine);
+                outputLine = sp.processInput(inputLine);
                 out.println(outputLine);
                 if (outputLine.equals("Bye."))
                     break;
