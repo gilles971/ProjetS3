@@ -74,7 +74,7 @@ public class WumpusClientAI2 {
                     break;
                 
                 if((info.get(0).equals("0") || info.get(0).equals("1") || info.get(0).equals("2") || info.get(0).equals("3") || info.get(0).equals("4")) &&
-                   (info.get(1).equals("0") || info.get(1).equals("1") || info.get(2).equals("2") || info.get(3).equals("3") || info.get(4).equals("4")))
+                   (info.get(1).equals("0") || info.get(1).equals("1") || info.get(1).equals("2") || info.get(1).equals("3") || info.get(1).equals("4")))
                     fromAI = artificialIntelligence.jouer(Integer.parseInt(info.get(0)), 
                                                           Integer.parseInt(info.get(1)), 
                                                           info);//stdIn.readLine();

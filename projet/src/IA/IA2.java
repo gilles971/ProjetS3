@@ -16,9 +16,12 @@ public IA2(int boundX, int boundY, int arrows) {
 	
 	labyrinth = new Case[boundX][boundY];
 	
+	int compteur = 0;
+	
 	for (int i=0; i<boundX; i++) {
 		for (int j=0; j<boundY; j++) {
-			labyrinth[i][j] = new Case();
+			labyrinth[i][j] = new Case(compteur);
+			compteur++;
 		}
 	}
 	this.arrows = arrows;
@@ -30,6 +33,13 @@ public IA2(int boundX, int boundY, int arrows) {
 *Envoie la case vers laquelle le déplacement est le moins dangereux
 */
 public String deplacement() {
+	try {
+		Thread.currentThread().sleep(1000);
+	} catch (InterruptedException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
 	Random rand = new Random();
 	int aleatoire = rand.nextInt(4)+1;
 
@@ -192,22 +202,22 @@ public String jouer(int x, int y, ArrayList<String> message){
 		wumpusAcote = this.wumpusProche();
 		if(wumpusAcote != null){//Si un wumpus est à cote
 			if (currentY-1 >= 0) {
-				if(labyrinth[x][y-1] == wumpusAcote){	//Case de gauche
+				if(labyrinth[x][y-1].getId() == wumpusAcote.getId()){	//Case de gauche
 					return "t o";
 				}
 			}
 			if (currentY+1 <= 4) {
-				if(labyrinth[x][y+1] == wumpusAcote){	//Case de droite
+				if(labyrinth[x][y+1].getId() == wumpusAcote.getId()){	//Case de droite
 					return "t e";
 				}
 			}
 			if (currentX-1 >= 0) {
-				if(labyrinth[x-1][y] == wumpusAcote){	//Case du bas
+				if(labyrinth[x-1][y].getId() == wumpusAcote.getId()){	//Case du bas
 					return "t s";
 				}
 			}
 			if (currentX+1 <= 4) {
-				if(labyrinth[x+1][y] == wumpusAcote){ //Case du haut
+				if(labyrinth[x+1][y].getId() == wumpusAcote.getId()){ //Case du haut
 					return "t n";
 				}
 			}

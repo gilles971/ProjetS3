@@ -7,18 +7,19 @@ public class Case {
 	private boolean dangersWumpus;
 	private boolean puit;
 	private boolean wumpus;
-	private boolean safe;
 	private boolean visite;
+	private int id;
 	
-	public Case(){
+	public Case(int id){
 		this.courantDair=false;
 		this.dangersPuit=true;
 		this.odeurInfame=false;
 		this.dangersWumpus=true;
 		this.puit=false;
 		this.wumpus=false;
-		this.safe=false;
 		this.visite = false;
+		this.id = id;
+		
 	}
 
 	public boolean getCourantDair() {
@@ -68,14 +69,6 @@ public class Case {
 	public void setWumpus(boolean wumpus) {
 		this.wumpus = wumpus;
 	}
-
-	public boolean getSafe() {
-		return safe;
-	}
-
-	public void setSafe(boolean safe) {
-		this.safe = safe;
-	}
 	
 	public boolean getVisite() {
 		return visite;
@@ -85,5 +78,7 @@ public class Case {
 		this.visite = visite;
 	}
 	
-	
+	public int getId(){
+		return this.id;
+	}
 }

@@ -1,7 +1,7 @@
 package jeuSocket;
 
 import java.util.ArrayList;
-import IA.IA1;
+import IA.IA3;
 
 /*
  * Copyright (c) 1995, 2013, Oracle and/or its affiliates. All rights reserved.
@@ -37,7 +37,7 @@ import IA.IA1;
 import java.io.*;
 import java.net.*;
 
-public class WumpusClientAI1 {
+public class WumpusClientAI3 {
     public static void main(String[] args) throws IOException {
         
         if (args.length != 2) {
@@ -49,7 +49,7 @@ public class WumpusClientAI1 {
         String hostName = args[0];
         int portNumber = Integer.parseInt(args[1]);
         
-        IA1 artificialIntelligence = new IA1(5, 5, 1);
+        IA3 artificialIntelligence = new IA3(5, 5, 1);
 
         try (
             Socket kkSocket = new Socket(hostName, portNumber);
@@ -75,9 +75,9 @@ public class WumpusClientAI1 {
                 
                 if((info.get(0).equals("0") || info.get(0).equals("1") || info.get(0).equals("2") || info.get(0).equals("3") || info.get(0).equals("4")) &&
                    (info.get(1).equals("0") || info.get(1).equals("1") || info.get(1).equals("2") || info.get(1).equals("3") || info.get(1).equals("4")))
-                   {fromAI = artificialIntelligence.jouer();//stdIn.readLine();
-                   System.out.println("ok1");
-                   }
+                    fromAI = artificialIntelligence.jouer(Integer.parseInt(info.get(0)), 
+                                                          Integer.parseInt(info.get(1)), 
+                                                          info);//stdIn.readLine();
                                                       
                 else
                     fromAI = "\n";

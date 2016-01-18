@@ -15,9 +15,12 @@ public IA3(int boundX, int boundY, int arrows) {
 	
 	labyrinth = new Case[boundX][boundY];
 	
+	int compteur=0;
+	
 	for (int i=0; i<boundX; i++) {
 		for (int j=0; j<boundY; j++) {
-			labyrinth[i][j] = new Case();
+			labyrinth[i][j] = new Case(compteur);
+			compteur++;
 		}
 	}
 	this.arrows = arrows;
@@ -30,40 +33,40 @@ public IA3(int boundX, int boundY, int arrows) {
 */
 public Case deplacementLePlusViable() {
 	ArrayList<Case> listCellAdja = getCelluleAdjacente();
-	ArrayList<Integer> listInt = new ArrayList<Integer>();
-	int compteur;
+	ArrayList<Double> listInt = new ArrayList<Double>();
+	Double compteur;
 	//Pour toutes les cases adjacentes à l'actuelle
 	for(Case c:listCellAdja) {
-		compteur = 0;
+		compteur = 0.0;
 		
 		if(c.getVisite()){
 			compteur += 1.5;	//Si on l'a déjà visité, on évite d'y aller
 		}else{
 			if(c.getDangersPuit()) {
-				compteur++;		//Si il y a un dangers de puit
+				compteur += 1.0;		//Si il y a un dangers de puit
 			}
 			if (c.getDangersWumpus()) {
-				compteur++;		//Si il y a un dangers de wumpus
+				compteur += 1.0;		//Si il y a un dangers de wumpus
 			}
 			if(c.getWumpus()) {
-				compteur +=10;	//Si il y a wumpus, on n'y va pas
+				compteur +=10.0;	//Si il y a wumpus, on n'y va pas
 			}
 			if (c.getPuit()) {
-				compteur += 10;	//Si il y a un puit, on y va pas
+				compteur += 10.0;	//Si il y a un puit, on y va pas
 			}
 		}
 		listInt.add(compteur);
 	}
 	//On cherche le plus petit nombre trouvé
-	int minimum = Collections.min(listInt);
+	Double minimum = Collections.min(listInt);
 
 	//On cherche quelles cases ont reçu ce score
-	for(int i=0; i<listInt.size(); i++){
+	for(int i=0; i<listCellAdja.size(); i++){
 		if(listInt.get(i) != minimum){
 			listCellAdja.remove(i);
 		}
 	}
-
+	
 	//On retourne une des cases qui a eu le plus petit score
 	return listCellAdja.get((int)(Math.random()*listCellAdja.size()));
 }
@@ -73,6 +76,22 @@ public Case deplacementLePlusViable() {
 */
 public Case deplacementChasseur(ArrayList<Integer> posWumpus) {
 	
+	if(currentX < posWumpus.get(0)){
+			return labyrinth[currentX+1][currentY];
+	}else{
+		if(currentX > posWumpus.get(0)){
+			return labyrinth[currentX-1][currentY];	
+		}
+	}
+	if(currentY < posWumpus.get(1)){
+			return labyrinth[currentX][currentY+1];
+	}else{
+		if(currentY < posWumpus.get(1)){
+			return labyrinth[currentX][currentY-1];
+		}
+	}
+	
+	/*
 	//Si la case en bas se rapproche
 	if(Math.abs(posWumpus.get(0)-(currentX)) + Math.abs(posWumpus.get(1)-(currentY)) >  
 		Math.abs(posWumpus.get(0)-(currentX-1)) + Math.abs(posWumpus.get(1)-(currentY))){
@@ -91,8 +110,8 @@ public Case deplacementChasseur(ArrayList<Integer> posWumpus) {
 	//Si la case à droite se rapproche
 	if(Math.abs(posWumpus.get(0)-(currentX)) + Math.abs(posWumpus.get(1)-(currentY)) >  
 		Math.abs(posWumpus.get(0)-(currentX)) + Math.abs(posWumpus.get(1)-(currentY+1))){
-		return labyrinth[currentX-1][currentY+1];
-	}
+		return labyrinth[currentX][currentY+1];
+	}*/
 	return null;
 }
 
@@ -113,6 +132,8 @@ public ArrayList<Case> getCelluleAdjacente() {
 	if (currentX+1 <= 4) {
 		list.add(labyrinth[currentX+1][currentY]);
 	}
+	
+	
 	return list;
 }
 
@@ -222,9 +243,17 @@ public void miseAJour(ArrayList<String> message){
 *Méthode appelé pour jouer
 */
 public String jouer(int x, int y, ArrayList<String> message){
+	try {
+		Thread.currentThread().sleep(10000);
+	} catch (InterruptedException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 
 	this.currentX=x;
+	//System.out.println("currentX = "+this.currentX);
 	this.currentY=y;
+	//System.out.println("currentY = "+this.currentY);
 	boolean wumpusTrouve=false;
 	Case wumpusAcote=null;
 
@@ -235,27 +264,26 @@ public String jouer(int x, int y, ArrayList<String> message){
 	wumpusTrouve = this.presenceWumpus();
 	
 	if(wumpusTrouve){//Si un wumpus à été trouvé
-	
 		//On cherche si il y a un wumpus à cote
 		wumpusAcote = this.wumpusProche();
 		if(wumpusAcote != null){//Si un wumpus est à cote
 			if (currentY-1 >= 0) {
-				if(labyrinth[x][y-1] == wumpusAcote){	//Case de gauche
+				if(labyrinth[x][y-1].getId() == wumpusAcote.getId()){	//Case de gauche
 					return "t o";
 				}
 			}
 			if (currentY+1 <= 4) {
-				if(labyrinth[x][y+1] == wumpusAcote){	//Case de droite
+				if(labyrinth[x][y+1].getId() == wumpusAcote.getId()){	//Case de droite
 					return "t e";
 				}
 			}
 			if (currentX-1 >= 0) {
-				if(labyrinth[x-1][y] == wumpusAcote){	//Case du bas
+				if(labyrinth[x-1][y].getId() == wumpusAcote.getId()){	//Case du bas
 					return "t s";
 				}
 			}
 			if (currentX+1 <= 4) {
-				if(labyrinth[x+1][y] == wumpusAcote){ //Case du haut
+				if(labyrinth[x+1][y].getId() == wumpusAcote.getId()){ //Case du haut
 					return "t n";
 				}
 			}
@@ -290,23 +318,23 @@ public String jouer(int x, int y, ArrayList<String> message){
 public String messageAEnvoyer(Case caseDirection){
 	
 	if (currentY-1 >= 0) {
-		if(labyrinth[currentX][currentY-1] == caseDirection){	//Case de gauche
-			return "d o";
-		}
-	}
-	if (currentY+1 <= 4) {
-		if(labyrinth[currentX][currentY+1] == caseDirection){	//Case de droite
+		if(labyrinth[currentX][currentY-1].getId() == caseDirection.getId()){	//Case de gauche
 			return "d e";
 		}
 	}
+	if (currentY+1 <= 4) {
+		if(labyrinth[currentX][currentY+1].getId() == caseDirection.getId()){	//Case de droite
+			return "d o";
+		}
+	}
 	if (currentX-1 >= 0) {
-		if(labyrinth[currentX-1][currentY] == caseDirection){	//Case du bas
-			return "d s";
+		if(labyrinth[currentX-1][currentY].getId() == caseDirection.getId()){	//Case du bas
+			return "d n";
 		}
 	}
 	if (currentX+1 <= 4) {
-		if(labyrinth[currentX+1][currentY] == caseDirection){ //Case du haut
-			return "d n";
+		if(labyrinth[currentX+1][currentY].getId() == caseDirection.getId()){ //Case du haut
+			return "d s";
 		}
 	}
 

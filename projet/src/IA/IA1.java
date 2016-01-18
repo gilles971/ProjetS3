@@ -5,20 +5,12 @@ import java.util.Collections;
 import java.util.Random;
 
 public class IA1 {
-private Case[][] labyrinth;
 private int arrows;
 private int boundX;
 private int boundY;
 
 public IA1(int boundX, int boundY, int arrows) {
-	
-	labyrinth = new Case[boundX][boundY];
-	
-	for (int i=0; i<boundX; i++) {
-		for (int j=0; j<boundY; j++) {
-			labyrinth[i][j] = new Case();
-		}
-	}
+
 	this.arrows = arrows;
 	this.boundX = boundX;
 	this.boundY = boundY;
@@ -29,7 +21,12 @@ public IA1(int boundX, int boundY, int arrows) {
 *Méthode appelé pour jouer
 */
 public String jouer(){
-
+	try {
+		Thread.currentThread().sleep(1000);
+	} catch (InterruptedException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 	Random rand = new Random();
 	int aleatoire = rand.nextInt(5)+1;
 	int aleatoire2;

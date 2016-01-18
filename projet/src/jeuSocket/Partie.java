@@ -391,6 +391,8 @@ public class Partie extends Thread {
 		}
 		ret = true;
 		
+		this.localiserJoueur();
+		
 		return ret;
 	}
 	

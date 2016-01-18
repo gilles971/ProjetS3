@@ -116,6 +116,6 @@ public class ServerProtocol {
 			}
 		}			
         
-        return p.getJoueur().getCoordX()+"\t"+p.getJoueur().getCoordY()+"\t"+p.verifMarque();
+        return p.getGrille().getJoueur().getCoordX()+" "+p.getGrille().getJoueur().getCoordY()+" "+p.verifMarque(); // \t
     }
 }

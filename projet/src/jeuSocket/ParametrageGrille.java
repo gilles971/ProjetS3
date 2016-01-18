@@ -119,4 +119,8 @@ public class ParametrageGrille {
 
 	}
 	
+	public Joueur getJoueur() {
+		return this.joueur;
+	}
+	
 }
