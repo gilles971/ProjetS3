@@ -1,7 +1,7 @@
 package jeuSocket;
 
 import java.util.ArrayList;
-import IA.IAa;
+import IA.IA2;
 
 /*
  * Copyright (c) 1995, 2013, Oracle and/or its affiliates. All rights reserved.
@@ -37,7 +37,7 @@ import IA.IAa;
 import java.io.*;
 import java.net.*;
 
-public class WumpusClientAI {
+public class WumpusClientAI2 {
     public static void main(String[] args) throws IOException {
         
         if (args.length != 2) {
@@ -49,7 +49,7 @@ public class WumpusClientAI {
         String hostName = args[0];
         int portNumber = Integer.parseInt(args[1]);
         
-        IAa artificialIntelligence = new IAa(5, 5, 1);
+        IA2 artificialIntelligence = new IA2(5, 5, 1);
 
         try (
             Socket kkSocket = new Socket(hostName, portNumber);

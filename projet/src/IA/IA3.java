@@ -11,7 +11,7 @@ private int arrows;
 private int boundX;
 private int boundY;
 
-public IAa(int boundX, int boundY, int arrows) {
+public IA3(int boundX, int boundY, int arrows) {
 	
 	labyrinth = new Case[boundX][boundY];
 	

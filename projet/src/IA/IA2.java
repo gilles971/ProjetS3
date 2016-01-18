@@ -2,8 +2,9 @@ package IA;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
-public class IA3 {
+public class IA2 {
 private Case[][] labyrinth;
 private int currentX;
 private int currentY;
@@ -11,7 +12,7 @@ private int arrows;
 private int boundX;
 private int boundY;
 
-public IAa(int boundX, int boundY, int arrows) {
+public IA2(int boundX, int boundY, int arrows) {
 	
 	labyrinth = new Case[boundX][boundY];
 	
@@ -28,22 +29,21 @@ public IAa(int boundX, int boundY, int arrows) {
 /**
 *Envoie la case vers laquelle le déplacement est le moins dangereux
 */
-public Case deplacement() {
+public String deplacement() {
 	Random rand = new Random();
 	int aleatoire = rand.nextInt(4)+1;
-	int aleatoire2;
 
-	switch aleatoire{
+	switch (aleatoire) {
 		case 1: return "d e";
-
 
 		case 2: return "d o";
 
-
 		case 3: return "d n";
 
-
 		case 4: return "d s";
+				
+		default: return "oups";		 
+		
 	}	
 }
 
@@ -215,7 +215,7 @@ public String jouer(int x, int y, ArrayList<String> message){
 		}else{//Si le wumpus n'est pas à cote
 			//On cherche la position du wumpus et on cherche un deplacement qui se rapproche de lui
 			ArrayList<Integer> posWumpus = positionWumpus(); 
-			Case move = this.deplacement();
+			String move = this.deplacement();
 			if(move != null){
 				return move;
 			}else{
@@ -226,7 +226,7 @@ public String jouer(int x, int y, ArrayList<String> message){
 	
 	}else{//Si le wumpus n'a pas été trouvé	
 		//Cherche la case avec le deplacement le plus viable
-		Case move = this.deplacement();
+		String move = this.deplacement();
 		
 		if(move != null){
 			return move;

@@ -2,8 +2,9 @@ package IA;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
-public class IAa {
+public class IA1 {
 private Case[][] labyrinth;
 private int arrows;
 private int boundX;
@@ -33,7 +34,7 @@ public String jouer(){
 	int aleatoire = rand.nextInt(5)+1;
 	int aleatoire2;
 
-	switch aleatoire{
+	switch (aleatoire){
 		case 1: return "d e";
 
 
@@ -46,8 +47,8 @@ public String jouer(){
 		case 4: return "d s";
 
 
-		case 5: aleatoire2 = rand.next(4)+1;
-				switch aleatoire2{
+		case 5: aleatoire2 = rand.nextInt(4)+1;
+				switch (aleatoire2){
 					case 1: return "t e";
 
 					case 2: return "t o";
@@ -56,7 +57,9 @@ public String jouer(){
 
 					case 4: return "t s";
 
+					default: return "oups";
 				}
+		default: return "oups";
 
 
 	}	
@@ -64,19 +67,4 @@ public String jouer(){
 
 
 // ---------------------------------------------------------------------- //
-
-/**
- * Retourne currentX
- * @return currentX
- */
-		public int getCurrentX() {
-			return currentX;
-		}
-
-/**
-*Retourne currentY 
-* @return
-*/
-		public int getCurrentY() {
-			return currentY;
-		}
+}
