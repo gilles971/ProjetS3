@@ -3,7 +3,7 @@ package IA;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class IAa {
+public class IA3 {
 private Case[][] labyrinth;
 private int currentX;
 private int currentY;
@@ -28,73 +28,25 @@ public IAa(int boundX, int boundY, int arrows) {
 /**
 *Envoie la case vers laquelle le déplacement est le moins dangereux
 */
-public Case deplacementLePlusViable() {
-	ArrayList<Case> listCellAdja = getCelluleAdjacente();
-	ArrayList<Integer> listInt = new ArrayList<Integer>();
-	int compteur;
-	//Pour toutes les cases adjacentes à l'actuelle
-	for(Case c:listCellAdja) {
-		compteur = 0;
-		
-		if(c.getVisite()){
-			compteur += 1.5;	//Si on l'a déjà visité, on évite d'y aller
-		}else{
-			if(c.getDangersPuit()) {
-				compteur++;		//Si il y a un dangers de puit
-			}
-			if (c.getDangersWumpus()) {
-				compteur++;		//Si il y a un dangers de wumpus
-			}
-			if(c.getWumpus()) {
-				compteur +=10;	//Si il y a wumpus, on n'y va pas
-			}
-			if (c.getPuit()) {
-				compteur += 10;	//Si il y a un puit, on y va pas
-			}
-		}
-		listInt.add(compteur);
-	}
-	//On cherche le plus petit nombre trouvé
-	int minimum = Collections.min(listInt);
+public Case deplacement() {
+	Random rand = new Random();
+	int aleatoire = rand.nextInt(4)+1;
+	int aleatoire2;
 
-	//On cherche quelles cases ont reçu ce score
-	for(int i=0; i<listInt.size(); i++){
-		if(listInt.get(i) != minimum){
-			listCellAdja.remove(i);
-		}
-	}
+	switch aleatoire{
+		case 1: return "d e";
 
-	//On retourne une des cases qui a eu le plus petit score
-	return listCellAdja.get((int)(Math.random()*listCellAdja.size()));
+
+		case 2: return "d o";
+
+
+		case 3: return "d n";
+
+
+		case 4: return "d s";
+	}	
 }
 
-/**
-*Envoie la case vers laquelle le déplacement est le moins dangereux et qui se rapproche du wumpus
-*/
-public Case deplacementChasseur(ArrayList<Integer> posWumpus) {
-	
-	//Si la case en bas se rapproche
-	if(Math.abs(posWumpus.get(0)-(currentX)) + Math.abs(posWumpus.get(1)-(currentY)) >  
-		Math.abs(posWumpus.get(0)-(currentX-1)) + Math.abs(posWumpus.get(1)-(currentY))){
-		return labyrinth[currentX-1][currentY];
-	}
-	//Si la case en haut se rapproche
-	if(Math.abs(posWumpus.get(0)-(currentX)) + Math.abs(posWumpus.get(1)-(currentY)) >  
-		Math.abs(posWumpus.get(0)-(currentX+1)) + Math.abs(posWumpus.get(1)-(currentY))){
-		return labyrinth[currentX+1][currentY];
-	}
-	//Si la case à gauche se rapproche
-	if(Math.abs(posWumpus.get(0)-(currentX)) + Math.abs(posWumpus.get(1)-(currentY)) >  
-		Math.abs(posWumpus.get(0)-(currentX)) + Math.abs(posWumpus.get(1)-(currentY-1))){
-		return labyrinth[currentX][currentY-1];
-	}
-	//Si la case à droite se rapproche
-	if(Math.abs(posWumpus.get(0)-(currentX)) + Math.abs(posWumpus.get(1)-(currentY)) >  
-		Math.abs(posWumpus.get(0)-(currentX)) + Math.abs(posWumpus.get(1)-(currentY+1))){
-		return labyrinth[currentX-1][currentY+1];
-	}
-	return null;
-}
 
 /**
 *Envoie la liste des cases adjacentes
@@ -263,9 +215,9 @@ public String jouer(int x, int y, ArrayList<String> message){
 		}else{//Si le wumpus n'est pas à cote
 			//On cherche la position du wumpus et on cherche un deplacement qui se rapproche de lui
 			ArrayList<Integer> posWumpus = positionWumpus(); 
-			Case caseDirection = this.deplacementChasseur(posWumpus);
-			if(caseDirection != null){
-				return messageAEnvoyer(caseDirection);
+			Case move = this.deplacement();
+			if(move != null){
+				return move;
 			}else{
 				return "oups";
 			}
@@ -274,44 +226,14 @@ public String jouer(int x, int y, ArrayList<String> message){
 	
 	}else{//Si le wumpus n'a pas été trouvé	
 		//Cherche la case avec le deplacement le plus viable
-		Case caseDirection = this.deplacementLePlusViable();
+		Case move = this.deplacement();
 		
-		if(caseDirection != null){
-			return messageAEnvoyer(caseDirection);
+		if(move != null){
+			return move;
 		}else{
 			return "oups";
 		}
 	}
-}
-
-/**
- * Genere le message à partir de la case
- */
-public String messageAEnvoyer(Case caseDirection){
-	
-	if (currentY-1 >= 0) {
-		if(labyrinth[currentX][currentY-1] == caseDirection){	//Case de gauche
-			return "d o";
-		}
-	}
-	if (currentY+1 <= 4) {
-		if(labyrinth[currentX][currentY+1] == caseDirection){	//Case de droite
-			return "d e";
-		}
-	}
-	if (currentX-1 >= 0) {
-		if(labyrinth[currentX-1][currentY] == caseDirection){	//Case du bas
-			return "d s";
-		}
-	}
-	if (currentX+1 <= 4) {
-		if(labyrinth[currentX+1][currentY] == caseDirection){ //Case du haut
-			return "d n";
-		}
-	}
-
-	return "Oups";
-	
 }
 
 
