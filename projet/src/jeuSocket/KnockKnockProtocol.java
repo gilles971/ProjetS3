@@ -64,8 +64,8 @@ public class KnockKnockProtocol {
     	
         String theOutput = null;
 		
-		System.out.println(p.getJoueur().toString());
-		System.out.println(p.getGrille().commandes());	
+		//System.out.println(p.getJoueur().toString());
+		//System.out.println(p.getGrille().commandes());	
 		p.verifMarque();
 		
 		System.out.println(p.getGrille().positionActuelle());
