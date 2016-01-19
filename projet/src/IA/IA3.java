@@ -76,42 +76,24 @@ public Case deplacementLePlusViable() {
 */
 public Case deplacementChasseur(ArrayList<Integer> posWumpus) {
 	
+	//Si le wumpus est à droite
 	if(currentX < posWumpus.get(0)){
 			return labyrinth[currentX+1][currentY];
 	}else{
+	//Si le wumpus est à gauche	
 		if(currentX > posWumpus.get(0)){
 			return labyrinth[currentX-1][currentY];	
 		}
 	}
+	//Si le wumpus est en bas
 	if(currentY < posWumpus.get(1)){
 			return labyrinth[currentX][currentY+1];
 	}else{
+	//Si le wumpus est en haut	
 		if(currentY < posWumpus.get(1)){
 			return labyrinth[currentX][currentY-1];
 		}
 	}
-	
-	/*
-	//Si la case en bas se rapproche
-	if(Math.abs(posWumpus.get(0)-(currentX)) + Math.abs(posWumpus.get(1)-(currentY)) >  
-		Math.abs(posWumpus.get(0)-(currentX-1)) + Math.abs(posWumpus.get(1)-(currentY))){
-		return labyrinth[currentX-1][currentY];
-	}
-	//Si la case en haut se rapproche
-	if(Math.abs(posWumpus.get(0)-(currentX)) + Math.abs(posWumpus.get(1)-(currentY)) >  
-		Math.abs(posWumpus.get(0)-(currentX+1)) + Math.abs(posWumpus.get(1)-(currentY))){
-		return labyrinth[currentX+1][currentY];
-	}
-	//Si la case à gauche se rapproche
-	if(Math.abs(posWumpus.get(0)-(currentX)) + Math.abs(posWumpus.get(1)-(currentY)) >  
-		Math.abs(posWumpus.get(0)-(currentX)) + Math.abs(posWumpus.get(1)-(currentY-1))){
-		return labyrinth[currentX][currentY-1];
-	}
-	//Si la case à droite se rapproche
-	if(Math.abs(posWumpus.get(0)-(currentX)) + Math.abs(posWumpus.get(1)-(currentY)) >  
-		Math.abs(posWumpus.get(0)-(currentX)) + Math.abs(posWumpus.get(1)-(currentY+1))){
-		return labyrinth[currentX][currentY+1];
-	}*/
 	return null;
 }
 
@@ -120,6 +102,7 @@ public Case deplacementChasseur(ArrayList<Integer> posWumpus) {
 */
 public ArrayList<Case> getCelluleAdjacente() {
 	ArrayList<Case> list = new ArrayList<Case>();
+	//On envoie les cases que si elles ne sont pas à l'exterieur du labyrinthe
 	if (currentY-1 >= 0) {
 		list.add(labyrinth[currentX][currentY-1]);
 	}
@@ -215,11 +198,13 @@ public void miseAJour(ArrayList<String> message){
 	
 	for (int i=0; i<boundX; i++) {
 		for (int j=0; j<boundY; j++) {
+			//On incrémente le nombre de dangers puit
 			if(labyrinth[i][j].getDangersPuit()){
 				compteurPuit++;
 				xPuit=i;
 				yPuit=j;
 			}
+			//On incrémente le nombre de dangers wumpus
 			if(labyrinth[i][j].getDangersWumpus()){
 				compteurWumpus++;
 				xWumpus=i;
@@ -245,10 +230,9 @@ public void miseAJour(ArrayList<String> message){
 */
 public String jouer(int x, int y, ArrayList<String> message){
 
+	//On met à jour notre position
 	this.currentX=x;
-	//System.out.println("currentX = "+this.currentX);
 	this.currentY=y;
-	//System.out.println("currentY = "+this.currentY);
 	boolean wumpusTrouve=false;
 	Case wumpusAcote=null;
 
@@ -263,22 +247,22 @@ public String jouer(int x, int y, ArrayList<String> message){
 		wumpusAcote = this.wumpusProche();
 		if(wumpusAcote != null){//Si un wumpus est à cote
 			if (currentY-1 >= 0) {
-				if(labyrinth[x][y-1].getId() == wumpusAcote.getId()){	//Case de gauche
+				if(labyrinth[x][y-1].getId() == wumpusAcote.getId()){	//Case du haut
 					return "t n";
 				}
 			}
 			if (currentY+1 <= 4) {
-				if(labyrinth[x][y+1].getId() == wumpusAcote.getId()){	//Case de droite
+				if(labyrinth[x][y+1].getId() == wumpusAcote.getId()){	//Case du bas
 					return "t s";
 				}
 			}
 			if (currentX-1 >= 0) {
-				if(labyrinth[x-1][y].getId() == wumpusAcote.getId()){	//Case du bas
+				if(labyrinth[x-1][y].getId() == wumpusAcote.getId()){	//Case de gauche
 					return "t o";
 				}
 			}
 			if (currentX+1 <= 4) {
-				if(labyrinth[x+1][y].getId() == wumpusAcote.getId()){ //Case du haut
+				if(labyrinth[x+1][y].getId() == wumpusAcote.getId()){ //Case de droite
 					return "t e";
 				}
 			}
@@ -313,22 +297,22 @@ public String jouer(int x, int y, ArrayList<String> message){
 public String messageAEnvoyer(Case caseDirection){
 	
 	if (currentY-1 >= 0) {
-		if(labyrinth[currentX][currentY-1].getId() == caseDirection.getId()){	//Case de gauche
+		if(labyrinth[currentX][currentY-1].getId() == caseDirection.getId()){	//Case du haut
 			return "d n";
 		}
 	}
 	if (currentY+1 <= 4) {
-		if(labyrinth[currentX][currentY+1].getId() == caseDirection.getId()){	//Case de droite
+		if(labyrinth[currentX][currentY+1].getId() == caseDirection.getId()){	//Case du bas
 			return "d s";
 		}
 	}
 	if (currentX-1 >= 0) {
-		if(labyrinth[currentX-1][currentY].getId() == caseDirection.getId()){	//Case du bas
+		if(labyrinth[currentX-1][currentY].getId() == caseDirection.getId()){	//Case de gauche
 			return "d o";
 		}
 	}
 	if (currentX+1 <= 4) {
-		if(labyrinth[currentX+1][currentY].getId() == caseDirection.getId()){ //Case du haut
+		if(labyrinth[currentX+1][currentY].getId() == caseDirection.getId()){ //Case de droite
 			return "d e";
 		}
 	}
@@ -345,9 +329,12 @@ public boolean presenceWumpus(){
 	
 	boolean test=false;
 	
+	//Parcours le labyrinthe
 	for (int i=0; i<boundX; i++) {
 		for (int j=0; j<boundY; j++) {
+			//Si on a trouvé le wumpus
 			if(labyrinth[i][j].getWumpus()){
+				//On renvoie vrai
 				test = true;
 			}
 		}
@@ -363,9 +350,12 @@ public ArrayList<Integer> positionWumpus(){
 	
 	ArrayList<Integer> listPosition = new ArrayList<Integer>();
 	
+	//Parcours le labyrinthe
 	for (int i=0; i<boundX; i++) {
 		for (int j=0; j<boundY; j++) {
+			//Si on a trouvé le wumpus
 			if(labyrinth[i][j].getWumpus()){
+				//On renvoie sa position
 				listPosition.add(i);
 				listPosition.add(j);
 			}
@@ -380,9 +370,11 @@ public ArrayList<Integer> positionWumpus(){
  */
 public Case wumpusProche(){
 	
+	//On récupère les cases adjacentes
 	ArrayList<Case> listCellAdja = getCelluleAdjacente();
 	
 	for(Case c : listCellAdja){
+		//si le wumpus est à coter
 		if(c.getWumpus()){
 			return c;
 		}
@@ -391,6 +383,8 @@ public Case wumpusProche(){
 }
 
 // ---------------------------------------------------------------------- //
+
+//Classes de tests
 
 /**
  * Retourne currentX
