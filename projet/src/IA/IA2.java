@@ -203,22 +203,22 @@ public String jouer(int x, int y, ArrayList<String> message){
 		if(wumpusAcote != null){//Si un wumpus est à cote
 			if (currentY-1 >= 0) {
 				if(labyrinth[x][y-1].getId() == wumpusAcote.getId()){	//Case de gauche
-					return "t o";
+					return "t n";
 				}
 			}
 			if (currentY+1 <= 4) {
 				if(labyrinth[x][y+1].getId() == wumpusAcote.getId()){	//Case de droite
-					return "t e";
+					return "t s";
 				}
 			}
 			if (currentX-1 >= 0) {
 				if(labyrinth[x-1][y].getId() == wumpusAcote.getId()){	//Case du bas
-					return "t s";
+					return "t o";
 				}
 			}
 			if (currentX+1 <= 4) {
 				if(labyrinth[x+1][y].getId() == wumpusAcote.getId()){ //Case du haut
-					return "t n";
+					return "t e";
 				}
 			}
 			return "oups";

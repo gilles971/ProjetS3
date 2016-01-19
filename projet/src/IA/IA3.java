@@ -245,9 +245,9 @@ public void miseAJour(ArrayList<String> message){
 public String jouer(int x, int y, ArrayList<String> message){
 
 	this.currentX=x;
-	//System.out.println("currentX = "+this.currentX);
+	System.out.println("currentX = "+this.currentX);
 	this.currentY=y;
-	//System.out.println("currentY = "+this.currentY);
+	System.out.println("currentY = "+this.currentY);
 	boolean wumpusTrouve=false;
 	Case wumpusAcote=null;
 
@@ -267,22 +267,22 @@ public String jouer(int x, int y, ArrayList<String> message){
 		if(wumpusAcote != null){//Si un wumpus est à cote
 			if (currentY-1 >= 0) {
 				if(labyrinth[x][y-1].getId() == wumpusAcote.getId()){	//Case de gauche
-					return "t o";
+					return "t n";
 				}
 			}
 			if (currentY+1 <= 4) {
 				if(labyrinth[x][y+1].getId() == wumpusAcote.getId()){	//Case de droite
-					return "t e";
+					return "t s";
 				}
 			}
 			if (currentX-1 >= 0) {
 				if(labyrinth[x-1][y].getId() == wumpusAcote.getId()){	//Case du bas
-					return "t s";
+					return "t o";
 				}
 			}
 			if (currentX+1 <= 4) {
 				if(labyrinth[x+1][y].getId() == wumpusAcote.getId()){ //Case du haut
-					return "t n";
+					return "t e";
 				}
 			}
 			return "oups";
@@ -317,22 +317,22 @@ public String messageAEnvoyer(Case caseDirection){
 	
 	if (currentY-1 >= 0) {
 		if(labyrinth[currentX][currentY-1].getId() == caseDirection.getId()){	//Case de gauche
-			return "d e";
+			return "d n";
 		}
 	}
 	if (currentY+1 <= 4) {
 		if(labyrinth[currentX][currentY+1].getId() == caseDirection.getId()){	//Case de droite
-			return "d o";
+			return "d s";
 		}
 	}
 	if (currentX-1 >= 0) {
 		if(labyrinth[currentX-1][currentY].getId() == caseDirection.getId()){	//Case du bas
-			return "d n";
+			return "d o";
 		}
 	}
 	if (currentX+1 <= 4) {
 		if(labyrinth[currentX+1][currentY].getId() == caseDirection.getId()){ //Case du haut
-			return "d s";
+			return "d e";
 		}
 	}
 
@@ -415,10 +415,10 @@ public Case wumpusProche(){
  *Fonction de test pour afficher les dangers de Puit		
  */
 		public void afficheLabPuit(){
-			for (int i=0; i<boundX; i++) {
+			for (int i=0; i<boundY; i++) {
 				System.out.print("\n");
-				for (int j=0; j<boundY; j++) {
-					System.out.print(this.labyrinth[i][j].getDangersPuit()+ " ");
+				for (int j=0; j<boundX; j++) {
+					System.out.print(this.labyrinth[j][i].getDangersPuit()+ "\t");
 				}
 			}
 		}
@@ -427,10 +427,10 @@ public Case wumpusProche(){
 *Fonction de test pour afficher les dangers de Wumpus		
 */
 		public void afficheLabWumpus(){
-			for (int i=0; i<boundX; i++) {
+			for (int i=0; i<boundY; i++) {
 				System.out.print("\n");
-				for (int j=0; j<boundY; j++) {
-					System.out.print(this.labyrinth[i][j].getDangersWumpus()+ " ");
+				for (int j=0; j<boundX; j++) {
+					System.out.print(this.labyrinth[j][i].getDangersWumpus()+ "\t");
 				}
 			}
 		}
