@@ -21,7 +21,7 @@ public class WumpusClientAI2 {
     	//on vérifie que la classe est utilisée correctement
         if (args.length != 2) {
             System.err.println(
-                "Usage: java KnockNnockClient <host name> <port number>");
+                "Usage: java WumpusClientAI2 <host name> <port number>");
             System.exit(1);
         }
 
