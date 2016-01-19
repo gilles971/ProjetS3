@@ -31,6 +31,8 @@ public String jouer(){
 	int aleatoire = rand.nextInt(5)+1;
 	int aleatoire2;
 
+	//On envoie un mouvement (4 chances sur 5) ou un tir (1 chance sur 5) aléatoirement
+
 	switch (aleatoire){
 		case 1: return "d e";
 
@@ -61,7 +63,4 @@ public String jouer(){
 
 	}	
 }
-
-
-// ---------------------------------------------------------------------- //
 }
