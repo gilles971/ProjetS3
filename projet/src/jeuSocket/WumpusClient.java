@@ -24,31 +24,38 @@ public class WumpusClient {
             System.exit(1);
         }
 
-        // on mémorise le 
+        // on mémorise le numéro de port
         String hostName = args[0];
         int portNumber = Integer.parseInt(args[1]);
 
         try (
-            Socket kkSocket = new Socket(hostName, portNumber);
-            PrintWriter out = new PrintWriter(kkSocket.getOutputStream(), true);
+        		// on commence par créer nos socket avec 
+        		//leur descripteur de fichier et leur buffer en écriture
+            Socket wSocket = new Socket(hostName, portNumber);
+            PrintWriter out = new PrintWriter(wSocket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(
-                new InputStreamReader(kkSocket.getInputStream()));
+                new InputStreamReader(wSocket.getInputStream()));
         ) {
             BufferedReader stdIn =
                 new BufferedReader(new InputStreamReader(System.in));
             String fromServer;
             String fromUser;
 
+            //on lance notre boucle:
+            //tant que l'on reçoit des données du serveur
+            //on les affiche et on lit l'entrée standard
+            //qu'on envoie ensuite au serveur
+            //on sort si on envoie "Bye."
             while ((fromServer = in.readLine()) != null) {
                 System.out.println("Server: " + fromServer);
-                if (fromServer.equals("Vous avez perdu"))
-                    break;
                 
                 fromUser = stdIn.readLine();
                 if (fromUser != null) {
                     System.out.println("Client: " + fromUser);
                     out.println(fromUser);
                 }
+                if (fromUser.equals("Bye."))
+                    break;
             }
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host " + hostName);
