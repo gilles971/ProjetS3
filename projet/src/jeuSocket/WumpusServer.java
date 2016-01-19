@@ -1,35 +1,12 @@
 package jeuSocket;
 
 /*
- * Copyright (c) 1995, 2014, Oracle and/or its affiliates. All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- *   - Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer.
- *
- *   - Redistributions in binary form must reproduce the above copyright
- *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution.
- *
- *   - Neither the name of Oracle or the names of its
- *     contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
- * IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
- * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */ 
+ * Cette classe met en place un serveur de jeu Wumpus
+ * afin qu'un client de jeu normal ou spécial pour les IA s'y connecte
+ * 
+ * cette classe est en partiet inspirée des classes fournies par oracle pour la mise
+ * en place d'un système client serveur
+ */
 
 import java.net.*;
 import java.io.*;
@@ -37,13 +14,17 @@ import java.io.*;
 public class WumpusServer {
     public static void main(String[] args) throws IOException {
         
+    	//il s'agit d'une simple vérification de l'utilisation de la classe
         if (args.length != 1) {
-            System.err.println("Usage: java KnockKnockServer <port number>");
+            System.err.println("Usage: java WumpusServer <port number>");
             System.exit(1);
         }
 
+        // on récupère le numéro de port passé en paramètre
         int portNumber = Integer.parseInt(args[0]);
 
+        //bloc type, on met en place une socket sur le port concerné
+        //et on se crée des descripteur de fichier avec leurs buffer en écriture
         try ( 
             ServerSocket serverSocket = new ServerSocket(portNumber);
             Socket clientSocket = serverSocket.accept();
@@ -53,37 +34,28 @@ public class WumpusServer {
                 new InputStreamReader(clientSocket.getInputStream()));
         ) {
         
-            String inputLine = "\n", outputLine;
+        	//on  se crée deux variables: l'netrée et la sortie
+        	String inputLine = "\n", outputLine;
             
-            // Initiate conversation with client
+            // on initialise la communication avec le client
             ServerProtocol sp = new ServerProtocol();
-            outputLine = "welcome to hunt the wumpus";//kkp.processInput(null);
+            outputLine = "welcome to hunt the wumpus";
             out.println(outputLine);
             
 
+            //on boucle tant que l'on reçoit des données dans la socket
+            //on demande au protocole de nous fournir la réponse a l'entrée fournie
+            //puis on l'envoie en sortie
+            //si jamais l'entrée est "Bye." on quitte
+            
             while ((inputLine = in.readLine()) != null) {
-                /*while (inputLine.equals("\n")) {
-                	System.out.println("lock");
-                	try {
-                		Thread.currentThread().sleep(1000);
-                	} catch (InterruptedException e) {
-                		// TODO Auto-generated catch block
-                		e.printStackTrace();
-                	}
-                	inputLine = in.readLine();
-                }*/
-            	System.out.println("reçu: "+inputLine);
-            	/*if (inputLine.equals("\t")) {
-            		System.out.println("caught");
-            	}
-            	else*/
-                outputLine = sp.processInput(inputLine);
-                System.out.println("envoyé: "+outputLine);
-                out.println(outputLine);
-
-                if (outputLine.equals("Bye."))
+                if (inputLine.equals("Bye."))
                     break;
-                //while((inputLine = in.readLine()).equals("\n"));
+                
+            	//System.out.println("reçu: "+inputLine);
+                outputLine = sp.processInput(inputLine);
+                //System.out.println("envoyé: "+outputLine);
+                out.println(outputLine);
             }
         } catch (IOException e) {
             System.out.println("Exception caught when trying to listen on port "

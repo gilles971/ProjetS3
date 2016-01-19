@@ -40,7 +40,7 @@ public Case deplacementLePlusViable() {
 		compteur = 0.0;
 		
 		if(c.getVisite()){
-			compteur += 1.5;	//Si on l'a déjà visité, on évite d'y aller
+			compteur += c.getNbrVisite();	//Si on l'a déjà visité, on évite d'y aller
 		}else{
 			if(c.getDangersPuit()) {
 				compteur += 1.0;		//Si il y a un dangers de puit
@@ -143,7 +143,8 @@ public ArrayList<Case> getCelluleAdjacente() {
 public void miseAJour(ArrayList<String> message){
 
 	labyrinth[currentX][currentY].setVisite(true);
-
+	labyrinth[currentX][currentY].incrNbrVisite(0.75);
+	
 	//Si on sent une odeur infame
 	if(message.contains("odeur")){
 		labyrinth[currentX][currentY].setOdeurInfame(true);
@@ -245,18 +246,14 @@ public void miseAJour(ArrayList<String> message){
 public String jouer(int x, int y, ArrayList<String> message){
 
 	this.currentX=x;
-	System.out.println("currentX = "+this.currentX);
+	//System.out.println("currentX = "+this.currentX);
 	this.currentY=y;
-	System.out.println("currentY = "+this.currentY);
+	//System.out.println("currentY = "+this.currentY);
 	boolean wumpusTrouve=false;
 	Case wumpusAcote=null;
 
 	//Met à jour le plateau en fonction du message
 	this.miseAJour(message);
-
-	this.afficheLabWumpus();
-	System.out.println("\n");
-	this.afficheLabPuit();
 	
 	//On cherche si un wumpus a été trouvé
 	wumpusTrouve = this.presenceWumpus();
