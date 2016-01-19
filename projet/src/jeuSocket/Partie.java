@@ -158,7 +158,7 @@ public class Partie extends Thread {
 	/**methode qui permet de savoir si la case ou se trouve le joueur est occupee, et si c'est le cas
 	 *  les modifications dans les classes seront faites 
 	*/
-	public void caseJoueurOccupee() {
+	public void caseJoueurOccupee(){
 			
 		Case[][] plat = this.monde.getPlateau();
 			
@@ -410,22 +410,22 @@ public class Partie extends Thread {
 		System.out.println();
 		if (plat[this.joueur.getCoordX()][this.joueur.getCoordY()].getMarqueTrou()) {
 			
-			ret = ret + "Vous sentez un courant d'air !!\n";
+			ret = ret + "Vous sentez un courant d'air !! ";
 		}		
 		if (plat[this.joueur.getCoordX()][this.joueur.getCoordY()].getMarqueWumpus()) {
 			
-			ret = ret + "Vous sentez une odeur infame...\n";
+			ret = ret + "Vous sentez une odeur infame... ";
 		}
 		if ( (plat[this.joueur.getCoordX()][this.joueur.getCoordY()].getPassageJoueur()) &&
 			 !this.historique.equals("") // evite l'affichage de l'info avant meme que le joueur ait fait un seul deplacement
 		   ) {
 			
-			ret = ret + "Vous etes deja passe par la.\n";
+			ret = ret + "Vous etes deja passe par la. ";
 		}
 		if ( !(plat[this.joueur.getCoordX()][this.joueur.getCoordY()].getMarqueWumpus()) &&
 			 !(plat[this.joueur.getCoordX()][this.joueur.getCoordY()].getMarqueTrou()) ) {
 				
-			return "C'est trop calme...";
+			return "C'est trop calme... ";
 		}
 		return ret;
 	}

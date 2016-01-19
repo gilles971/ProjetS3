@@ -55,7 +55,7 @@ public class ServerProtocol {
     	j = new Joueur("j1");		
 		p = new Partie(j, "hunt the wumpus");
 	
-		p.setMonde(new Monde(5,1,2,0,1));
+		p.setMonde(new Monde(5,1,1,0,1));
 		p.disposerPlateau();
 		p.setGrille();
     }
@@ -68,7 +68,7 @@ public class ServerProtocol {
 		//System.out.println(p.getGrille().commandes());	
 		p.verifMarque();
 		
-		System.out.println(p.getGrille().positionActuelle());
+		//System.out.println(p.getGrille().positionActuelle());
 		/*if(theInput == null) {
 			return "welcome to hunt the wumpus";
 		}*/
@@ -115,7 +115,8 @@ public class ServerProtocol {
 				return "Le trou a vaincu !";
 			}
 		}			
-        
+        //p.localiserJoueur();
+		//System.out.println(p.getGrille().getJoueur().getCoordX()+" "+p.getGrille().getJoueur().getCoordY()+" "+p.verifMarque());
         return p.getGrille().getJoueur().getCoordX()+" "+p.getGrille().getJoueur().getCoordY()+" "+p.verifMarque(); // \t
     }
 }

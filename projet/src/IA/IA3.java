@@ -243,12 +243,6 @@ public void miseAJour(ArrayList<String> message){
 *Méthode appelé pour jouer
 */
 public String jouer(int x, int y, ArrayList<String> message){
-	try {
-		Thread.currentThread().sleep(10000);
-	} catch (InterruptedException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
 
 	this.currentX=x;
 	//System.out.println("currentX = "+this.currentX);
@@ -260,6 +254,10 @@ public String jouer(int x, int y, ArrayList<String> message){
 	//Met à jour le plateau en fonction du message
 	this.miseAJour(message);
 
+	this.afficheLabWumpus();
+	System.out.println("\n");
+	this.afficheLabPuit();
+	
 	//On cherche si un wumpus a été trouvé
 	wumpusTrouve = this.presenceWumpus();
 	

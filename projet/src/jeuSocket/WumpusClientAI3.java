@@ -1,6 +1,7 @@
 package jeuSocket;
 
 import java.util.ArrayList;
+
 import IA.IA3;
 
 /*
@@ -34,6 +35,7 @@ import IA.IA3;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */ 
 
+
 import java.io.*;
 import java.net.*;
 
@@ -63,9 +65,16 @@ public class WumpusClientAI3 {
             String fromAI;
 
             while ((fromServer = in.readLine()) != null) {
+            	fromAI = "\t";
                 System.out.println("Server: " + fromServer);
                 ArrayList<String> info = new ArrayList<String>();
                 
+            	try {
+            		Thread.currentThread().sleep(6000);
+            	} catch (InterruptedException e) {
+            		// TODO Auto-generated catch block
+            		e.printStackTrace();
+            	}
                 String[] temp = fromServer.split("\\s+");
                 for (int i = 0; i<temp.length; i++) {
                     info.add(temp[i]);
@@ -75,12 +84,16 @@ public class WumpusClientAI3 {
                 
                 if((info.get(0).equals("0") || info.get(0).equals("1") || info.get(0).equals("2") || info.get(0).equals("3") || info.get(0).equals("4")) &&
                    (info.get(1).equals("0") || info.get(1).equals("1") || info.get(1).equals("2") || info.get(1).equals("3") || info.get(1).equals("4")))
+                {
+                	System.out.println("ok");
                     fromAI = artificialIntelligence.jouer(Integer.parseInt(info.get(0)), 
                                                           Integer.parseInt(info.get(1)), 
                                                           info);//stdIn.readLine();
-                                                      
-                else
-                    fromAI = "\n";
+                }                                     
+                /*else 
+                {
+                    fromAI = " ";
+                }*/
                     
                 if (fromAI != null) {
                     System.out.println("Client: " + fromAI);

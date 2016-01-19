@@ -53,18 +53,37 @@ public class WumpusServer {
                 new InputStreamReader(clientSocket.getInputStream()));
         ) {
         
-            String inputLine, outputLine;
+            String inputLine = "\n", outputLine;
             
             // Initiate conversation with client
             ServerProtocol sp = new ServerProtocol();
             outputLine = "welcome to hunt the wumpus";//kkp.processInput(null);
             out.println(outputLine);
+            
 
             while ((inputLine = in.readLine()) != null) {
+                /*while (inputLine.equals("\n")) {
+                	System.out.println("lock");
+                	try {
+                		Thread.currentThread().sleep(1000);
+                	} catch (InterruptedException e) {
+                		// TODO Auto-generated catch block
+                		e.printStackTrace();
+                	}
+                	inputLine = in.readLine();
+                }*/
+            	System.out.println("reçu: "+inputLine);
+            	/*if (inputLine.equals("\t")) {
+            		System.out.println("caught");
+            	}
+            	else*/
                 outputLine = sp.processInput(inputLine);
+                System.out.println("envoyé: "+outputLine);
                 out.println(outputLine);
+
                 if (outputLine.equals("Bye."))
                     break;
+                //while((inputLine = in.readLine()).equals("\n"));
             }
         } catch (IOException e) {
             System.out.println("Exception caught when trying to listen on port "
