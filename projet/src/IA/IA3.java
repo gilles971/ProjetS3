@@ -40,10 +40,10 @@ public Case deplacementLePlusViable() {
 		compteur = 0.0;
 		
 		if(c.getVisite()){
-			compteur += c.getNbrVisite();	//Si on l'a déjà visité, on évite d'y aller
+			compteur += 1.0;	//Si on l'a déjà visité, on évite d'y aller
 		}else{
 			if(c.getDangersPuit()) {
-				compteur += 1.0;		//Si il y a un dangers de puit
+				compteur += 1.5;		//Si il y a un dangers de puit
 			}
 			if (c.getDangersWumpus()) {
 				compteur += 1.0;		//Si il y a un dangers de wumpus
@@ -60,12 +60,14 @@ public Case deplacementLePlusViable() {
 	//On cherche le plus petit nombre trouvé
 	Double minimum = Collections.min(listInt);
 
+	
 	//On cherche quelles cases ont reçu ce score
-	for(int i=0; i<listCellAdja.size(); i++){
+	for(int i=listCellAdja.size()-1; i>=0; i--){
 		if(listInt.get(i) != minimum){
 			listCellAdja.remove(i);
 		}
 	}
+	
 	
 	//On retourne une des cases qui a eu le plus petit score
 	return listCellAdja.get((int)(Math.random()*listCellAdja.size()));
@@ -126,7 +128,7 @@ public ArrayList<Case> getCelluleAdjacente() {
 public void miseAJour(ArrayList<String> message){
 
 	labyrinth[currentX][currentY].setVisite(true);
-	labyrinth[currentX][currentY].incrNbrVisite(0.75);
+	//labyrinth[currentX][currentY].incrNbrVisite(0.75);
 	
 	//Si on sent une odeur infame
 	if(message.contains("odeur")){
