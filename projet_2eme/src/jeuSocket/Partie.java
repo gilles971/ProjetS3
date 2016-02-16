@@ -15,11 +15,10 @@ public class Partie extends Thread {
 	
 	// Section des attributs	
 	
-	private int nbrTour;						// Modifié pour S3
-
 	private String historique;
 	private int compteur;
 	private boolean victoire;
+	private boolean wumpusTuer;
 	private int nbSacRamasses;
 	private Joueur joueur;		
 	private	Monde monde;		
@@ -27,6 +26,27 @@ public class Partie extends Thread {
 	private ParametrageGrille grille;
 	private Vue vueFenetre;
 
+
+
+	public int getNbPoint()
+	{
+		int point=0;
+		if(this.getVictoire()==true)
+								{
+								point += 24;
+								}
+        if(this.wumpusTuer)
+        						{
+        						point += 24;
+        						}
+        if(this.nbSacRamasses!=0 && this.monde.getNbSac() != 0)
+        						{
+        						point+= (24/this.monde.getNbSac())*this.getNbSacRamasses();
+        						}
+
+     point -= this.compteur;
+     return point;
+	}
 	
 	// Section des constructeurs
 	
@@ -40,12 +60,12 @@ public class Partie extends Thread {
 		this.nbSacRamasses = 0; 
 		this.compteur = 0;
 		this.victoire = false;
+		this.wumpusTuer= false;
 		this.monde = null;				
 		this.raisonMort = null;
 		this.vueFenetre = new Vue("Jeu de la chasse au Wumpus", (Partie) this);
 		this.grille = new ParametrageGrille(this.joueur, this.monde);
-
-		this.nbrTour=0;						//Modifié pour S3
+		this.pointJoueur=0;
 	}	
 	
 	// Section des getters and setters
@@ -250,7 +270,7 @@ public class Partie extends Thread {
 						System.out.println("En plein entre les deux yeux !\nFelicitation vous avez tue le  wumpus !\n");
 						plat[x][y].setObjet(null);
 						plat[x][y].setOccupe(false);
-						this.setVictoire(true);   // modification pour ajout de victoire après kill wumpus
+						this.wumpusTuer=true;   
 						
 						for( i = 0 ; i < this.monde.getLongueurCote() ; i++ ) 
 						{
