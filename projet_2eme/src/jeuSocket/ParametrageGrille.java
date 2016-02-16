@@ -2,19 +2,19 @@ package jeuSocket;
 
 
 public class ParametrageGrille {
-	
+
 	private Joueur joueur;
 	private Monde monde;
-	
+
 	/**Constructeur de la classe ParametrageGrille
-	 * 
+	 *
 	 * @param j - Joueur de la partie en cours
 	 */
 	public ParametrageGrille(Joueur j, Monde m) {
 		this.joueur = j;
 		this.monde = m;
 	}
-	
+
 	/**Methode qui affiche les commandes a utiliser pendant une partie
 	 *
 	 * @return - Message d'information listant les differentes commandes realisables
@@ -27,36 +27,40 @@ public class ParametrageGrille {
 				+ "\nQuatre directions sont accessibles : n (nord), s (sud), e (est), o (ouest)"
 				+ "\nPour afficher l'historique de vos actions, entrez la commande : \"h\"");
 		}
-	
+
 	/**Methode qui affiche les coordonnees du joueur apres chaque action
-	 * 
+	 *
 	 * @return - Message d'information sur les coordonnees du joueur
 	 */
 	public String positionActuelle() {
 		return ("Vous vous situez sur la case (" + this.joueur.getCoordX() + ", " + this.joueur.getCoordY() + ")"
 				+ "\nAppuyez sur entree pour continuer");
 	}
-	
-	
+
+
 	/** Methode permettant de creer la chaine de caracteres contenant l'affichage de la grille
-	 * 
+	 *
 	 * @return la chaine de caracteres contenant l'affichage de la grille
 	 */
 	public String recupAffGrille() {
-		
+
 		int taille = this.monde.getLongueurCote();
 
-		//String caseGrille = "            0          1          2          3          4\n       ";
+		String caseGrille = "            0";
 
-		for(int i=0;i<taille;i++){
-			caseGrille += "\t\t\t"+i;
-		}	
+		for(int i=1;i<taille;i++){
+			if (i<10)
+				caseGrille += "          "+i;
+			else
+				caseGrille += "        "+i;
+		}
 
+		caseGrille+="\n       ";
 		int i = 0, j = 0;
 		Case[][] grilleJeu = new Case[this.monde.getLongueurCote()][this.monde.getLongueurCote()];
 		grilleJeu = this.monde.getPlateau();
-		
-		
+
+
 
 		for (j = 0;j < taille; j++) {
 
@@ -72,7 +76,7 @@ public class ParametrageGrille {
 
 					if ( grilleJeu[i][j].getPassageJoueur() || grilleJeu[i][j].getPresenceJoueur() ) {
 						caseGrille = caseGrille + "/   ~~   \\";
-					}					
+					}
 					else {
 						caseGrille = caseGrille + "/          \\";
 					}
@@ -85,12 +89,12 @@ public class ParametrageGrille {
 			caseGrille = caseGrille + "\n" + j + "     ";
 
 			for(i = 0; i < taille; i++) {
-				
+
 				if (grilleJeu[i][j].getPassageJoueur() && !(grilleJeu[i][j].getPresenceJoueur()) ) {
 
 					if (grilleJeu[i][j].getMarqueWumpus()) {
 						caseGrille = caseGrille + "     :-!    ";
-					}	
+					}
 					else {
 						caseGrille = caseGrille + "            ";
 					}
@@ -99,7 +103,7 @@ public class ParametrageGrille {
 
 					if (grilleJeu[i][j].getMarqueWumpus()) {
 						caseGrille = caseGrille + "    J:-!    ";
-					}	
+					}
 					else {
 						caseGrille = caseGrille + "     J      ";
 					}
@@ -118,13 +122,13 @@ public class ParametrageGrille {
 			}
 			caseGrille = caseGrille + "\n       ";
 		}
-		
+
 		return caseGrille;
 
 	}
-	
+
 	public Joueur getJoueur() {
 		return this.joueur;
 	}
-	
+
 }
