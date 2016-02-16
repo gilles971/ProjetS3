@@ -21,7 +21,6 @@ public class ServerProtocol {
     	j = new Joueur("j1");		
 		p = new Partie(j, "hunt the wumpus");
 	
-		p.setMonde(new Monde(5,1,1,0,1));
 		p.disposerPlateau();
 		p.setGrille();
     }
@@ -34,48 +33,71 @@ public class ServerProtocol {
      */
     public String processInput(String theInput) {
     	
-    	//on vérifie que la commande est standard
-		if (
-				theInput.equals("d n") ||
-				theInput.equals("d o") ||
-				theInput.equals("d e") ||
-				theInput.equals("d s")
-				)
-				{
-			//on déplace le joueur en utilisant les méthodes de partie
-					p.deplacer(theInput);
-				}				
-		else if (
-				theInput.equals("t n") ||
-				theInput.equals("t o") ||
-				theInput.equals("t e") ||
-				theInput.equals("t s")
-				)
-				{			
-			//on tire notre flèche en utilisant les méthodes de partie
-					p.tirer(theInput);
+    	if(p.getMonde() == null){
+    		String[] tab = theInput.split();
+
+    		if(tab[0].equals("conf")
+    			&& tab[1].parseInt() > 2
+    			&& tab[2].parseInt() >= 0 && tab[2].parseInt() < tab[1].parseInt()*tab[1].parseInt()/2
+    			&& tab[3].parseInt() >=0
+    			&& tab[4].parseInt() >=1
+    			){
+				p.setMonde(new Monde(tab[1].parseInt(),
+									1,
+									tab[2].parseInt(),
+									tab[3].parseInt(),
+									tab[4].parseint()));
+				return "Paramètres enregistrés";
+			}else{
+				p.setMonde(new Monde(5,1,1,0,1));
+				return "Paramètres non valides, paramètres de base enregistrés";
+			}
+		}else{
+				
+	    	//on vérifie que la commande est standard
+			if (
+					theInput.equals("d n") ||
+					theInput.equals("d o") ||
+					theInput.equals("d e") ||
+					theInput.equals("d s")
+					)
+					{
+				//on déplace le joueur en utilisant les méthodes de partie
+						p.deplacer(theInput);
+					}				
+			else if (
+					theInput.equals("t n") ||
+					theInput.equals("t o") ||
+					theInput.equals("t e") ||
+					theInput.equals("t s")
+					)
+					{			
+				//on tire notre flèche en utilisant les méthodes de partie
+						p.tirer(theInput);
+					}
+			
+			//mise a jour de la fenêtre
+			p.getVue().updateGrille(p.getGrille().recupAffGrille());
+			
+			//verification des conditions de victoire
+			if (p.getVictoire()) {
+				p.getVue().updateVictoire();
+				return "Vous avez gagne !!!";
+			}
+			//verification de l'état de mort
+			if (!(p.getJoueur().getVivant())){
+				p.getVue().updateDefaite();
+				String mort = p.getRaisonMort();
+				if (mort.equals("Wumpus")) {
+					return "Wumpus suicide ! Try again !";
 				}
-		
-		//mise a jour de la fenêtre
-		p.getVue().updateGrille(p.getGrille().recupAffGrille());
-		
-		//verification des conditions de victoire
-		if (p.getVictoire()) {
-			p.getVue().updateVictoire();
-			return "Vous avez gagne !!!";
-		}
-		//verification de l'état de mort
-		if (!(p.getJoueur().getVivant())){
-			p.getVue().updateDefaite();
-			String mort = p.getRaisonMort();
-			if (mort.equals("Wumpus")) {
-				return "Wumpus suicide ! Try again !";
+				if (mort.equals("trou")) {
+					return "Le trou a vaincu !";
+				}
 			}
-			if (mort.equals("trou")) {
-				return "Le trou a vaincu !";
-			}
-		}
-		
-        return p.getGrille().getJoueur().getCoordX()+" "+p.getGrille().getJoueur().getCoordY()+" "+p.verifMarque(); // \t
+			
+	        return p.getGrille().getJoueur().getCoordX()+" "+p.getGrille().getJoueur().getCoordY()+" "+p.verifMarque(); // \t
+    	}
     }
+
 }
