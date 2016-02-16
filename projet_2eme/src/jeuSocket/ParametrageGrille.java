@@ -46,7 +46,11 @@ public class ParametrageGrille {
 		
 		int taille = this.monde.getLongueurCote();
 
-		String caseGrille = "            0          1          2          3          4\n       ";
+		//String caseGrille = "            0          1          2          3          4\n       ";
+
+		for(int i=0;i<taille;i++){
+			caseGrille += "\t\t\t"+i;
+		}	
 
 		int i = 0, j = 0;
 		Case[][] grilleJeu = new Case[this.monde.getLongueurCote()][this.monde.getLongueurCote()];

@@ -302,7 +302,8 @@ public class Partie extends Thread {
 			ret = true;
 		}		
 		
-		if ( (x > 4) || (x < 0) || (y > 4) || (y < 0) ) {			
+		if ( (x > this.monde.getLongueurCote()-1) || (x < 0) 
+			|| (y > this.monde.getLongueurCote()-1) || (y < 0) ) {			
 			ret = false;
 		}
 		
@@ -327,7 +328,8 @@ public class Partie extends Thread {
 			ret = true;
 		}		
 		
-		if ( (x > 4) || (x < 0) || (y > 4) || (y < 0) ) {			
+		if ( (x > this.monde.getLongueurCote()-1) || (x < 0) 
+			|| (y > this.monde.getLongueurCote()-1) || (y < 0) ) {			
 			ret = false;
 		}
 		
