@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 
-public class Partie extends Thread {
+public class Partie {
 	
 	// Section des attributs	
 	
