@@ -21,8 +21,8 @@ public abstract class ObjetDuMonde
 	}
 
 	public int getPortee() { return portee; }
-	public int getSymbole() { return sybole; }
-	public int getMessage() { return message; }
+	public char getSymbole() { return symbole; }
+	public String getMessage() { return message; }
 	
 	public void interaction(Joueur j) {}
 }

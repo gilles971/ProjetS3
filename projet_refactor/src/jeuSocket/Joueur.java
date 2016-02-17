@@ -12,6 +12,7 @@ public class Joueur {
 	private int nbFleches;
 	private int score;
 	private boolean alive;
+	private int x, y;
 	
 	public Joueur(String sonPseudo) {
 		this.pseudo = sonPseudo;

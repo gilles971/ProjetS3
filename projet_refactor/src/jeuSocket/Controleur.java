@@ -30,7 +30,7 @@ public class Controleur implements KeyListener {
 	*/
 
 	public void keyPressed(KeyEvent e) {
-
+		/*
 		// affichage de la victoire dans la fenetre
 		if (this.laPartie.getVictoire()) {
 			this.vueFenetre.updateVictoire();
@@ -38,9 +38,9 @@ public class Controleur implements KeyListener {
 		else if (!(this.laPartie.getJoueur().getVivant())){
 			this.vueFenetre.updateDefaite();
 		}
-		else {
-			this.vueFenetre.updateGrille(this.laPartie.getGrille().recupAffGrille());
-		}
+		else {*/
+			this.vueFenetre.updateGrille(this.laPartie.toString());
+		//}
 	}
 
 

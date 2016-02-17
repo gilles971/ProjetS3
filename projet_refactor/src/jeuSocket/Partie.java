@@ -47,8 +47,7 @@ public class Partie {
 		this.compteur = 0;
 		this.monde = null;
 		this.vueFenetre = new Vue("Jeu de la chasse au Wumpus", (Partie) this);
-		this.grille = new ParametrageGrille(this.joueur, this.monde);
-		this.pointJoueur=0;
+		//this.pointJoueur=0;
 	}	
 	
 	public Vue getVue() { return this.vueFenetre; }
@@ -59,9 +58,9 @@ public class Partie {
 	public void setMonde(Monde monde) { this.monde = monde; }
 	
 	public void interactionJoueurObjet(){
-		ObjetDuMonde o = plateau[joueur.getX()][joueur.getY()].getObjet();
+		ObjetDuMonde o = monde.getPlateau()[joueur.getX()][joueur.getY()].getObjet();
 		if (o != null)
-			o.interactionJoueurObjet(joueur);
+			o.interaction(joueur);
 	}
 		
 
@@ -105,8 +104,8 @@ public class Partie {
 			ret = true;
 		}		
 		
-		if ( (x > this.monde.getLongueurCote()-1) || (x < 0) 
-			|| (y > this.monde.getLongueurCote()-1) || (y < 0) ) {			
+		if ( (x > this.monde.getTaille()-1) || (x < 0) 
+			|| (y > this.monde.getTaille()-1) || (y < 0) ) {			
 			ret = false;
 		}
 		
@@ -157,7 +156,7 @@ public class Partie {
 		Monde monde = this.getMonde();
 		
 		//monde.placerObjets();		
-		monde.placerJoueur(joueur);
+		monde.placerJoueur(joueur, 1);
 		
 		joueur.setNbFleches(); //*** a mettre eventuellement nb fleche différent
 	}
@@ -187,11 +186,11 @@ public class Partie {
 			for (int j=0; j<t; j++) {
 				ret += "/";
 				for (int k=0; k<3; k++) {
-					if (monde.getPlateau()[j][i].getIndice().size()<k) {
+					if (monde.getPlateau()[j][i].getIndices().size()<k) {
 						ret+= " ";
 					}
 					else {
-						ret += (String) monde.getPlateau()[j][i].getIndice().get(k).getSymbole();
+						ret += new Character(monde.getPlateau()[j][i].getIndices().get(k).getSymbole()).toString();
 					}
 				}
 				ret += "\\";

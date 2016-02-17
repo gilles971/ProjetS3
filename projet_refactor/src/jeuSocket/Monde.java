@@ -7,6 +7,7 @@
 package jeuSocket;
 
 import java.util.ArrayList;
+import java.lang.reflect.InvocationTargetException;
 
 public class Monde {
 	
@@ -34,20 +35,34 @@ public class Monde {
 		String[] objets = s.split("\\s+");
 		for (int i=0; i<objets.length; i++) {
 			String[] objQuantite = objets[i].split(":");
-			for (int j=0; j<Integer.valueOf(objQuantite[1]); j++) {
-				contenu.add(Class.forName(objQuantite[0]).getConstructor().newInstance());
-			}
+			try {
+				for (int j=0; j<Integer.valueOf(objQuantite[1]); j++) {
+					contenu.add((ObjetDuMonde) Class.forName(objQuantite[0]).getConstructor().newInstance());
+				}
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			} catch (SecurityException e) {
+				e.printStackTrace();
+			} catch (InstantiationException e) {
+				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+			} 
 		}
 		
 		int randX = (int) Math.random()*taille;
 		int randY = (int) Math.random()*taille;
 		for (ObjetDuMonde o : contenu) {
 			while (plateau[randX][randY].getObjet() != null) {
-				int randX = (int) Math.random()*taille;
-				int randY = (int) Math.random()*taille;
+				randX = (int) Math.random()*taille;
+				randY = (int) Math.random()*taille;
 			}
 			plateau[randX][randY].setObjet(o);
-			getIndice(o, randX, randY);
+			setIndice(o, randX, randY);
 		}
 	}
 	
@@ -122,8 +137,8 @@ public class Monde {
 		int randX = (int) Math.random()*taille;
 		int randY = (int) Math.random()*taille;
 		while (plateau[randX][randY].getObjet() != null) {
-			int randX = (int) Math.random()*taille;
-			int randY = (int) Math.random()*taille;
+			randX = (int) Math.random()*taille;
+			randY = (int) Math.random()*taille;
 		}
 		
 		Sortie exit = new Sortie();

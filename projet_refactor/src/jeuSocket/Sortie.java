@@ -10,7 +10,7 @@ public class Sortie extends ObjetDuMonde
 {
         public Sortie()
         {
-                super(0, "S", "Vous pouvez sortir avec 's'");
+                super(0, 'S', "Vous pouvez sortir avec 's'");
         }
         
         public void interaction(Joueur j) {

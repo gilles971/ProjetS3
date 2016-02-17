@@ -10,7 +10,7 @@ public class Trou extends ObjetDuMonde
 {
 	public Trou()
 	{
-		super(1, "~", "il y a un courant d'air");
+		super(1, '~', "il y a un courant d'air");
 	}
 	
 	public void interaction(Joueur j) {

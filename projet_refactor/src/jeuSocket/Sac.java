@@ -10,7 +10,7 @@ public class Sac extends ObjetDuMonde
 {
         public Sac()
         {
-                super(0, " ", "");
+                super(0, ' ', "");
         }
 
         
