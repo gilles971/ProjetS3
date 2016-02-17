@@ -66,7 +66,7 @@ public class Vue extends JFrame {
 	*/
 	public void updateGrille(String up) {
 		this.grille.setText(up);
-		this.grille.setFont(new Font("Arial", Font.BOLD, 15));
+		this.grille.setFont(new Font("Courier", Font.BOLD, 15));
 		this.grille.setForeground(Color.green);
 	}
 	
