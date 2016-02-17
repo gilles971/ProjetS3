@@ -32,17 +32,16 @@ public class ServerProtocol {
     public String processInput(String theInput) {
 
     	if(p.getMonde() == null){
-			p.setMonde(new Monde(10));
+			/*p.setMonde(new Monde(10));
 			p.getMonde().placerObjets(theInput);
 			p.disposerPlateau();
 			return "Paramètres enregistrés";
-			/*
+			*/
 			p.setMonde(new Monde(5));
 			p.getMonde().placerObjets();
 			p.disposerPlateau();
-			p.setGrille();
 			return "Paramètres non valides, paramètres de base enregistrés";
-			*/
+			//*/
 		}else{
 			
 			String ret="";
