@@ -10,8 +10,9 @@ private int currentY;
 private int arrows;
 private int boundX;
 private int boundY;
+private int well;
 
-public IA3(int boundX, int boundY, int arrows) {
+public IA3(int boundX, int boundY, int arrows, int well) {
 	
 	labyrinth = new Case[boundX][boundY];
 	
@@ -26,6 +27,7 @@ public IA3(int boundX, int boundY, int arrows) {
 	this.arrows = arrows;
 	this.boundX = boundX;
 	this.boundY = boundY;
+	this.well = well;
 }
 
 /**
@@ -157,19 +159,25 @@ public void miseAJour(ArrayList<String> message){
 		}
 	}	
 
+	boolean allWells = false;
+
 	//Si on sent un courant d'air
 	if(message.contains("courant")){
 		labyrinth[currentX][currentY].setCourantDair(true);
-		for (int i=0; i<boundX; i++) {
-			for (int j=0; j<boundY; j++) {
-				//Si la case est à une distance supérieur à 1, 
-				//il n'y a pas de danger
-				if(	Math.abs(i -currentX)+Math.abs(j-currentY) > 1 ){
-					labyrinth[i][j].setDangersPuit(false);
-				}
 
+		//Si il y a un seul puit
+		if(this.well == 1){
+			for (int i=0; i<boundX; i++) {
+				for (int j=0; j<boundY; j++) {
+					//Si la case est à une distance supérieur à 1, 
+					//il n'y a pas de danger
+					if(	Math.abs(i -currentX)+Math.abs(j-currentY) > 1 ){
+						labyrinth[i][j].setDangersPuit(false);
+					}
+				}
 			}
-		}
+		
+
 	//Si on ne sent pas de courant d'air
 	}else{
 		for (int i=0; i<boundX; i++) {
@@ -184,6 +192,19 @@ public void miseAJour(ArrayList<String> message){
 		}
 	}
 	
+	//Si on a 4 dangers autour d'une case, elle a un puit
+	for (int i=0; i<boundX; i++) {
+		for (int j=0; j<boundY; j++) {
+			//Si la case est à une distance supérieur à 1, 
+			//il n'y a pas de danger
+			if(	labyrinth[i+1][j].getCourantDair() == true 
+				&& labyrinth[i-1][j].getCourantDair() == true
+				&& labyrinth[i][j+1].getCourantDair() == true
+				&& labyrinth[i][j-1].getCourantDair() == true){labyrinth[i][j].setPuit(true);}
+		}
+	}
+
+
 	//Si on a raté, on perd une flèche
 	if(message.contains("rate")) {
 		this.arrows --;
@@ -192,8 +213,10 @@ public void miseAJour(ArrayList<String> message){
 	
 	//On va regarder le nombre de dangersPuit et dangersWumpus
 	int compteurPuit=0;
-	int xPuit=-1;
-	int yPuit=-1;
+	ArrayList<Integer> listPuit = new ArrayList<Integer>();
+
+	//int xPuit=-1;
+	//int yPuit=-1;
 	int compteurWumpus=0;
 	int xWumpus=-1;
 	int yWumpus=-1;
@@ -203,8 +226,10 @@ public void miseAJour(ArrayList<String> message){
 			//On incrémente le nombre de dangers puit
 			if(labyrinth[i][j].getDangersPuit()){
 				compteurPuit++;
-				xPuit=i;
-				yPuit=j;
+				//xPuit=i;
+				//yPuit=j;
+				listPuit.add(i);
+				listPuit.add(j);
 			}
 			//On incrémente le nombre de dangers wumpus
 			if(labyrinth[i][j].getDangersWumpus()){
@@ -215,9 +240,11 @@ public void miseAJour(ArrayList<String> message){
 		}
 	}
 	
-	//Si il n'y a qu'un seul dangers, alors le puit est à cette position
-	if(compteurPuit == 1){
-		labyrinth[xPuit][yPuit].setPuit(true);
+	//Si il y a le nombre de dangers égal au nombre de puit, on les met en tant que dangers
+	if(compteurPuit == this.well){
+		for(int l=0; l<this.well*2; l=l+2){
+			labyrinth[l][l+1].setPuit(true);
+		}	
 	}
 	
 	//Si il n'y a qu'un seul dangers, alors le puit est à cette position
