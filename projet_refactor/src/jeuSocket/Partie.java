@@ -190,7 +190,7 @@ public class Partie {
 						ret+= " ";
 					}
 					else {
-						ret += new Character(monde.getPlateau()[j][i].getIndices().get(k).getSymbole()).toString();
+						ret += new Character(monde.getPlateau()[j][i].getIndices().get(k).getSymbole());
 					}
 				}
 				ret += "\\";
