@@ -35,6 +35,7 @@ public class Monde {
 		String[] objets = s.split("\\s+");
 		for (int i=0; i<objets.length; i++) {
 			String[] objQuantite = objets[i].split(":");
+			System.out.println(objQuantite[0])
 			try {
 				for (int j=0; j<Integer.valueOf(objQuantite[1]); j++) {
 					contenu.add((ObjetDuMonde) Class.forName(objQuantite[0]).getConstructor().newInstance());
