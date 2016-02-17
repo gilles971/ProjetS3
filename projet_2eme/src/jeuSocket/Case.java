@@ -1,5 +1,5 @@
 /**Documentation de la classe Case
- * 
+ *
  * @author Groupe de projet de D
  * @version 1.0
  */
@@ -12,22 +12,22 @@ package jeuSocket;
 
 public class Case {
 
-	
+
 	// Section des attibuts
-	
+
 	private boolean presenceJoueur;
 	private boolean passageJoueur;
 	private boolean occupe;
 	private boolean marqueTrou;
-	private boolean marqueWumpus;	
+	private boolean marqueWumpus;
 	private ObjetDuMonde objet;
-	
-	
+
+
 	// Section des constructeurs
-	
+
 
 	/**Constructeur de la classe Case
-	 * 
+	 *
 	 */
 	public Case() {
 		this.presenceJoueur = false;
@@ -37,11 +37,11 @@ public class Case {
 		this.objet          = null ;
 	}
 
-	
-	
+
+
 	// Section des methodes
 
-	
+
 
 	/**Permet un acces au booleen passageJoueur
 	 * @return le booleen passageJoueur qui nous dit si le joueur est passe sur la case ou non
@@ -57,8 +57,8 @@ public class Case {
 		this.passageJoueur = passageJoueur;
 	}
 
-	
-	
+
+
 	/**Permet un acces au booleen presenceJoueur
 	 * @return le booleen presenceJoueur qui nous dit si le joueur est sur la case ou non
 	 */
@@ -139,7 +139,7 @@ public class Case {
 	public void setObjet(ObjetDuMonde objet) {
 		this.objet = objet;
 	}
-	
+
 
 
 }

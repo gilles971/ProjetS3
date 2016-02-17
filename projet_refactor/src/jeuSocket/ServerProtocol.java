@@ -43,9 +43,9 @@ public class ServerProtocol {
 			return "Paramètres non valides, paramètres de base enregistrés";
 			//*/
 		}else{
-			
+
 			String ret="";
-			
+
 	    	//on vérifie que la commande est standard
 			if (
 					theInput.equals("d n") ||
@@ -72,21 +72,18 @@ public class ServerProtocol {
 			p.getVue().updateGrille(p.toString());
 
 			//verification des conditions de victoire
-			/*if (p.getVictoire()) {
+			if (p.victoire()) {
 				p.getVue().updateVictoire();
 				return "Vous avez gagne !!!";
-			}*/
+			}
 			//verification de l'état de mort
-			/*if (!(p.getJoueur().getVivant())){
+			if (p.defaite()){
 				p.getVue().updateDefaite();
-				String mort = p.getRaisonMort();
-				if (mort.equals("Wumpus")) {
-					return "Wumpus suicide ! Try again !";
-				}
-				if (mort.equals("trou")) {
-					return "Le trou a vaincu !";
-				}
-			}*/
+				//String mort = p.getRaisonMort();
+				//if (mort.equals("Wumpus")) {
+					return "Vous avez perdu";
+				//}
+      }
 
 	        return p.getJoueur().getX()+" "+p.getJoueur().getY()+" "+ret; // \t
     	}

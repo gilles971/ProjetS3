@@ -2,21 +2,21 @@ package jeuSocket;
 
 /*
  * cette classe sert a se connecter au serveur de jeu wumpus
- * 
+ *
  * il s'agit d'une invite de commande qui envoie l'entrée terminal au serveur
  * elle sert a jouer normalement
- * 
+ *
  * cette classe est en partiet inspirée des classes fournies par oracle pour la mise
  * en place d'un système client serveur
- * 
- */ 
+ *
+ */
 
 import java.io.*;
 import java.net.*;
 
 public class WumpusClient {
     public static void main(String[] args) throws IOException {
-        
+
     	//on vérifie que la classe est utilisée correctement
         if (args.length != 2) {
             System.err.println(
@@ -29,7 +29,7 @@ public class WumpusClient {
         int portNumber = Integer.parseInt(args[1]);
 
         try (
-        		// on commence par créer nos socket avec 
+        		// on commence par créer nos socket avec
         		//leur descripteur de fichier et leur buffer en écriture
             Socket wSocket = new Socket(hostName, portNumber);
             PrintWriter out = new PrintWriter(wSocket.getOutputStream(), true);
@@ -48,7 +48,7 @@ public class WumpusClient {
             //on sort si on envoie "Bye."
             while ((fromServer = in.readLine()) != null) {
                 System.out.println("Server: " + fromServer);
-                
+
                 fromUser = stdIn.readLine();
                 if (fromUser != null) {
                     System.out.println("Client: " + fromUser);
@@ -67,4 +67,3 @@ public class WumpusClient {
         }
     }
 }
-

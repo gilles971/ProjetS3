@@ -1,5 +1,5 @@
 /**Documentation de la classe Sortie
- * 
+ *
  * @author Équipe IA Wumpus
  * @version 1.0
  */
@@ -12,9 +12,9 @@ public class Sortie extends ObjetDuMonde
         {
                 super(0, 'S', "Vous pouvez sortir avec 's'");
         }
-        
+
         public void interaction(Joueur j) {
-                if (j.alive()) j.addScore(50);
+                //if (j.alive()) j.addScore(50);
         }
 
 }

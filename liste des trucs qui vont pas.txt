@@ -1,0 +1,14 @@
+Ce qui ne va pas avec ce qu'on nous as filé:
+
+-Mélange de générique et de spécifique,
+par exemple, pour la gestion de la taille
+le programme se comporte alternativement comme
+si on pouvait régler sa taille ET comme si elle
+était fixée à 4.
+
+-Il y des propriétés qui sont mal gérées,
+par exemple certaines salles sont signalées par
+une lettre/caractère/symbole, mais ce caractère est défini
+par la vue pas par l'objet en question. ça complique l'ajout
+de contenu.
+
