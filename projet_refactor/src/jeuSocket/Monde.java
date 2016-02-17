@@ -11,7 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 
 public class Monde {
 	
-	private static String mondeDeBase = "Wumpus.class:1 Trou.class:1";
+	private static String mondeDeBase = "jeuSocket.Wumpus.class:1 jeuSocket.Trou.class:1";
 	private int taille;
 	private ArrayList<ObjetDuMonde> contenu;
 	private Case[][] plateau;
