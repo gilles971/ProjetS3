@@ -67,23 +67,15 @@ public class ServerProtocol {
 				//on tire notre flèche en utilisant les méthodes de partie
 						p.tirer(theInput);
 					}
+      else if (theInput.equals("s")) {
+            p.sortir();
+      }
 
 			//mise a jour de la fenêtre
 			p.getVue().updateGrille(p.toString());
 
 			//verification des conditions de victoire
-			if (p.victoire()) {
-				p.getVue().updateVictoire();
-				return "Vous avez gagne !!!";
-			}
-			//verification de l'état de mort
-			if (p.defaite()){
-				p.getVue().updateDefaite();
-				//String mort = p.getRaisonMort();
-				//if (mort.equals("Wumpus")) {
-					return "Vous avez perdu";
-				//}
-      }
+			if (p.gameOver()) { return "game end"; }
 
 	        return p.getJoueur().getX()+" "+p.getJoueur().getY()+" "+ret; // \t
     	}

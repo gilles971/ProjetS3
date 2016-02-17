@@ -55,15 +55,13 @@ public class Monde {
 			}
 		}
 
-		int randX = (int) Math.random()*taille;
-		int randY = (int) Math.random()*taille;
-
+		int randX;
+		int randY;
 		for (ObjetDuMonde o : contenu) {
-			while (plateau[randX][randY].getObjet() != null) {
-				System.out.println("ok3 ");
-				randX = (int) Math.random()*taille;
-				randY = (int) Math.random()*taille;
-			}
+			do {
+				randX = (int) (Math.random()*taille);
+				randY = (int) (Math.random()*taille);
+			} while (plateau[randX][randY].getObjet() != null);
 			plateau[randX][randY].setObjet(o);
 			setIndice(o, randX, randY);
 			System.out.println("ok1 ");
@@ -111,25 +109,25 @@ public class Monde {
 			int currentY = y;
 
 			for(int j=0; j<i; j++) {
-				plateau[currentX][currentY].getIndices().remove(o);
+				if (currentX>-1 && currentY>-1) plateau[currentX][currentY].getIndices().remove(o);
 				currentX++;
 				currentY--;
 			}
 
 			for(int j=0; j<i; j++) {
-				plateau[currentX][currentY].getIndices().remove(o);
+				if (currentY>-1 && currentX<taille) plateau[currentX][currentY].getIndices().remove(o);
 				currentX++;
 				currentY++;
 			}
 
 			for(int j=0; j<i; j++) {
-				plateau[currentX][currentY].getIndices().remove(o);
+				if (currentX<taille && currentY<taille) plateau[currentX][currentY].getIndices().remove(o);
 				currentX--;
 				currentY++;
 			}
 
 			for(int j=0; j<i; j++) {
-				plateau[currentX][currentY].getIndices().remove(o);
+				if (currentY<taille && currentX>-1) plateau[currentX][currentY].getIndices().remove(o);
 				currentX--;
 				currentY--;
 			}
@@ -139,12 +137,12 @@ public class Monde {
 	}
 
 	public void placerJoueur(Joueur player, int fleches) {
-		int randX = (int) Math.random()*taille;
-		int randY = (int) Math.random()*taille;
-		while (plateau[randX][randY].getObjet() != null) {
-			randX = (int) Math.random()*taille;
-			randY = (int) Math.random()*taille;
-		}
+		int randX;
+		int randY;
+		do  {
+			randX = (int) (Math.random()*taille);
+			randY = (int) (Math.random()*taille);
+		} while (plateau[randX][randY].getObjet() != null);
 
 		Sortie exit = new Sortie();
 		plateau[randX][randY].setObjet(exit);

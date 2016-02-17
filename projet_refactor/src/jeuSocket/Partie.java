@@ -18,27 +18,6 @@ public class Partie {
 	private Joueur joueur;
 	private	Monde monde;
 	private Vue vueFenetre;
-	/*
-	public int getNbPoint()
-	{
-		int point=0;
-		if(this.getVictoire()==true)
-								{
-								point += 24;
-								}
-        if(this.wumpusTuer)
-        						{
-        						point += 24;
-        						}
-        if(this.nbSacRamasses!=0 && this.monde.getNbSac() != 0)
-        						{
-        						point+= (24/this.monde.getNbSac())*this.getNbSacRamasses();
-        						}
-
-     point -= this.compteur;
-     return point;
-	}
-	*/
 
 	public Partie(Joueur j) {
 		this.joueur = j;
@@ -149,10 +128,23 @@ public class Partie {
 			for (ObjetDuMonde o : monde.getPlateau()[x][y].getIndices()) {
 				ret += o.getMessage();
 			}
+			System.out.println(joueur.getScore());
 			return ret;
 		}
 
 		return "deplacement impossible";
+	}
+
+	public void sortir() {
+		int x = joueur.getX();
+		int y = joueur.getY();
+		if (monde.getPlateau()[x][y].getObjet() instanceof Sortie) {
+			victoire();
+			monde.getPlateau()[x][y].setJoueur(null);
+		}
+		else {
+			System.out.println("vous ne pouvez pas sortir");
+		}
 	}
 
 	public void disposerPlateau() {
@@ -167,10 +159,11 @@ public class Partie {
 
 	public boolean defaite() { return !joueur.alive(); }
 
-	public boolean victoire() {
-		for (ObjetDuMonde o : monde.getContenu())
-			if (o instanceof Wumpus) return false;
-		return joueur.alive();
+	public void victoire() {	if (joueur.alive()) joueur.addScore(50);}
+
+	public boolean gameOver() {
+		if(monde.getPlateau()[joueur.getX()][joueur.getY()].getJoueur() == null) return true;
+		return defaite();
 	}
 
 	public String commandes() {
@@ -197,14 +190,17 @@ public class Partie {
 			ret += i+" ";
 			for (int j=0; j<t; j++) {
 				ret += "/";
+				boolean aff = true;
 				for (int k=0; k<3; k++) {
-					if (monde.getPlateau()[j][i].getJoueur() != null) { ret += "J"; System.out.println("ok"); }
-					else if (monde.getPlateau()[j][i].getIndices().size()<k
-							|| !monde.getPlateau()[j][i].getVisite()) {
-						ret+= " ";
-					}
+					if (monde.getPlateau()[j][i].getJoueur() != null && aff) { ret += "J"; aff = false; }
 					else {
-						ret += new Character(monde.getPlateau()[j][i].getIndices().get(k).getSymbole());
+						if (monde.getPlateau()[j][i].getIndices().size()<=k
+								|| !monde.getPlateau()[j][i].getVisite()) {
+							ret+= " ";
+						}
+						else {
+							ret += new Character(monde.getPlateau()[j][i].getIndices().get(k).getSymbole());
+						}
 					}
 				}
 				ret += "\\";
