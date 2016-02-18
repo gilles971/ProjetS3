@@ -42,9 +42,10 @@ public class Partie {
 	}
 
 
-	public boolean tirer(String com) {
+	public String tirer(String com) {
 		int x = joueur.getX();
 		int y = joueur.getY();
+		String ret = "Vous n'avez rien touche avec votre tir";
 		//int nbfleches = joueur.getNbFleches();
 		//int i, j;
 
@@ -60,14 +61,15 @@ public class Partie {
 			if (monde.getPlateau()[x][y].getObjet() instanceof Wumpus) {
 				joueur.addScore(200);
 				monde.remove(x, y);
+				ret = "Le wumpus est tue par votre tir";
 			}
 
 			this.historique = historique + "\n" + compteur + com;
 			this.compteur++;
-			return true;
+			return ret;
 		}
 
-		return false;
+		return "Impossible";
 	}
 
 	public boolean autoriserDeplacement(int x, int y) {
