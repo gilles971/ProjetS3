@@ -126,7 +126,7 @@ public class Partie {
 			this.historique = historique + "\n" + compteur + com;
 			this.compteur++;
 			for (ObjetDuMonde o : monde.getPlateau()[x][y].getIndices()) {
-				ret += o.getMessage();
+				ret += o.getMessage()+" ";
 			}
 			System.out.println(joueur.getScore());
 			return ret;
@@ -190,9 +190,8 @@ public class Partie {
 			ret += i+" ";
 			for (int j=0; j<t; j++) {
 				ret += "/";
-				boolean aff = true;
 				for (int k=0; k<3; k++) {
-					if (monde.getPlateau()[j][i].getJoueur() != null && aff) { ret += "J"; aff = false; }
+					if (monde.getPlateau()[j][i].getJoueur() != null && k==2) { ret += "J"; }
 					else {
 						if (monde.getPlateau()[j][i].getIndices().size()<=k
 								|| !monde.getPlateau()[j][i].getVisite()) {

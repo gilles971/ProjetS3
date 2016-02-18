@@ -31,18 +31,25 @@ public class ServerProtocol {
      */
     public String processInput(String theInput) {
 
-    	if(p.getMonde() == null){
-			/*p.setMonde(new Monde(10));
-			p.getMonde().placerObjets(theInput);
-			p.disposerPlateau();
-			return "Paramètres enregistrés";
-			*/
-			p.setMonde(new Monde(5));
-			p.getMonde().placerObjets();
-			p.disposerPlateau();
-			return "Paramètres non valides, paramètres de base enregistrés";
-			//*/
-		}else{
+  	  if(p.getMonde() == null){
+        if (theInput.trim().equals("") || theInput.equals("default")) {
+          p.setMonde(new Monde(5));
+          p.getMonde().placerObjets();
+    	    p.disposerPlateau();
+    		  return "Paramètres non valides, paramètres de base enregistrés";
+        }
+        else {
+          String[] theWorld = theInput.split("\\s+");
+          p.setMonde(new Monde(Integer.valueOf(theWorld[0])));
+          String objets = "";
+          for (int i=1; i<theWorld.length; i++)
+            objets += theWorld[i]+" ";
+          p.getMonde().placerObjets(objets);
+          p.disposerPlateau();
+          return "Paramètres enregistrés";
+        }
+		  }
+      else{
 
 			String ret="";
 

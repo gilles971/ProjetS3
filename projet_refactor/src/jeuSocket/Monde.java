@@ -17,8 +17,8 @@ public class Monde {
 	private Case[][] plateau;
 
 	public Monde(int taille) {	// Modification car erreur dans l'ordre des objets
-		this.taille = taille;
 		this.contenu = new ArrayList<ObjetDuMonde>();
+		this.taille = taille;
 		this.plateau = new Case[taille][taille];
 
 		for( int i = 0 ; i < taille ; i++ )
