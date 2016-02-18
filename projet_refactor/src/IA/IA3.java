@@ -11,6 +11,8 @@ private int arrows;
 private int boundX;
 private int boundY;
 private int well;
+private ArrayList<Integer> posSortie;
+private boolean wumpusTue;
 
 public IA3(int boundX, int boundY, int arrows, int well) {
 	
@@ -28,6 +30,8 @@ public IA3(int boundX, int boundY, int arrows, int well) {
 	this.boundX = boundX;
 	this.boundY = boundY;
 	this.well = well;
+	this.posSortie = new ArrayList<Integer>;
+	this.wumpusTue = false;
 }
 
 /**
@@ -70,30 +74,29 @@ public Case deplacementLePlusViable() {
 		}
 	}
 	
-	
 	//On retourne une des cases qui a eu le plus petit score
 	return listCellAdja.get((int)(Math.random()*listCellAdja.size()));
 }
 
 /**
-*Envoie la case vers laquelle le déplacement est le moins dangereux et qui se rapproche du wumpus
+*Envoie la case vers laquelle le déplacement est le moins dangereux et qui se rapproche de la posistion voulue
 */
 public Case deplacementChasseur(ArrayList<Integer> posWumpus) {
 	
-	//Si le wumpus est à droite
+	//Si la posistion voulue est à droite
 	if(currentX < posWumpus.get(0)){
 			return labyrinth[currentX+1][currentY];
 	}else{
-	//Si le wumpus est à gauche	
+	//Si la posistion voulue est à gauche	
 		if(currentX > posWumpus.get(0)){
 			return labyrinth[currentX-1][currentY];	
 		}
 	}
-	//Si le wumpus est en bas
+	//Si la posistion voulue est en bas
 	if(currentY < posWumpus.get(1)){
 			return labyrinth[currentX][currentY+1];
 	}else{
-	//Si le wumpus est en haut	
+	//Si la posistion voulue est en haut	
 		if(currentY < posWumpus.get(1)){
 			return labyrinth[currentX][currentY-1];
 		}
@@ -132,6 +135,19 @@ public void miseAJour(ArrayList<String> message){
 	labyrinth[currentX][currentY].setVisite(true);
 	//labyrinth[currentX][currentY].incrNbrVisite(0.75);
 	
+				//Si le wumpus a été tué, on l'enregistre
+				if(message.contains("tue")){
+					this.wumpusTue = true;
+				}
+
+				//Si on est sur la case de la sortie, on l'enregistre
+				if(message.contains("sortie")){
+					sortie.clear();
+					sortie.add(currentX);
+					sortie.add(currentY);
+				}
+
+
 	//Si on sent une odeur infame
 	if(message.contains("odeur")){
 		labyrinth[currentX][currentY].setOdeurInfame(true);
@@ -206,7 +222,7 @@ public void miseAJour(ArrayList<String> message){
 
 
 	//Si on a raté, on perd une flèche
-	if(message.contains("rate")) {
+	if(message.contains("tir")) {
 		this.arrows --;
 	}
 	
@@ -215,8 +231,6 @@ public void miseAJour(ArrayList<String> message){
 	int compteurPuit=0;
 	ArrayList<Integer> listPuit = new ArrayList<Integer>();
 
-	//int xPuit=-1;
-	//int yPuit=-1;
 	int compteurWumpus=0;
 	int xWumpus=-1;
 	int yWumpus=-1;
@@ -226,8 +240,6 @@ public void miseAJour(ArrayList<String> message){
 			//On incrémente le nombre de dangers puit
 			if(labyrinth[i][j].getDangersPuit()){
 				compteurPuit++;
-				//xPuit=i;
-				//yPuit=j;
 				listPuit.add(i);
 				listPuit.add(j);
 			}
@@ -240,7 +252,7 @@ public void miseAJour(ArrayList<String> message){
 		}
 	}
 	
-	//Si il y a le nombre de dangers égal au nombre de puit, on les met en tant que dangers
+	//Si il y a le nombre de dangers égal au nombre de puit, on les met à ces position
 	if(compteurPuit == this.well){
 		for(int l=0; l<this.well*2; l=l+2){
 			labyrinth[l][l+1].setPuit(true);
@@ -251,11 +263,10 @@ public void miseAJour(ArrayList<String> message){
 	if(compteurWumpus == 1){
 		labyrinth[xWumpus][yWumpus].setWumpus(true);
 	}
-
 }
 
 /**
-*Méthode appelé pour jouer
+*Méthode appelé pour jouer -----------------------------------------------------------------------------------------------
 */
 public String jouer(int x, int y, ArrayList<String> message){
 
@@ -268,57 +279,77 @@ public String jouer(int x, int y, ArrayList<String> message){
 	//Met à jour le plateau en fonction du message
 	this.miseAJour(message);
 	
-	//On cherche si un wumpus a été trouvé
-	wumpusTrouve = this.presenceWumpus();
-	
-	if(wumpusTrouve){//Si un wumpus à été trouvé
-		//On cherche si il y a un wumpus à cote
-		wumpusAcote = this.wumpusProche();
-		if(wumpusAcote != null){//Si un wumpus est à cote
-			if (currentY-1 >= 0) {
-				if(labyrinth[x][y-1].getId() == wumpusAcote.getId()){	//Case du haut
-					return "t n";
+	//Si le wumpus a été tué, on va vers la sortie
+	if(wumpusTue){ 
+
+				if(currentX == posSortie(0) && currentY == posSortie(1)){
+					return "s";
+				}else{
+					Case caseDirection = this.deplacementChasseur(posSortie);
+					if(caseDirection != null){
+						return messageAEnvoyer(caseDirection);
+					}else{
+						return "oups";
+					}
+				}
+	//Sinon, on le cherche et on le tue
+	}else{
+		
+		//On cherche si un wumpus a été trouvé
+		wumpusTrouve = this.presenceWumpus();
+		
+		if(wumpusTrouve){//Si un wumpus à été trouvé
+			//On cherche si il y a un wumpus à cote
+			wumpusAcote = this.wumpusProche();
+			if(wumpusAcote != null){//Si un wumpus est à cote
+				if (currentY-1 >= 0) {
+					if(labyrinth[x][y-1].getId() == wumpusAcote.getId()){	//Case du haut
+						return "t n";
+					}
+				}
+				if (currentY+1 <= 4) {
+					if(labyrinth[x][y+1].getId() == wumpusAcote.getId()){	//Case du bas
+						return "t s";
+					}
+				}
+				if (currentX-1 >= 0) {
+					if(labyrinth[x-1][y].getId() == wumpusAcote.getId()){	//Case de gauche
+						return "t o";
+					}
+				}
+				if (currentX+1 <= 4) {
+					if(labyrinth[x+1][y].getId() == wumpusAcote.getId()){ //Case de droite
+						return "t e";
+					}
+				}
+				return "oups";
+			}else{//Si le wumpus n'est pas à cote
+				//On cherche la position du wumpus et on cherche un deplacement qui se rapproche de lui
+				ArrayList<Integer> posWumpus = positionWumpus(); 
+				Case caseDirection = this.deplacementChasseur(posWumpus);
+				if(caseDirection != null){
+					return messageAEnvoyer(caseDirection);
+				}else{
+					return "oups";
 				}
 			}
-			if (currentY+1 <= 4) {
-				if(labyrinth[x][y+1].getId() == wumpusAcote.getId()){	//Case du bas
-					return "t s";
-				}
-			}
-			if (currentX-1 >= 0) {
-				if(labyrinth[x-1][y].getId() == wumpusAcote.getId()){	//Case de gauche
-					return "t o";
-				}
-			}
-			if (currentX+1 <= 4) {
-				if(labyrinth[x+1][y].getId() == wumpusAcote.getId()){ //Case de droite
-					return "t e";
-				}
-			}
-			return "oups";
-		}else{//Si le wumpus n'est pas à cote
-			//On cherche la position du wumpus et on cherche un deplacement qui se rapproche de lui
-			ArrayList<Integer> posWumpus = positionWumpus(); 
-			Case caseDirection = this.deplacementChasseur(posWumpus);
+		
+		}else{//Si le wumpus n'a pas été trouvé	
+			//Cherche la case avec le deplacement le plus viable
+			Case caseDirection = this.deplacementLePlusViable();
+			
 			if(caseDirection != null){
 				return messageAEnvoyer(caseDirection);
 			}else{
 				return "oups";
 			}
 		}
-		
-	
-	}else{//Si le wumpus n'a pas été trouvé	
-		//Cherche la case avec le deplacement le plus viable
-		Case caseDirection = this.deplacementLePlusViable();
-		
-		if(caseDirection != null){
-			return messageAEnvoyer(caseDirection);
-		}else{
-			return "oups";
-		}
-	}
+	}	
 }
+
+
+// -----------------------------------------------------------------------------------------------------------------------------
+
 
 /**
  * Genere le message à partir de la case
@@ -346,7 +377,7 @@ public String messageAEnvoyer(Case caseDirection){
 		}
 	}
 
-	return "Oups";
+	return "oups";
 	
 }
 

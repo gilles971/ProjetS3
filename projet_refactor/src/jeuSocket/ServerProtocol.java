@@ -65,7 +65,7 @@ public class ServerProtocol {
 					)
 					{
 				//on tire notre flèche en utilisant les méthodes de partie
-						p.tirer(theInput);
+						ret = p.tirer(theInput);
 					}
       else if (theInput.equals("s")) {
             p.sortir();
