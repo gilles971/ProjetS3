@@ -14,7 +14,7 @@ public class Sac extends ObjetDuMonde
         }
 
 
-        public void interaction(Joueur j) {
+        public String interaction(Joueur j) {
                 if (j.alive()) j.addScore(100);
         }
 }

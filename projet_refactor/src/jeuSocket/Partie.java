@@ -120,7 +120,7 @@ public class Partie {
 			plateau[x][y].setJoueur(joueur);
 			plateau[x][y].visiter();
 
-			interactionJoueurObjet();
+			ret +=interactionJoueurObjet();
 			if (monde.getPlateau()[x][y].getObjet() instanceof Sac) {
 				monde.remove(x, y);
 			}
@@ -137,16 +137,17 @@ public class Partie {
 		return "deplacement impossible";
 	}
 
-	public void sortir() {
+	public String sortir() {
 		int x = joueur.getX();
 		int y = joueur.getY();
 		if (monde.getPlateau()[x][y].getObjet() instanceof Sortie) {
 			victoire();
 			monde.getPlateau()[x][y].setJoueur(null);
+			joueur.addScore(-compteur);
+			return "partie terminee score: "+ joueur.getScore();
 		}
-		else {
-			System.out.println("vous ne pouvez pas sortir");
-		}
+
+		return "vous ne pouvez pas sortir";
 	}
 
 	public void disposerPlateau() {
@@ -162,19 +163,29 @@ public class Partie {
 	public boolean defaite() { return !joueur.alive(); }
 
 	public void victoire() {	if (joueur.alive()) joueur.addScore(50);}
-
+	/*
 	public boolean gameOver() {
 		if(monde.getPlateau()[joueur.getX()][joueur.getY()].getJoueur() == null) return true;
 		return defaite();
 	}
-
-	public String commandes() {
-		return ("Les differentes commandes possibles sont a utiliser de la facon suivante : \n"
-				+	"\"raccourci action\" [espace] \"raccourci direction\".\n"
-				+ "     --> Exemple : d n veut dire \"Deplacement au nord\""
-				+ "\nDeux actions sont possibles : d (raccourci pour se deplacer) et t (raccourci pour tirer)"
-				+ "\nQuatre directions sont accessibles : n (nord), s (sud), e (est), o (ouest)"
-				+ "\nPour afficher l'historique de vos actions, entrez la commande : \"h\"");
+	*/
+	public String help() {
+		return ("Aide - Jeu du Wumpus "
+				+ "Regles : "
+				+	"Le but du jeu est de faire le plus gros score. "
+				+ "Pour avoir du score il y a différents moyens: "
+				+ " 1)Tuer le Wumpus avec votre unique flèche "
+				+ " 2)Trouver un trésor "
+				+ " 3)Sortir du labyrinthe en vie, et rapidement "
+				+ "Vous pouvez mourir si vous vous aventurez sur une case. "
+				+ "trou ou Wumpus. vous pouvez sentir les trous a une case "
+				+ "de distance (courant d'air) et le Wumpus a 2 cases (odeur infame)."
+				+ "Commandes : "
+				+ "il y a quatre directions nord(n), sud(s), est(e), ouest(o)"
+				+ "pour vous déplacer entrez \"d <direction>\". "
+				+ "pour tirer sur un case adjacente entrez \"t <direction> \". "
+				+ "pour sortir entrez \"s\" alors que vous êtes sur la sortie. "
+				+ "pour afficher l'aide entrez \"h\" ");
 	}
 
 	public String toString() {
