@@ -12,7 +12,7 @@ public class Case {
 	
 	public Case(int id){
 		this.courantDair=false;
-		this.dangersPuit=true;
+		this.dangersPuit=false;
 		this.odeurInfame=false;
 		this.dangersWumpus=true;
 		this.puit=false;

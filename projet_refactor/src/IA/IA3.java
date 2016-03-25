@@ -4,15 +4,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class IA3 {
-private Case[][] labyrinth;
+private int well;
 private int currentX;
 private int currentY;
 private int arrows;
 private int boundX;
 private int boundY;
-private int well;
+
+//Les infos que possède l'IA et qui sont mises à jour durant l'execution
+private Case[][] labyrinth;
 private ArrayList<Integer> posSortie;
 private boolean wumpusTue;
+
 
 public IA3(int boundX, int boundY, int arrows, int well) {
 	
@@ -104,28 +107,6 @@ public Case deplacementChasseur(ArrayList<Integer> posWumpus) {
 	return null;
 }
 
-/**
-*Envoie la liste des cases adjacentes
-*/
-public ArrayList<Case> getCelluleAdjacente() {
-	ArrayList<Case> list = new ArrayList<Case>();
-	//On envoie les cases que si elles ne sont pas à l'exterieur du labyrinthe
-	if (currentY-1 >= 0) {
-		list.add(labyrinth[currentX][currentY-1]);
-	}
-	if (currentY+1 <= 4) {
-		list.add(labyrinth[currentX][currentY+1]);
-	}
-	if (currentX-1 >= 0) {
-		list.add(labyrinth[currentX-1][currentY]);
-	}
-	if (currentX+1 <= 4) {
-		list.add(labyrinth[currentX+1][currentY]);
-	}
-	
-	
-	return list;
-}
 
 /**
 *En fonction des données reçues, on met à jour la variable labyrinth
@@ -175,37 +156,47 @@ public void miseAJour(ArrayList<String> message){
 		}
 	}	
 
-	boolean allWells = false;
 
 	//Si on sent un courant d'air
 	if(message.contains("courant")){
 		labyrinth[currentX][currentY].setCourantDair(true);
 
-		//Si il y a un seul puit
-		if(this.well == 1){
-			for (int i=0; i<boundX; i++) {
-				for (int j=0; j<boundY; j++) {
-					//Si la case est à une distance supérieur à 1, 
-					//il n'y a pas de danger
-					if(	Math.abs(i -currentX)+Math.abs(j-currentY) > 1 ){
-						labyrinth[i][j].setDangersPuit(false);
+				if (currentY-1 >= 0) {
+					if(labyrinth[x][y-1].getVisite() != false){
+						labyrinth[x][y-1].setDangersPuit(true);	//Case du haut
 					}
 				}
-			}
+				if (currentY+1 <= this.boundY) {
+					if(labyrinth[x][y+1].getVisite() != false){
+						labyrinth[x][y+1].setDangersPuit(true);	//Case du bas
+					}
+				}
+				if (currentX-1 >= 0) {
+					if(labyrinth[x-1][y].getVisite() != false){
+						labyrinth[x-1][y].setDangersPuit(true);	//Case de gauche
+					}
+				}
+				if (currentX+1 <= this.boundX) {
+					if(labyrinth[x+1][y].getVisite() != false){
+						labyrinth[x+1][y].setDangersPuit(true); //Case de droite
+					}
+				}
 		
 
 	//Si on ne sent pas de courant d'air
 	}else{
-		for (int i=0; i<boundX; i++) {
-			for (int j=0; j<boundY; j++) {
-				//Si la case est à une distance inferieur ou égale à 1, 
-				//il n'y a pas de danger
-				if(	Math.abs(i -currentX)+Math.abs(j-currentY) <= 1 ){
-					labyrinth[i][j].setDangersPuit(false);
+				if (currentY-1 >= 0 ) {
+					labyrinth[x][y-1].setDangersPuit(false);	//Case du haut
 				}
-
-			}
-		}
+				if (currentY+1 <= this.boundY) {
+					labyrinth[x][y+1].setDangersPuit(false);	//Case du bas
+				}
+				if (currentX-1 >= 0) {
+					labyrinth[x-1][y].setDangersPuit(false);	//Case de gauche
+				}
+				if (currentX+1 <= this.boundX) {
+					labyrinth[x+1][y].setDangersPuit(false); //Case de droite
+				}
 	}
 	
 	//Si on a 4 dangers autour d'une case, elle a un puit
@@ -228,8 +219,8 @@ public void miseAJour(ArrayList<String> message){
 	
 	
 	//On va regarder le nombre de dangersPuit et dangersWumpus
-	int compteurPuit=0;
-	ArrayList<Integer> listPuit = new ArrayList<Integer>();
+	//int compteurPuit=0;
+	//ArrayList<Integer> listPuit = new ArrayList<Integer>();
 
 	int compteurWumpus=0;
 	int xWumpus=-1;
@@ -238,11 +229,11 @@ public void miseAJour(ArrayList<String> message){
 	for (int i=0; i<boundX; i++) {
 		for (int j=0; j<boundY; j++) {
 			//On incrémente le nombre de dangers puit
-			if(labyrinth[i][j].getDangersPuit()){
+			/*if(labyrinth[i][j].getDangersPuit()){
 				compteurPuit++;
 				listPuit.add(i);
 				listPuit.add(j);
-			}
+			}*/
 			//On incrémente le nombre de dangers wumpus
 			if(labyrinth[i][j].getDangersWumpus()){
 				compteurWumpus++;
@@ -252,12 +243,12 @@ public void miseAJour(ArrayList<String> message){
 		}
 	}
 	
-	//Si il y a le nombre de dangers égal au nombre de puit, on les met à ces position
+	/*//Si il y a le nombre de dangers égal au nombre de puit, on les met à ces position
 	if(compteurPuit == this.well){
 		for(int l=0; l<this.well*2; l=l+2){
 			labyrinth[l][l+1].setPuit(true);
 		}	
-	}
+	}*/
 	
 	//Si il n'y a qu'un seul dangers, alors le puit est à cette position
 	if(compteurWumpus == 1){
@@ -307,7 +298,7 @@ public String jouer(int x, int y, ArrayList<String> message){
 						return "t n";
 					}
 				}
-				if (currentY+1 <= 4) {
+				if (currentY+1 <= this.boundY) {
 					if(labyrinth[x][y+1].getId() == wumpusAcote.getId()){	//Case du bas
 						return "t s";
 					}
@@ -317,7 +308,7 @@ public String jouer(int x, int y, ArrayList<String> message){
 						return "t o";
 					}
 				}
-				if (currentX+1 <= 4) {
+				if (currentX+1 <= this.boundX) {
 					if(labyrinth[x+1][y].getId() == wumpusAcote.getId()){ //Case de droite
 						return "t e";
 					}
@@ -350,6 +341,28 @@ public String jouer(int x, int y, ArrayList<String> message){
 
 // -----------------------------------------------------------------------------------------------------------------------------
 
+/**
+*Envoie la liste des cases adjacentes
+*/
+public ArrayList<Case> getCelluleAdjacente() {
+	ArrayList<Case> list = new ArrayList<Case>();
+	//On envoie les cases que si elles ne sont pas à l'exterieur du labyrinthe
+	if (currentY-1 >= 0) {
+		list.add(labyrinth[currentX][currentY-1]);
+	}
+	if (currentY+1 <= this.boundY) {
+		list.add(labyrinth[currentX][currentY+1]);
+	}
+	if (currentX-1 >= 0) {
+		list.add(labyrinth[currentX-1][currentY]);
+	}
+	if (currentX+1 <= this.boundX) {
+		list.add(labyrinth[currentX+1][currentY]);
+	}
+	
+	
+	return list;
+}
 
 /**
  * Genere le message à partir de la case
@@ -361,7 +374,7 @@ public String messageAEnvoyer(Case caseDirection){
 			return "d n";
 		}
 	}
-	if (currentY+1 <= 4) {
+	if (currentY+1 <= this.boundY) {
 		if(labyrinth[currentX][currentY+1].getId() == caseDirection.getId()){	//Case du bas
 			return "d s";
 		}
@@ -371,7 +384,7 @@ public String messageAEnvoyer(Case caseDirection){
 			return "d o";
 		}
 	}
-	if (currentX+1 <= 4) {
+	if (currentX+1 <= this.boundX) {
 		if(labyrinth[currentX+1][currentY].getId() == caseDirection.getId()){ //Case de droite
 			return "d e";
 		}
@@ -441,6 +454,134 @@ public Case wumpusProche(){
 	}
 	return null;
 }
+
+
+/**
+ * Renvoie le pourcentage de dangers puit, correspondant au nombre de puit sur le nombre de dangers
+ */
+public Double pourcentageDangersPuit(int posX, int posY){
+
+	Double nbrDangers = 0.0;
+	Double nbrCase = 0.0;
+
+	if(labyrinthe[posX][posY].getDangersPuit()){
+
+		if (posY-1 >= 0) {
+			if(labyrinth[posX][posY-1].getCourantDair()){
+				if(posY-2 >= 0){
+					if(labyrinth[posX][posY-2].getDangersPuit()){
+						nbDangers++;
+					}
+					nbrCase++;
+				}
+				if(posX-1 >= 0){
+					if(labyrinth[posX-1][posY-1].getDangersPuit()){
+						nbDangers++;
+					}
+					nbrCase++;
+				}
+				if(posX+1 <= this.boudX){
+					if(labyrinth[posX+1][posY-1].getDangersPuit()){
+						nbDangers++;
+					}
+					nbrCase++;
+				}
+			}
+		}
+		if (posY+1 <= this.boundY) {
+			if(labyrinth[posX][posY+1].getCourantDair()){
+				if(posY+2 <= this.boudY){
+					if(labyrinth[posX][posY+2].getDangersPuit()){
+						nbDangers++;
+					}
+					nbrCase++;	
+				}
+				if(posX-1 >= 0){
+					if(labyrinth[posX-1][posY+1].getDangersPuit()){
+						nbDangers++;
+					}
+					nbrCase++;
+				}
+				if(posX+1 <= this.boundX){
+					if(labyrinth[posX+1][posY+1].getDangersPuit()){
+						nbDangers++;
+					}
+					nbrCase++;
+				}
+			}
+		}
+		if (posX-1 >= 0) {
+			if(labyrinth[posX-1][posY].getCourantDair()){
+				if(posY-1 >= 0){
+					if(labyrinth[posX-1][posY-1].getDangersPuit()){
+						nbDangers++;
+					}
+					nbrCase++;
+				}
+				if(posY+1 <= this.boudY){
+					if(labyrinth[posX-1][posY+1].getDangersPuit()){
+						nbDangers++;
+					}
+					nbrCase++;
+				}
+				if(posX-2 >= 0){
+					if(labyrinth[posX-2][posY].getDangersPuit()){
+						nbDangers++;
+					}
+					nbrCase++;
+				}
+			}
+		}
+		if (posX+1 <= this.boundX) {
+			if(labyrinth[posX+1][posY].getCourantDair()){
+				if(posY-1 >= 0){
+					if(labyrinth[posX+1][posY-1].getDangersPuit()){
+						nbDangers++;
+					}
+					nbrCase++;
+				}
+				if(posY+1 <= this.boudY){
+					if(labyrinth[posX+1][posY+1].getDangersPuit()){
+						nbDangers++;
+					}
+					nbrCase++;
+				}
+				if(posX+2 <= this.boudX){
+					if(labyrinth[posX+2][posY].getDangersPuit()){
+						nbDangers++;
+					}
+					nbrCase++;
+				}
+			}
+		}
+
+		return nbDangers/nbrCase;
+
+	}else{
+		return 0.0;
+	}
+}
+
+/**
+ * Renvoie le pourcentage de dangers wumpus, correspondant à 1 (le nombre de wumpus) sur le nombre de dangers
+ */
+public Double pourcentageDangersWumpus(){
+
+	int nbDangers = 0;
+
+	//Parcours le labyrinthe
+	for (int i=0; i<boundX; i++) {
+		for (int j=0; j<boundY; j++) {
+			if(labyrinthe[i][j].getDangersWumpus() == true){
+				nbDangers++;
+			}
+		}
+	}
+
+	return 1/nbDangers;	
+}
+
+
 
 // ---------------------------------------------------------------------- //
 
