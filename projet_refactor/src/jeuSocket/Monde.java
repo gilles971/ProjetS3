@@ -1,6 +1,6 @@
 /**Documentation de la classe Monde
  *
- * @author Groupe de projet de D refactorisée par l'équipe IA Wumpus
+ * @author Groupe de projet D refactorisée par l'équipe IA Wumpus
  * @version 2.0
  */
 
@@ -38,7 +38,7 @@ public class Monde {
 			System.out.println(objQuantite[0]);
 			try {
 				for (int j=0; j<Integer.valueOf(objQuantite[1]); j++) {
-					contenu.add((ObjetDuMonde) Class.forName("jeuSocket"+objQuantite[0]).getConstructor().newInstance());
+					contenu.add((ObjetDuMonde) Class.forName("jeuSocket."+objQuantite[0]).getConstructor().newInstance());
 				}
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
@@ -81,7 +81,10 @@ public class Monde {
 				currentY--;
 			}
 
-			for(int j=0; j<i; j++) {<
+			for(int j=0; j<i; j++) {
+				if (currentY>-1 && currentX<taille) plateau[currentX][currentY].getIndices().add(o);
+				currentX++;
+				currentY++;
 			}
 
 			for(int j=0; j<i; j++) {

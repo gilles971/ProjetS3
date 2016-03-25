@@ -1,6 +1,6 @@
 /**Documentation de la classe Partie
  *
- * @author Groupe de projet de D refactorisée par l'équipe IA Wumpus
+ * @author Groupe de projet D refactorisée par l'équipe IA Wumpus
  * @version 2.0
  */
 
