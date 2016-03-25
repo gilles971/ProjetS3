@@ -55,7 +55,6 @@ public class WumpusClientAI3 {
             	try {
             		Thread.currentThread().sleep(2000);
             	} catch (InterruptedException e) {
-            		// TODO Auto-generated catch block
             		e.printStackTrace();
             	}
 
@@ -70,6 +69,7 @@ public class WumpusClientAI3 {
 
                 //ici on vérifie que les deux premières données sont bien des coordonées
                 // si oui on demande a l'IA de jouer
+
                 try {
                   int x = Integer.valueOf(info.get(0));
                   int y = Integer.valueOf(info.get(1));

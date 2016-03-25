@@ -19,7 +19,7 @@ public class ServerProtocol {
 
     public ServerProtocol () {
     	j = new Joueur("j1");
-	p = new Partie(j);
+      p = new Partie(j);
 
     }
 

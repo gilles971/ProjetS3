@@ -13,8 +13,9 @@ public class Sortie extends ObjetDuMonde
                 super(0, 'S', "Vous pouvez sortir avec 's'");
         }
 
-        public void interaction(Joueur j) {
+        public String interaction(Joueur j) {
                 //if (j.alive()) j.addScore(50);
+                return "c'est la sortie";
         }
 
 }

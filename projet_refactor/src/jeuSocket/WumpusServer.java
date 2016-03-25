@@ -39,7 +39,7 @@ public class WumpusServer {
 
             // on initialise la communication avec le client
             ServerProtocol sp = new ServerProtocol();
-            outputLine = "welcome to hunt the wumpus (press 'h' anytime for help)";
+            outputLine = "welcome to hunt the wumpus (press 'h' anytime for help) you may configure the setup of the world right away";
             out.println(outputLine);
 
 

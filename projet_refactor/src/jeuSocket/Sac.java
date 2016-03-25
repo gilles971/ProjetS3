@@ -16,5 +16,6 @@ public class Sac extends ObjetDuMonde
 
         public String interaction(Joueur j) {
                 if (j.alive()) j.addScore(100);
+                return "vous avez trouvé d l'or!";
         }
 }

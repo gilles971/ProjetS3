@@ -35,10 +35,11 @@ public class Partie {
 	public Monde getMonde() { return monde; }
 	public void setMonde(Monde monde) { this.monde = monde; }
 
-	public void interactionJoueurObjet(){
+	public String interactionJoueurObjet(){
 		ObjetDuMonde o = monde.getPlateau()[joueur.getX()][joueur.getY()].getObjet();
 		if (o != null)
-			o.interaction(joueur);
+			return o.interaction(joueur);
+		return "";
 	}
 
 

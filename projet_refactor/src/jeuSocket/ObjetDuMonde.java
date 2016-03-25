@@ -23,5 +23,5 @@ public abstract class ObjetDuMonde
 	public char getSymbole() { return symbole; }
 	public String getMessage() { return message; }
 
-	public void interaction(Joueur j) {}
+	public String interaction(Joueur j) { return ""; }
 }

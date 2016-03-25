@@ -1,5 +1,5 @@
 /**Documentation de la classe Wumpus
- * 
+ *
  * @author Groupe de projet de D refactorisée par l'équipe IA Wumpus
  * @version 2.0
  */
@@ -12,9 +12,9 @@ public class Wumpus extends ObjetDuMonde
 	{
 		super(2, '!', "Vous sentez une odeur infame...");
 	}
-	
-	public void interaction(Joueur j) {
+
+	public String interaction(Joueur j) {
 		j.kill();
+		return "vous êtes mort... ";
 	}
 }
-

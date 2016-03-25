@@ -1,5 +1,5 @@
 /**Documentation de la classe Trou
- * 
+ *
  * @author Groupe de projet de D refactorisée par l'équipe IA Wumpus
  * @version 2.0
  */
@@ -12,8 +12,9 @@ public class Trou extends ObjetDuMonde
 	{
 		super(1, '~', "il y a un courant d'air");
 	}
-	
-	public void interaction(Joueur j) {
+
+	public String interaction(Joueur j) {
 		j.kill();
+		return "vous êtes mort ";
 	}
 }
