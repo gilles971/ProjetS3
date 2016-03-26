@@ -11,22 +11,42 @@ package jeuSocket;
  *
  */
 
+import IA.Ia;
 import java.io.*;
 import java.net.*;
+import java.lang.reflect.InvocationTargetException;
 
-public class WumpusClient {
+public class WumpusMultiClient {
     public static void main(String[] args) throws IOException {
 
     	//on vérifie que la classe est utilisée correctement
         if (args.length != 2) {
             System.err.println(
-                "Usage: java WumpusClient <host name> <port number>");
+                "Usage: java WumpusClient <host name> <port number> [IA to use]");
             System.exit(1);
         }
 
         // on mémorise le numéro de port
         String hostName = args[0];
         int portNumber = Integer.parseInt(args[1]);
+
+        if(args.length>2) {
+          try {
+            Ia artificialIntelligence = (Ia) Class.forName("IA."+args[2]).getConstructor().newInstance(5, 5, 1);
+          } catch (ClassNotFoundException e) {
+    				e.printStackTrace();
+    			} catch (SecurityException e) {
+    				e.printStackTrace();
+    			} catch (InstantiationException e) {
+    				e.printStackTrace();
+    			} catch (NoSuchMethodException e) {
+    				e.printStackTrace();
+    			} catch (IllegalAccessException e) {
+    				e.printStackTrace();
+    			} catch (InvocationTargetException e) {
+    				e.printStackTrace();
+    			}
+        }
 
         try (
         		// on commence par créer nos socket avec

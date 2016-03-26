@@ -28,7 +28,7 @@ public class Vue extends JFrame {
 	// attributs de la classe
 	private JTextArea grille;
 	private Partie laPartie;
-	
+
 	// constructeur de la classe
 	/**Constructeur de la classe vue
 	*@param titre qui represente le titre qui sera donnee a la vue
@@ -36,40 +36,40 @@ public class Vue extends JFrame {
 	*/
 	public Vue(String titre, Partie p) {
 		super(titre);
-		
+
 		this.setAlwaysOnTop(true);
-		
+
 		this.laPartie = p;
-		
+
 		JPanel panneau = new JPanel();
 		panneau.setBackground(Color.BLACK);
-		this.getContentPane().add(panneau);	
-		
+		this.getContentPane().add(panneau);
+
 		this.grille = new JTextArea("\n\n\n\n\n       Bienvenue a vous, " + this.laPartie.getJoueur().getPseudo() + " !\n"
 									+ "Si vous etes pret a relever le defi,\nappuyer sur la touche Entree pour\n"
 									+ "       afficher la grille de jeu...");
 		this.grille.setOpaque(false);
 		this.grille.setBackground(Color.BLACK);
-		this.grille.setFont(new Font("Times New Romans", Font.BOLD, 15));
+		this.grille.setFont(new Font("Arial", Font.BOLD, 15));
 		this.grille.setForeground(Color.WHITE);
 		this.grille.setEditable(false);
 		this.grille.addKeyListener(new Controleur(this, this.laPartie));
 		panneau.add(grille);
-		
+
 		this.setPreferredSize(new Dimension(350, 450));
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.pack();
 		this.setVisible(true);
 	}
 
-	/**methode qui permet une mise a jour de la grille de jeu affichee dans la fenetre 
+	/**methode qui permet une mise a jour de la grille de jeu affichee dans la fenetre
 	*/
 	public void updateGrille(String up) {
 		this.grille.setText(up);
-		this.grille.setFont(new Font("Arial", Font.BOLD, 15));
+		this.grille.setFont(new Font("Courier", Font.BOLD, 20));
 		this.grille.setForeground(Color.green);
 	}
-	
+
 	/**methode qui permet a la vue de se modifier lors de la victoire du joueur
 	*/
 	public void updateVictoire() {
@@ -77,7 +77,7 @@ public class Vue extends JFrame {
 		this.grille.setForeground(Color.RED);
 		this.grille.setFont(new Font("Arial", Font.BOLD, 20));
 	}
-	
+
 	/**methode qui permet a la vue de se modifier lors de la defaite du joueur
 	*/
 	public void updateDefaite() {

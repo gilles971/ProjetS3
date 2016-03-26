@@ -19,7 +19,7 @@ public class ServerProtocol {
 
     public ServerProtocol () {
     	j = new Joueur("j1");
-		p = new Partie(j);
+      p = new Partie(j);
 
     }
 
@@ -31,64 +31,51 @@ public class ServerProtocol {
      */
     public String processInput(String theInput) {
 
-    	if(p.getMonde() == null){
-			/*p.setMonde(new Monde(10));
-			p.getMonde().placerObjets(theInput);
-			p.disposerPlateau();
-			return "Paramètres enregistrés";
-			*/
-			p.setMonde(new Monde(5));
-			p.getMonde().placerObjets();
-			p.disposerPlateau();
-			return "Paramètres non valides, paramètres de base enregistrés";
-			//*/
-		}else{
-			
-			String ret="";
-			
-	    	//on vérifie que la commande est standard
-			if (
-					theInput.equals("d n") ||
-					theInput.equals("d o") ||
-					theInput.equals("d e") ||
-					theInput.equals("d s")
-					)
-					{
-				//on déplace le joueur en utilisant les méthodes de partie
-						ret = p.deplacer(theInput);
-					}
-			else if (
-					theInput.equals("t n") ||
-					theInput.equals("t o") ||
-					theInput.equals("t e") ||
-					theInput.equals("t s")
-					)
-					{
-				//on tire notre flèche en utilisant les méthodes de partie
-						p.tirer(theInput);
-					}
+	if(p.getMonde() == null){
+	    if (theInput.trim().equals("") || theInput.equals("default")) {
+		p.setMonde(new Monde(5));
+		p.getMonde().placerObjets();
+		p.disposerPlateau();
+		return "Paramètres non valides, paramètres de base enregistrés";
+	    }
+	    else {
+		String[] theWorld = theInput.split("\\s+");
+		p.setMonde(new Monde(Integer.valueOf(theWorld[0])));
+		String objets = "";
+		for (int i=1; i<theWorld.length; i++)
+		    objets += theWorld[i]+" ";
+		p.getMonde().placerObjets(objets);
+		p.disposerPlateau();
+		return "Paramètres enregistrés";
+	    }
+	}
+	else{
 
-			//mise a jour de la fenêtre
-			p.getVue().updateGrille(p.toString());
+	    String ret="";
+	    String[] order=theInput.split("\\s+");
+	    //on vérifie que la commande est standard
+	    if (order[0].equals("d")) {
+		//on déplace le joueur en utilisant les méthodes de partie
+		ret = p.deplacer(theInput);
+	    }
+	    if (order[0].equals("t")) {
+		//on tire notre flèche en utilisant les méthodes de partie
+		ret = p.tirer(theInput);
+	    }
+	    if (theInput.equals("s")) {
+		ret = p.sortir();
+	    }
+      if (theInput.equals("h")) {
+		return p.help();
+	    }
 
-			//verification des conditions de victoire
-			/*if (p.getVictoire()) {
-				p.getVue().updateVictoire();
-				return "Vous avez gagne !!!";
-			}*/
-			//verification de l'état de mort
-			/*if (!(p.getJoueur().getVivant())){
-				p.getVue().updateDefaite();
-				String mort = p.getRaisonMort();
-				if (mort.equals("Wumpus")) {
-					return "Wumpus suicide ! Try again !";
-				}
-				if (mort.equals("trou")) {
-					return "Le trou a vaincu !";
-				}
-			}*/
+	    //mise a jour de la fenêtre
+	    p.getVue().updateGrille(p.toString());
 
-	        return p.getJoueur().getX()+" "+p.getJoueur().getY()+" "+ret; // \t
+	    //verification des conditions de victoire
+	    //if (p.gameOver()) { return "game end"; }
+
+	    return p.getJoueur().getX()+" "+p.getJoueur().getY()+" "+ret; // \t
     	}
     }
 

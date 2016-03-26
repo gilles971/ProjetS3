@@ -3,7 +3,7 @@ package jeuSocket;
 /*
  * cette classe sert a communiquer avec le WumpusServer
  * elle permet a une IA de réagir aux situations communiquée par le serveur
- * 
+ *
  * elle se lance exactement comme le Client WumpusClient, sauf qu'elle génère
  * ses sorties avec l'IA
  */
@@ -17,7 +17,7 @@ import java.net.*;
 
 public class WumpusClientAI3 {
     public static void main(String[] args) throws IOException {
-        
+
     	//on vérifie que la classe est utilisée correctement
         if (args.length != 2) {
             System.err.println(
@@ -28,11 +28,11 @@ public class WumpusClientAI3 {
      // on mémorise le numéro de port
         String hostName = args[0];
         int portNumber = Integer.parseInt(args[1]);
-        
+
         IA3 artificialIntelligence = new IA3(5, 5, 1);
 
         try (
-        		// on commence par créer nos socket avec 
+        		// on commence par créer nos socket avec
         		//leur descripteur de fichier et leur buffer en écriture
             Socket kkSocket = new Socket(hostName, portNumber);
             PrintWriter out = new PrintWriter(kkSocket.getOutputStream(), true);
@@ -50,34 +50,36 @@ public class WumpusClientAI3 {
             	fromAI = "\t";
                 //System.out.println("Server: " + fromServer);
                 ArrayList<String> info = new ArrayList<String>();
-                
+
                 //on patiente un peu :)
             	try {
             		Thread.currentThread().sleep(2000);
             	} catch (InterruptedException e) {
-            		// TODO Auto-generated catch block
             		e.printStackTrace();
             	}
-            	
+
             	//ondécoupe la String en entrée au niveau des espaces
                 String[] temp = fromServer.split("\\s+");
                 for (int i = 0; i<temp.length; i++) {
                     info.add(temp[i]);
                 }
                 //si on a gagné ou perdu on break
-                if (fromServer.equals("Wumpus suicide ! Try again !") ||fromServer.equals("Vous avez gagne !!!") )
-                    break;
-                
+                //if (fromServer.equals("Wumpus suicide ! Try again !") ||fromServer.equals("Vous avez gagne !!!") )
+                  //  break;
+
                 //ici on vérifie que les deux premières données sont bien des coordonées
                 // si oui on demande a l'IA de jouer
-                if((info.get(0).equals("0") || info.get(0).equals("1") || info.get(0).equals("2") || info.get(0).equals("3") || info.get(0).equals("4")) &&
-                   (info.get(1).equals("0") || info.get(1).equals("1") || info.get(1).equals("2") || info.get(1).equals("3") || info.get(1).equals("4")))
-                {
-                	System.out.println("ok");
-                    fromAI = artificialIntelligence.jouer(Integer.parseInt(info.get(0)), 
-                                                          Integer.parseInt(info.get(1)), 
-                                                          info);
-                }                                     
+
+                try {
+                  int x = Integer.valueOf(info.get(0));
+                  int y = Integer.valueOf(info.get(1));
+                  if ( x > -1 && y > -1){
+                  	System.out.println("ok");
+                    fromAI = artificialIntelligence.jouer(x, y, info);
+                  }
+                } catch (NumberFormatException e) {
+                  e.printStackTrace();
+                }
                     //a moins que l'IA n'ait rien retourné, on envoie la donnée au serveur
                 if (fromAI != null) {
                     //System.out.println("Client: " + fromAI);
@@ -94,4 +96,3 @@ public class WumpusClientAI3 {
         }
     }
 }
-

@@ -8,19 +8,17 @@ public class Case {
 	private boolean puit;
 	private boolean wumpus;
 	private boolean visite;
-	//private double nbrVisite;
 	private int id;
 	
 	public Case(int id){
 		this.courantDair=false;
-		this.dangersPuit=true;
+		this.dangersPuit=false;
 		this.odeurInfame=false;
 		this.dangersWumpus=true;
 		this.puit=false;
 		this.wumpus=false;
 		this.visite = false;
 		this.id = id;
-		//this.nbrVisite=0.0;
 	}
 
 	public boolean getCourantDair() {
@@ -78,14 +76,6 @@ public class Case {
 	public void setVisite(boolean visite) {
 		this.visite = visite;
 	}
-	
-	/*public double getNbrVisite() {
-		return nbrVisite;
-	}
-
-	public void incrNbrVisite(double nbr) {
-		this.nbrVisite += nbr;
-	}*/
 	
 	public int getId(){
 		return this.id;
