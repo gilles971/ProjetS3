@@ -19,57 +19,31 @@ import java.lang.reflect.InvocationTargetException;
 public class WumpusMultiClient {
     public static void main(String[] args) throws IOException {
 
-    	//on vérifie que la classe est utilisée correctement
         if (args.length != 2) {
             System.err.println(
                 "Usage: java WumpusClient <host name> <port number>");
             System.exit(1);
         }
 
-        // on mémorise le numéro de port
         String hostName = args[0];
         int portNumber = Integer.parseInt(args[1]);
 
-        if(args.length>2) {
-          try {
-            Ia artificialIntelligence = (Ia) Class.forName("IA."+args[2]).getConstructor().newInstance(5, 5, 1);
-          } catch (ClassNotFoundException e) {
-    				e.printStackTrace();
-    			} catch (SecurityException e) {
-    				e.printStackTrace();
-    			} catch (InstantiationException e) {
-    				e.printStackTrace();
-    			} catch (NoSuchMethodException e) {
-    				e.printStackTrace();
-    			} catch (IllegalAccessException e) {
-    				e.printStackTrace();
-    			} catch (InvocationTargetException e) {
-    				e.printStackTrace();
-    			}
-        }
-
         try (
-        		// on commence par créer nos socket avec
-        		//leur descripteur de fichier et leur buffer en écriture
             Socket wSocket = new Socket(hostName, portNumber);
             PrintWriter out = new PrintWriter(wSocket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(
                 new InputStreamReader(wSocket.getInputStream()));
         ) {
-            BufferedReader stdIn =
-                new BufferedReader(new InputStreamReader(System.in));
+            BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
             String fromServer;
             String fromUser;
+            ClientProtocol cp = new ClientProtocol();
+            cp.setup();
 
-            //on lance notre boucle:
-            //tant que l'on reçoit des données du serveur
-            //on les affiche et on lit l'entrée standard
-            //qu'on envoie ensuite au serveur
-            //on sort si on envoie "Bye."
             while ((fromServer = in.readLine()) != null) {
                 System.out.println("Server: " + fromServer);
 
-                fromUser = stdIn.readLine();
+                fromUser = cp.processOrPlay(fromServer);
                 if (fromUser != null) {
                     System.out.println("Client: " + fromUser);
                     out.println(fromUser);

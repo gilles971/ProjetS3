@@ -3,7 +3,7 @@ package IA;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class IA3 implements Ia {
+public class IALargeur implements Ia {
     private int well;
     private int currentX;
     private int currentY;
@@ -17,7 +17,7 @@ public class IA3 implements Ia {
     private boolean wumpusTue;
 
 
-    public IA3(int boundX, int boundY, int arrows, int well) {
+    public IALargeur(int boundX, int boundY, int arrows, int well) {
 
 	labyrinth = new Case[boundX][boundY];
 
@@ -41,44 +41,28 @@ public class IA3 implements Ia {
      *Envoie la case vers laquelle le déplacement est le moins dangereux
      */
     public Case deplacementLePlusViable() {
-	ArrayList<Case> listCellAdja = getCelluleAdjacente();
-	ArrayList<Double> listInt = new ArrayList<Double>();
-	Double compteur;
-	//Pour toutes les cases adjacentes à l'actuelle
-	for(Case c:listCellAdja) {
-	    compteur = 0.0;
+	
+		int posX;
+		int posY;
+		int passage;
+		int distance=10;
+	
+		for (int i=0; i<boundX; i++) {
+			for (int j=0; j<boundY; j++) {
+				passage = Math.sqrt(Math.pow(this.posSortie.get(0)-i) + Math.pow(this.posSortie.get(1)-j));
+				if(passage < distance && pourcentageDangersWumpus(i, j) < 1/5 && pourcentageDangersPuit(i, j) > 1/2 ){
+					distance=passage;
+					posX = i;
+					posY = j;
+				}
+			}
+		}	
+	ArrayList<Integer> aa = new ArrayList();
+	aa.add(posX);
+	aa.add(posY);
+		
+	return deplacementChasseur(aa);
 
-	    if(c.getVisite()){
-		compteur += 1.0;	//Si on l'a déjà visité, on évite d'y aller
-	    }else{
-		if(c.getDangersPuit()) {
-		    compteur += 1.5;		//Si il y a un dangers de puit
-		}
-		if (c.getDangersWumpus()) {
-		    compteur += 1.0;		//Si il y a un dangers de wumpus
-		}
-		if(c.getWumpus()) {
-		    compteur +=10.0;	//Si il y a wumpus, on n'y va pas
-		}
-		if (c.getPuit()) {
-		    compteur += 10.0;	//Si il y a un puit, on y va pas
-		}
-	    }
-	    listInt.add(compteur);
-	}
-	//On cherche le plus petit nombre trouvé
-	Double minimum = Collections.min(listInt);
-
-
-	//On cherche quelles cases ont reçu ce score
-	for(int i=listCellAdja.size()-1; i>=0; i--){
-	    if(listInt.get(i) != minimum){
-		listCellAdja.remove(i);
-	    }
-	}
-
-	//On retourne une des cases qui a eu le plus petit score
-	return listCellAdja.get((int)(Math.random()*listCellAdja.size()));
     }
 
     /**
@@ -578,20 +562,24 @@ public class IA3 implements Ia {
     /**
      * Renvoie le pourcentage de dangers wumpus, correspondant à 1 (le nombre de wumpus) sur le nombre de dangers
      */
-    public Double pourcentageDangersWumpus(){
-
-	int nbDangers = 0;
-
-	//Parcours le labyrinth
-	for (int i=0; i<boundX; i++) {
-	    for (int j=0; j<boundY; j++) {
-		if(labyrinth[i][j].getDangersWumpus() == true){
-		    nbDangers++;
-		}
-	    }
-	}
-
-	return 1.0/nbDangers;
+    public Double pourcentageDangersWumpus(int posX, int posY){
+	
+		if(labyrinth[posX, posY].getDangersWumpus()){
+			int nbDangers = 0;
+		
+			//Parcours le labyrinth
+			for (int i=0; i<boundX; i++) {
+			    for (int j=0; j<boundY; j++) {
+				if(labyrinth[i][j].getDangersWumpus() == true){
+				    nbDangers++;
+				}
+			    }
+			}
+		
+			return 1.0/nbDangers;
+		}else{
+			return 0.0;
+		}	
     }
 
 

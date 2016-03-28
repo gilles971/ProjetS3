@@ -2,12 +2,10 @@ package IA;
 
 import java.util.Collections;
 import java.util.Random;
+import java.util.ArrayList;
 
-public class IA1 extends Ia {
+public class IA1 implements Ia {
 
-    public IA1(int bX, int bY, int arr) {
-	super(bX, bY, arr);
-    }
 
 	@Override
     public String jouer(int x, int y, ArrayList<String> message){

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-public class IA2 extends Ia {
+public class IA2 implements Ia {
     private Case[][] labyrinth;
     private int currentX;
     private int currentY;
@@ -13,7 +13,6 @@ public class IA2 extends Ia {
     private int arrows;
 
     public IA2(int bX, int bY, int arr) {
-    	super(bX, bY, arr);
     	this.boundX=bX;
     	this.boundY=bY;
     	this.arrows=arr;
