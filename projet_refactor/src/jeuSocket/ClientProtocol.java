@@ -1,7 +1,14 @@
+package jeuSocket;
+
+import IA.Ia;
+import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+
 public class ClientProtocol {
     
     Ia processor;
-    String theWorld
+    String theWorld;
     boolean isSetedUp;
     
     public ClientProtocol() {
@@ -9,8 +16,9 @@ public class ClientProtocol {
     }
     
     public void setup() {
+	try {
         String command;
-        
+        BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("You just started the Hunt the Wumpus client\n"
                           +"you may now configure the game\n"
                           +"type \"default\" if you want the default settings\n");
@@ -45,6 +53,11 @@ public class ClientProtocol {
 		}
 		
 		return;
+	}
+	catch (IOException e) {
+	    e.printStackTrace();
+	    System.exit(1);
+	}
     }
     
     public String processOrPlay(String fromServer) {
@@ -53,7 +66,14 @@ public class ClientProtocol {
             return theWorld;
         }
         if(processor==null){
-            return stdIn.readLine();
+	    BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+	    try {
+            	return stdIn.readLine();
+	    }
+	    catch (IOException e) {
+		e.printStackTrace();
+		System.exit(1);
+	    }
         }
         
         ArrayList<String> info = new ArrayList<String>();
@@ -73,12 +93,12 @@ public class ClientProtocol {
             int x = Integer.valueOf(info.get(0));
             int y = Integer.valueOf(info.get(1));
             if ( x > -1 && y > -1){
-                return = processor.jouer(x, y, info)+"\n";
+                return processor.jouer(x, y, info)+"\n";
             }
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
         
-        return = "\t\n";
+        return "\t\n";
     }
 }
