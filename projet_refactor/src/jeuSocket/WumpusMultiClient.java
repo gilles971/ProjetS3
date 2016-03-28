@@ -22,7 +22,7 @@ public class WumpusMultiClient {
     	//on vérifie que la classe est utilisée correctement
         if (args.length != 2) {
             System.err.println(
-                "Usage: java WumpusClient <host name> <port number> [IA to use]");
+                "Usage: java WumpusClient <host name> <port number>");
             System.exit(1);
         }
 

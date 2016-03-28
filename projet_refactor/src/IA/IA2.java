@@ -8,9 +8,15 @@ public class IA2 extends Ia {
     private Case[][] labyrinth;
     private int currentX;
     private int currentY;
+    private int boundX;
+    private int boundY;
+    private int arrows;
 
     public IA2(int bX, int bY, int arr) {
     	super(bX, bY, arr);
+    	this.boundX=bX;
+    	this.boundY=bY;
+    	this.arrows=arr;
     	labyrinth = new Case[boundX][boundY];
 
     	int compteur = 0;
@@ -183,6 +189,7 @@ public class IA2 extends Ia {
     /**
      *Méthode appelé pour jouer
      */
+    @Override
     public String jouer(int x, int y, ArrayList<String> message){
 
     	//On met à jour notre position

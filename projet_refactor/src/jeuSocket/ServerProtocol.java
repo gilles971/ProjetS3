@@ -19,7 +19,7 @@ public class ServerProtocol {
 
     public ServerProtocol () {
     	j = new Joueur("j1");
-      p = new Partie(j);
+     	p = new Partie(j);
 
     }
 
@@ -42,8 +42,9 @@ public class ServerProtocol {
 		String[] theWorld = theInput.split("\\s+");
 		p.setMonde(new Monde(Integer.valueOf(theWorld[0])));
 		String objets = "";
-		for (int i=1; i<theWorld.length; i++)
-		    objets += theWorld[i]+" ";
+		if (theWorld.length>1)
+			for (int i=1; i<theWorld.length; i++)
+		    	objets += theWorld[i]+" ";
 		p.getMonde().placerObjets(objets);
 		p.disposerPlateau();
 		return "Paramètres enregistrés";

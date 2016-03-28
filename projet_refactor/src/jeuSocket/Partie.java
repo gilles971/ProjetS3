@@ -164,12 +164,12 @@ public class Partie {
 	public boolean defaite() { return !joueur.alive(); }
 
 	public void victoire() {	if (joueur.alive()) joueur.addScore(50);}
-	/*
+	
 	public boolean gameOver() {
 		if(monde.getPlateau()[joueur.getX()][joueur.getY()].getJoueur() == null) return true;
 		return defaite();
 	}
-	*/
+	
 	public String help() {
 		return ("Aide - Jeu du Wumpus "
 				+ "Regles : "

@@ -9,14 +9,11 @@ public class IA1 extends Ia {
 	super(bX, bY, arr);
     }
 
-    /**
-     *Méthode appelé pour jouer
-     */
-    public String jouer(){
+	@Override
+    public String jouer(int x, int y, ArrayList<String> message){
 	try {
 	    Thread.currentThread().sleep(1000);
 	} catch (InterruptedException e) {
-	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
 	Random rand = new Random();

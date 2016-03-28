@@ -123,9 +123,9 @@ public class IA3 {
 
 	//Si on est sur la case de la sortie, on l'enregistre
 	if(message.contains("sortie")){
-	    sortie.clear();
-	    sortie.add(currentX);
-	    sortie.add(currentY);
+	    posSortie.clear();
+	    posSortie.add(currentX);
+	    posSortie.add(currentY);
 	}
 
 
@@ -160,42 +160,42 @@ public class IA3 {
 	//Si on sent un courant d'air
 	if(message.contains("courant")){
 	    labyrinth[currentX][currentY].setCourantDair(true);
-
+/*
 	    if (currentY-1 >= 0) {
-		if(labyrinth[x][y-1].getVisite() != false){
-		    labyrinth[x][y-1].setDangersPuit(true);	//Case du haut
+		if(labyrinth[currentX][currentY-1].getVisite() != false){
+		    labyrinth[currentX][currentY-1].setDangersPuit(true);	//Case du haut
 		}
 	    }
 	    if (currentY+1 <= this.boundY) {
-		if(labyrinth[x][y+1].getVisite() != false){
-		    labyrinth[x][y+1].setDangersPuit(true);	//Case du bas
+		if(labyrinth[currentX][currentY+1].getVisite() != false){
+		    labyrinth[currentX][currentY+1].setDangersPuit(true);	//Case du bas
 		}
 	    }
 	    if (currentX-1 >= 0) {
-		if(labyrinth[x-1][y].getVisite() != false){
-		    labyrinth[x-1][y].setDangersPuit(true);	//Case de gauche
+		if(labyrinth[currentX-1][currentY].getVisite() != false){
+		    labyrinth[currentX-1][currentY].setDangersPuit(true);	//Case de gauche
 		}
 	    }
 	    if (currentX+1 <= this.boundX) {
-		if(labyrinth[x+1][y].getVisite() != false){
-		    labyrinth[x+1][y].setDangersPuit(true); //Case de droite
+		if(labyrinth[currentX+1][currentY].getVisite() != false){
+		    labyrinth[currentX+1][currentY].setDangersPuit(true); //Case de droite
 		}
 	    }
-
+*/
 
 	    //Si on ne sent pas de courant d'air
 	}else{
 	    if (currentY-1 >= 0 ) {
-		labyrinth[x][y-1].setDangersPuit(false);	//Case du haut
+		labyrinth[currentX][currentY-1].setDangersPuit(false);	//Case du haut
 	    }
 	    if (currentY+1 <= this.boundY) {
-		labyrinth[x][y+1].setDangersPuit(false);	//Case du bas
+		labyrinth[currentX][currentY+1].setDangersPuit(false);	//Case du bas
 	    }
 	    if (currentX-1 >= 0) {
-		labyrinth[x-1][y].setDangersPuit(false);	//Case de gauche
+		labyrinth[currentX-1][currentY].setDangersPuit(false);	//Case de gauche
 	    }
 	    if (currentX+1 <= this.boundX) {
-		labyrinth[x+1][y].setDangersPuit(false); //Case de droite
+		labyrinth[currentX+1][currentY].setDangersPuit(false); //Case de droite
 	    }
 	}
 
@@ -273,7 +273,7 @@ public class IA3 {
 	//Si le wumpus a été tué, on va vers la sortie
 	if(wumpusTue){
 
-	    if(currentX == posSortie(0) && currentY == posSortie(1)){
+	    if(currentX == posSortie.get(0) && currentY == posSortie.get(1)){
 		return "s";
 	    }else{
 		Case caseDirection = this.deplacementChasseur(posSortie);
@@ -346,7 +346,7 @@ public class IA3 {
      */
     public ArrayList<Case> getCelluleAdjacente() {
 	ArrayList<Case> list = new ArrayList<Case>();
-	//On envoie les cases que si elles ne sont pas à l'exterieur du labyrinthe
+	//On envoie les cases que si elles ne sont pas à l'exterieur du labyrinth
 	if (currentY-1 >= 0) {
 	    list.add(labyrinth[currentX][currentY-1]);
 	}
@@ -402,7 +402,7 @@ public class IA3 {
 
 	boolean test=false;
 
-	//Parcours le labyrinthe
+	//Parcours le labyrinth
 	for (int i=0; i<boundX; i++) {
 	    for (int j=0; j<boundY; j++) {
 		//Si on a trouvé le wumpus
@@ -423,7 +423,7 @@ public class IA3 {
 
 	ArrayList<Integer> listPosition = new ArrayList<Integer>();
 
-	//Parcours le labyrinthe
+	//Parcours le labyrinth
 	for (int i=0; i<boundX; i++) {
 	    for (int j=0; j<boundY; j++) {
 		//Si on a trouvé le wumpus
@@ -461,10 +461,10 @@ public class IA3 {
      */
     public Double pourcentageDangersPuit(int posX, int posY){
 
-	Double nbrDangers = 0.0;
+	Double nbDangers = 0.0;
 	Double nbrCase = 0.0;
 
-	if(labyrinthe[posX][posY].getDangersPuit()){
+	if(labyrinth[posX][posY].getDangersPuit()){
 
 	    if (posY-1 >= 0) {
 		if(labyrinth[posX][posY-1].getCourantDair()){
@@ -480,7 +480,7 @@ public class IA3 {
 			}
 			nbrCase++;
 		    }
-		    if(posX+1 <= this.boudX){
+		    if(posX+1 <= this.boundX){
 			if(labyrinth[posX+1][posY-1].getDangersPuit()){
 			    nbDangers++;
 			}
@@ -490,7 +490,7 @@ public class IA3 {
 	    }
 	    if (posY+1 <= this.boundY) {
 		if(labyrinth[posX][posY+1].getCourantDair()){
-		    if(posY+2 <= this.boudY){
+		    if(posY+2 <= this.boundY){
 			if(labyrinth[posX][posY+2].getDangersPuit()){
 			    nbDangers++;
 			}
@@ -518,7 +518,7 @@ public class IA3 {
 			}
 			nbrCase++;
 		    }
-		    if(posY+1 <= this.boudY){
+		    if(posY+1 <= this.boundY){
 			if(labyrinth[posX-1][posY+1].getDangersPuit()){
 			    nbDangers++;
 			}
@@ -540,13 +540,13 @@ public class IA3 {
 			}
 			nbrCase++;
 		    }
-		    if(posY+1 <= this.boudY){
+		    if(posY+1 <= this.boundY){
 			if(labyrinth[posX+1][posY+1].getDangersPuit()){
 			    nbDangers++;
 			}
 			nbrCase++;
 		    }
-		    if(posX+2 <= this.boudX){
+		    if(posX+2 <= this.boundX){
 			if(labyrinth[posX+2][posY].getDangersPuit()){
 			    nbDangers++;
 			}
@@ -569,16 +569,16 @@ public class IA3 {
 
 	int nbDangers = 0;
 
-	//Parcours le labyrinthe
+	//Parcours le labyrinth
 	for (int i=0; i<boundX; i++) {
 	    for (int j=0; j<boundY; j++) {
-		if(labyrinthe[i][j].getDangersWumpus() == true){
+		if(labyrinth[i][j].getDangersWumpus() == true){
 		    nbDangers++;
 		}
 	    }
 	}
 
-	return 1/nbDangers;
+	return 1.0/nbDangers;
     }
 
 
