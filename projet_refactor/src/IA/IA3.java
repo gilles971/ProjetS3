@@ -229,11 +229,11 @@ public class IA3 {
 	for (int i=0; i<boundX; i++) {
 	    for (int j=0; j<boundY; j++) {
 		//On incrémente le nombre de dangers puit
-		/*if(labyrinth[i][j].getDangersPuit()){
+		if(labyrinth[i][j].getDangersPuit()){
 		  compteurPuit++;
 		  listPuit.add(i);
 		  listPuit.add(j);
-		  }*/
+		}
 		//On incrémente le nombre de dangers wumpus
 		if(labyrinth[i][j].getDangersWumpus()){
 		    compteurWumpus++;
@@ -243,12 +243,12 @@ public class IA3 {
 	    }
 	}
 
-	/*//Si il y a le nombre de dangers égal au nombre de puit, on les met à ces position
+	//Si il y a le nombre de dangers égal au nombre de puit, on les met à ces position
 	  if(compteurPuit == this.well){
 	  for(int l=0; l<this.well*2; l=l+2){
-	  labyrinth[l][l+1].setPuit(true);
+		  labyrinth[l][l+1].setPuit(true);
 	  }
-	  }*/
+	  }
 
 	//Si il n'y a qu'un seul dangers, alors le puit est à cette position
 	if(compteurWumpus == 1){
@@ -276,7 +276,7 @@ public class IA3 {
 	    if(currentX == posSortie.get(0) && currentY == posSortie.get(1)){
 		return "s";
 	    }else{
-		Case caseDirection = this.deplacementChasseur(posSortie);
+			Case caseDirection = this.deplacementChasseur(posSortie);
 		if(caseDirection != null){
 		    return messageAEnvoyer(caseDirection);
 		}else{
@@ -463,11 +463,15 @@ public class IA3 {
 
 	Double nbDangers = 0.0;
 	Double nbrCase = 0.0;
+	Double nbrCourantDair = 0.0;
 
 	if(labyrinth[posX][posY].getDangersPuit()){
 
 	    if (posY-1 >= 0) {
 		if(labyrinth[posX][posY-1].getCourantDair()){
+			nbrCase++;
+			nbDangers++;
+			nbrCourantDair++;
 		    if(posY-2 >= 0){
 			if(labyrinth[posX][posY-2].getDangersPuit()){
 			    nbDangers++;
@@ -490,6 +494,9 @@ public class IA3 {
 	    }
 	    if (posY+1 <= this.boundY) {
 		if(labyrinth[posX][posY+1].getCourantDair()){
+			nbrCase++;
+			nbDangers++;
+			nbrCourantDair++;
 		    if(posY+2 <= this.boundY){
 			if(labyrinth[posX][posY+2].getDangersPuit()){
 			    nbDangers++;
@@ -512,6 +519,9 @@ public class IA3 {
 	    }
 	    if (posX-1 >= 0) {
 		if(labyrinth[posX-1][posY].getCourantDair()){
+			nbrCase++;
+			nbDangers++;
+			nbrCourantDair++;
 		    if(posY-1 >= 0){
 			if(labyrinth[posX-1][posY-1].getDangersPuit()){
 			    nbDangers++;
@@ -534,6 +544,9 @@ public class IA3 {
 	    }
 	    if (posX+1 <= this.boundX) {
 		if(labyrinth[posX+1][posY].getCourantDair()){
+			nbrCase++;
+			nbDangers++;
+			nbrCourantDair++;
 		    if(posY-1 >= 0){
 			if(labyrinth[posX+1][posY-1].getDangersPuit()){
 			    nbDangers++;
@@ -555,10 +568,10 @@ public class IA3 {
 		}
 	    }
 
-	    return nbDangers/nbrCase;
+	    return nbDangers/nbrCase/nbrCourantDair;
 
 	}else{
-	    return 0.0;
+	    return 1.0;
 	}
     }
 

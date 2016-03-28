@@ -29,7 +29,7 @@ public class WumpusClientAI3 {
         String hostName = args[0];
         int portNumber = Integer.parseInt(args[1]);
 
-        IA3 artificialIntelligence = new IA3(5, 5, 1);
+        IA3 artificialIntelligence = new IA3(5, 5, 1, 2);
 
         try (
         		// on commence par créer nos socket avec
