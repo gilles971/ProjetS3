@@ -28,13 +28,12 @@ public class WumpusMultiClient {
         String hostName = args[0];
         int portNumber = Integer.parseInt(args[1]);
 
-        try (
+        try {
             Socket wSocket = new Socket(hostName, portNumber);
             PrintWriter out = new PrintWriter(wSocket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(
                 new InputStreamReader(wSocket.getInputStream()));
-        ) {
-            BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+        
             String fromServer;
             String fromUser;
             ClientProtocol cp = new ClientProtocol();

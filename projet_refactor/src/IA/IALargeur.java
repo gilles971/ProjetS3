@@ -50,7 +50,7 @@ public class IALargeur implements Ia {
 		for (int i=0; i<boundX; i++) {
 			for (int j=0; j<boundY; j++) {
 				passage = Math.sqrt(Math.pow(this.posSortie.get(0)-i) + Math.pow(this.posSortie.get(1)-j));
-				if(passage < distance && pourcentageDangersWumpus(i, j) < 1/5 && pourcentageDangersPuit(i, j) > 1/2 ){
+				if(passage < distance && pourcentageDangersWumpus(i, j) < 1/5 && pourcentageDangersPuit(i, j) > 1/2 && labyrinth[i][j].getVisite() == false){
 					distance=passage;
 					posX = i;
 					posY = j;
@@ -564,7 +564,7 @@ public class IALargeur implements Ia {
      */
     public Double pourcentageDangersWumpus(int posX, int posY){
 	
-		if(labyrinth[posX, posY].getDangersWumpus()){
+		if(labyrinth[posX][posY].getDangersWumpus()){
 			int nbDangers = 0;
 		
 			//Parcours le labyrinth
