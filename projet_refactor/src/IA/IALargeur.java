@@ -3,13 +3,16 @@ package IA;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class IALargeur implements Ia {
+public class IA3 implements Ia {
     private int well;
     private int currentX;
     private int currentY;
     private int arrows;
     private int boundX;
     private int boundY;
+    private int turn;
+    private int totalTurn;
+    private boolean nouveauCourant;
 
     //Les infos que possède l'IA et qui sont mises à jour durant l'execution
     private Case[][] labyrinth;
@@ -17,7 +20,7 @@ public class IALargeur implements Ia {
     private boolean wumpusTue;
 
 
-    public IALargeur(int boundX, int boundY, int arrows, int well) {
+    public IALargeur(int boundX, int boundY, int arrows, int well, int t) {
 
 	labyrinth = new Case[boundX][boundY];
 
@@ -35,11 +38,14 @@ public class IALargeur implements Ia {
 	this.well = well;
 	this.posSortie = new ArrayList<Integer>();
 	this.wumpusTue = false;
+	this.totalTurn = t;
+	this.turn = 0;
     }
 
     /**
-     *Envoie la case vers laquelle le déplacement est le moins dangereux
+     *Envoie la case pour un deplacement en largeur
      */
+
     public Case deplacementLePlusViable() {
 	
 		int posX;
@@ -50,7 +56,10 @@ public class IALargeur implements Ia {
 		for (int i=0; i<boundX; i++) {
 			for (int j=0; j<boundY; j++) {
 				passage = Math.sqrt(Math.pow(this.posSortie.get(0)-i) + Math.pow(this.posSortie.get(1)-j));
-				if(passage < distance && pourcentageDangersWumpus(i, j) < 1/5 && pourcentageDangersPuit(i, j) > 1/2 && labyrinth[i][j].getVisite() == false){
+				if(passage < distance 
+					&& pourcentageDangersWumpus(i, j) < 1/5 
+					&& pourcentageDangersPuit(i, j) < 1/2 
+					&& labyrinth[i][j].getVisite() == false){
 					distance=passage;
 					posX = i;
 					posY = j;
@@ -66,7 +75,7 @@ public class IALargeur implements Ia {
     }
 
     /**
-     *Envoie la case vers laquelle le déplacement est le moins dangereux et qui se rapproche de la posistion voulue
+     *Envoie la case vers laquelle le déplacement se rapproche de la posistion voulue
      */
     public Case deplacementChasseur(ArrayList<Integer> posWumpus) {
 
@@ -97,6 +106,12 @@ public class IALargeur implements Ia {
      */
     public void miseAJour(ArrayList<String> message){
 
+	//On met à zéro nouveauCourant et on le met à vrai si on entre dans une case non visité et qui contient un courant d'air
+	this.nouveauCourant = false;
+	if(labyrinth[currentX][currentY].getVisite() == false && message.contains("courant")){
+		this.nouveauCourant = true;
+	}
+
 	labyrinth[currentX][currentY].setVisite(true);
 	//labyrinth[currentX][currentY].incrNbrVisite(0.75);
 
@@ -111,7 +126,6 @@ public class IALargeur implements Ia {
 	    posSortie.add(currentX);
 	    posSortie.add(currentY);
 	}
-
 
 	//Si on sent une odeur infame
 	if(message.contains("odeur")){
@@ -144,28 +158,6 @@ public class IALargeur implements Ia {
 	//Si on sent un courant d'air
 	if(message.contains("courant")){
 	    labyrinth[currentX][currentY].setCourantDair(true);
-/*
-	    if (currentY-1 >= 0) {
-		if(labyrinth[currentX][currentY-1].getVisite() != false){
-		    labyrinth[currentX][currentY-1].setDangersPuit(true);	//Case du haut
-		}
-	    }
-	    if (currentY+1 <= this.boundY) {
-		if(labyrinth[currentX][currentY+1].getVisite() != false){
-		    labyrinth[currentX][currentY+1].setDangersPuit(true);	//Case du bas
-		}
-	    }
-	    if (currentX-1 >= 0) {
-		if(labyrinth[currentX-1][currentY].getVisite() != false){
-		    labyrinth[currentX-1][currentY].setDangersPuit(true);	//Case de gauche
-		}
-	    }
-	    if (currentX+1 <= this.boundX) {
-		if(labyrinth[currentX+1][currentY].getVisite() != false){
-		    labyrinth[currentX+1][currentY].setDangersPuit(true); //Case de droite
-		}
-	    }
-*/
 
 	    //Si on ne sent pas de courant d'air
 	}else{
@@ -183,18 +175,6 @@ public class IALargeur implements Ia {
 	    }
 	}
 
-	//Si on a 4 dangers autour d'une case, elle a un puit
-	for (int i=0; i<boundX; i++) {
-	    for (int j=0; j<boundY; j++) {
-		//Si la case est à une distance supérieur à 1,
-		//il n'y a pas de danger
-		if(	labyrinth[i+1][j].getCourantDair() == true
-			&& labyrinth[i-1][j].getCourantDair() == true
-			&& labyrinth[i][j+1].getCourantDair() == true
-			&& labyrinth[i][j-1].getCourantDair() == true){labyrinth[i][j].setPuit(true);}
-	    }
-	}
-
 
 	//Si on a raté, on perd une flèche
 	if(message.contains("tir")) {
@@ -202,22 +182,13 @@ public class IALargeur implements Ia {
 	}
 
 
-	//On va regarder le nombre de dangersPuit et dangersWumpus
-	int compteurPuit=0;
-	ArrayList<Integer> listPuit = new ArrayList<Integer>();
-
+	//On va regarder le nombre de dangersWumpus
 	int compteurWumpus=0;
 	int xWumpus=-1;
 	int yWumpus=-1;
 
 	for (int i=0; i<boundX; i++) {
 	    for (int j=0; j<boundY; j++) {
-		//On incrémente le nombre de dangers puit
-		if(labyrinth[i][j].getDangersPuit()){
-		  compteurPuit++;
-		  listPuit.add(i);
-		  listPuit.add(j);
-		}
 		//On incrémente le nombre de dangers wumpus
 		if(labyrinth[i][j].getDangersWumpus()){
 		    compteurWumpus++;
@@ -227,14 +198,7 @@ public class IALargeur implements Ia {
 	    }
 	}
 
-	//Si il y a le nombre de dangers égal au nombre de puit, on les met à ces position
-	  if(compteurPuit == this.well){
-	  for(int l=0; l<this.well*2; l=l+2){
-		  labyrinth[listPuit.get(l)][listPuit.get(l+1)].setPuit(true);
-	  }
-	  }
-
-	//Si il n'y a qu'un seul dangers, alors le puit est à cette position
+	//Si il n'y a qu'un seul dangers, alors le wumpus est à cette position
 	if(compteurWumpus == 1){
 	    labyrinth[xWumpus][yWumpus].setWumpus(true);
 	}
@@ -254,9 +218,10 @@ public class IALargeur implements Ia {
 	//Met à jour le plateau en fonction du message
 	this.miseAJour(message);
 
-	//Si le wumpus a été tué, on va vers la sortie
-	if(wumpusTue){
-
+	this.turn++;
+	
+	//Si le nombre de tour a dépassé la limite
+	if(turn > totalTurn){
 	    if(currentX == posSortie.get(0) && currentY == posSortie.get(1)){
 		return "s";
 	    }else{
@@ -267,58 +232,73 @@ public class IALargeur implements Ia {
 		    return "oups";
 		}
 	    }
-	    //Sinon, on le cherche et on le tue
 	}else{
+		//Si le wumpus a été tué, on va vers la sortie
+		if(wumpusTue){
 
-	    //On cherche si un wumpus a été trouvé
-	    wumpusTrouve = this.presenceWumpus();
-
-	    if(wumpusTrouve){//Si un wumpus à été trouvé
-		//On cherche si il y a un wumpus à cote
-		wumpusAcote = this.wumpusProche();
-		if(wumpusAcote != null){//Si un wumpus est à cote
-		    if (currentY-1 >= 0) {
-			if(labyrinth[x][y-1].getId() == wumpusAcote.getId()){	//Case du haut
-			    return "t n";
-			}
-		    }
-		    if (currentY+1 <= this.boundY) {
-			if(labyrinth[x][y+1].getId() == wumpusAcote.getId()){	//Case du bas
-			    return "t s";
-			}
-		    }
-		    if (currentX-1 >= 0) {
-			if(labyrinth[x-1][y].getId() == wumpusAcote.getId()){	//Case de gauche
-			    return "t o";
-			}
-		    }
-		    if (currentX+1 <= this.boundX) {
-			if(labyrinth[x+1][y].getId() == wumpusAcote.getId()){ //Case de droite
-			    return "t e";
-			}
-		    }
-		    return "oups";
-		}else{//Si le wumpus n'est pas à cote
-		    //On cherche la position du wumpus et on cherche un deplacement qui se rapproche de lui
-		    ArrayList<Integer> posWumpus = positionWumpus();
-		    Case caseDirection = this.deplacementChasseur(posWumpus);
-		    if(caseDirection != null){
-			return messageAEnvoyer(caseDirection);
+		    if(currentX == posSortie.get(0) && currentY == posSortie.get(1)){
+			return "s";
 		    }else{
-			return "oups";
+				Case caseDirection = this.deplacementChasseur(posSortie);
+			if(caseDirection != null){
+			    return messageAEnvoyer(caseDirection);
+			}else{
+			    return "oups";
+			}
+		    }
+		    //Sinon, on le cherche et on le tue
+		}else{
+
+		    //On cherche si un wumpus a été trouvé
+		    wumpusTrouve = this.presenceWumpus();
+
+		    if(wumpusTrouve){//Si un wumpus à été trouvé
+			//On cherche si il y a un wumpus à cote
+			wumpusAcote = this.wumpusProche();
+			if(wumpusAcote != null){//Si un wumpus est à cote
+			    if (currentY-1 >= 0) {
+				if(labyrinth[x][y-1].getId() == wumpusAcote.getId()){	//Case du haut
+				    return "t n";
+				}
+			    }
+			    if (currentY+1 <= this.boundY) {
+				if(labyrinth[x][y+1].getId() == wumpusAcote.getId()){	//Case du bas
+				    return "t s";
+				}
+			    }
+			    if (currentX-1 >= 0) {
+				if(labyrinth[x-1][y].getId() == wumpusAcote.getId()){	//Case de gauche
+				    return "t o";
+				}
+			    }
+			    if (currentX+1 <= this.boundX) {
+				if(labyrinth[x+1][y].getId() == wumpusAcote.getId()){ //Case de droite
+				    return "t e";
+				}
+			    }
+			    return "oups";
+			}else{//Si le wumpus n'est pas à cote
+			    //On cherche la position du wumpus et on cherche un deplacement qui se rapproche de lui
+			    ArrayList<Integer> posWumpus = positionWumpus();
+			    Case caseDirection = this.deplacementChasseur(posWumpus);
+			    if(caseDirection != null){
+				return messageAEnvoyer(caseDirection);
+			    }else{
+				return "oups";
+			    }
+			}
+
+		    }else{//Si le wumpus n'a pas été trouvé
+			//Cherche la case avec le deplacement le plus viable
+			Case caseDirection = this.deplacementLePlusViable();
+
+			if(caseDirection != null){
+			    return messageAEnvoyer(caseDirection);
+			}else{
+			    return "oups";
+			}
 		    }
 		}
-
-	    }else{//Si le wumpus n'a pas été trouvé
-		//Cherche la case avec le deplacement le plus viable
-		Case caseDirection = this.deplacementLePlusViable();
-
-		if(caseDirection != null){
-		    return messageAEnvoyer(caseDirection);
-		}else{
-		    return "oups";
-		}
-	    }
 	}
     }
 
@@ -446,140 +426,202 @@ public class IALargeur implements Ia {
     public Double pourcentageDangersPuit(int posX, int posY){
 
 	Double nbDangers = 0.0;
-	Double nbrCase = 0.0;
 	Double nbrCourantDair = 0.0;
+	ArrayList listeDesId = new ArrayList();
+	Case enDouble == null;	
+
 
 	if(labyrinth[posX][posY].getDangersPuit()){
 
 	    if (posY-1 >= 0) {
 		if(labyrinth[posX][posY-1].getCourantDair()){
-			nbrCase++;
 			nbDangers++;
 			nbrCourantDair++;
 		    if(posY-2 >= 0){
 			if(labyrinth[posX][posY-2].getDangersPuit()){
 			    nbDangers++;
+				if(listeDesId.contains(labyrinth[posX][posY-2].getId()){
+					enDouble = labyrinth[posX][posY-2];
+				}else{
+					listeDesId.add(labyrinth[posX][posY-2].getId());
+				}
 			}
-			nbrCase++;
 		    }
 		    if(posX-1 >= 0){
 			if(labyrinth[posX-1][posY-1].getDangersPuit()){
 			    nbDangers++;
+				if(listeDesId.contains(labyrinth[posX-1][posY-1].getId()){
+					enDouble = labyrinth[posX-1][posY-1];
+				}else{
+					listeDesId.add(labyrinth[posX-1][posY-1].getId());
+				}
 			}
-			nbrCase++;
 		    }
 		    if(posX+1 <= this.boundX){
 			if(labyrinth[posX+1][posY-1].getDangersPuit()){
 			    nbDangers++;
+				if(listeDesId.contains(labyrinth[posX+1][posY-1].getId()){
+					enDouble = labyrinth[posX+1][posY-1];
+				}else{
+					listeDesId.add(labyrinth[posX+1][posY-1].getId());
+				}
 			}
-			nbrCase++;
 		    }
 		}
 	    }
 	    if (posY+1 <= this.boundY) {
 		if(labyrinth[posX][posY+1].getCourantDair()){
-			nbrCase++;
 			nbDangers++;
 			nbrCourantDair++;
 		    if(posY+2 <= this.boundY){
 			if(labyrinth[posX][posY+2].getDangersPuit()){
 			    nbDangers++;
+				if(listeDesId.contains(labyrinth[posX][posY+2].getId()){
+					enDouble = labyrinth[posX][posY+2];
+				}else{
+					listeDesId.add(labyrinth[posX][posY+2].getId());
+				}
 			}
-			nbrCase++;
 		    }
 		    if(posX-1 >= 0){
 			if(labyrinth[posX-1][posY+1].getDangersPuit()){
 			    nbDangers++;
+				if(listeDesId.contains(labyrinth[posX-1][posY11].getId()){
+					enDouble = labyrinth[posX-1][posY+1];
+				}else{
+					listeDesId.add(labyrinth[posX-1][posY+1].getId());
+				}
 			}
-			nbrCase++;
 		    }
 		    if(posX+1 <= this.boundX){
 			if(labyrinth[posX+1][posY+1].getDangersPuit()){
 			    nbDangers++;
+				if(listeDesId.contains(labyrinth[posX+1][posY+1].getId()){
+					enDouble = labyrinth[posX+1][posY+1];
+				}else{
+					listeDesId.add(labyrinth[posX+1][posY+1].getId());
+				}
 			}
-			nbrCase++;
 		    }
 		}
 	    }
 	    if (posX-1 >= 0) {
 		if(labyrinth[posX-1][posY].getCourantDair()){
-			nbrCase++;
 			nbDangers++;
 			nbrCourantDair++;
 		    if(posY-1 >= 0){
 			if(labyrinth[posX-1][posY-1].getDangersPuit()){
 			    nbDangers++;
+				if(listeDesId.contains(labyrinth[posX-1][posY-1].getId()){
+					enDouble = labyrinth[posX-1][posY-1];
+				}else{
+					listeDesId.add(labyrinth[posX-1][posY-1].getId());
+				}	    
 			}
-			nbrCase++;
 		    }
+		
 		    if(posY+1 <= this.boundY){
 			if(labyrinth[posX-1][posY+1].getDangersPuit()){
 			    nbDangers++;
+				if(listeDesId.contains(labyrinth[posX-1][posY+1].getId()){
+					enDouble = labyrinth[posX-1][posY+1];
+				}else{
+					listeDesId.add(labyrinth[posX-1][posY+1].getId());
+				}
 			}
-			nbrCase++;
 		    }
 		    if(posX-2 >= 0){
 			if(labyrinth[posX-2][posY].getDangersPuit()){
 			    nbDangers++;
+				if(listeDesId.contains(labyrinth[posX-2][posY].getId()){
+					enDouble = labyrinth[posX-2][posY];
+				}else{
+					listeDesId.add(labyrinth[posX-2][posY].getId());
+				}
 			}
-			nbrCase++;
 		    }
 		}
 	    }
 	    if (posX+1 <= this.boundX) {
 		if(labyrinth[posX+1][posY].getCourantDair()){
-			nbrCase++;
 			nbDangers++;
 			nbrCourantDair++;
 		    if(posY-1 >= 0){
 			if(labyrinth[posX+1][posY-1].getDangersPuit()){
 			    nbDangers++;
+				if(listeDesId.contains(labyrinth[posX+1][posY-1].getId()){
+					enDouble = labyrinth[posX+1][posY-1];
+				}else{
+					listeDesId.add(labyrinth[posX+1][posY-1].getId());
+				}
 			}
-			nbrCase++;
 		    }
 		    if(posY+1 <= this.boundY){
 			if(labyrinth[posX+1][posY+1].getDangersPuit()){
 			    nbDangers++;
+				if(listeDesId.contains(labyrinth[posX+1][posY+1].getId()){
+					enDouble = labyrinth[posX+1][posY+1];
+				}else{
+					listeDesId.add(labyrinth[posX+1][posY+1].getId());
+				}
 			}
-			nbrCase++;
 		    }
 		    if(posX+2 <= this.boundX){
 			if(labyrinth[posX+2][posY].getDangersPuit()){
 			    nbDangers++;
+				if(listeDesId.contains(labyrinth[posX+2][posY].getId()){
+					enDouble = labyrinth[posX+2][posY];
+				}else{
+					listeDesId.add(labyrinth[posX+2][posY].getId());
+				}
 			}
-			nbrCase++;
 		    }
 		}
 	    }
-
-	    return nbDangers/nbrCase/nbrCourantDair;
+		 //On renvoie une valeur en fonction du nombre de courant d'air autour de la case
+		 if(nbrCourantDair == 1){
+		    return 1/nbDangers;
+		 }
+		 if(nbrCourantDair == 2){
+			if(enDouble == null){
+				return 4.0/5.0;
+			}else{
+				if(enDouble.getDangersPuit(){
+					return 1.0/2.0;
+				}else{
+					return 4.0/5.0;
+				}
+			}
+		 }
+		 if(nbrCourantDair == 3){
+			return 4.0/5.0;
+		 }
+		 if(nbrCourantDair == 4){
+			return 1.0;
+	 }
 
 	}else{
-	    return 1.0;
+	    return 0.0;
 	}
     }
 
     /**
      * Renvoie le pourcentage de dangers wumpus, correspondant à 1 (le nombre de wumpus) sur le nombre de dangers
      */
-    public Double pourcentageDangersWumpus(int posX, int posY){
-	
-		if(labyrinth[posX][posY].getDangersWumpus()){
-			int nbDangers = 0;
-		
-			//Parcours le labyrinth
-			for (int i=0; i<boundX; i++) {
-			    for (int j=0; j<boundY; j++) {
-				if(labyrinth[i][j].getDangersWumpus() == true){
-				    nbDangers++;
-				}
-			    }
-			}
-		
-			return 1.0/nbDangers;
-		}else{
-			return 0.0;
-		}	
+    public Double pourcentageDangersWumpus(){
+
+	int nbDangers = 0;
+
+	//Parcours le labyrinth
+	for (int i=0; i<boundX; i++) {
+	    for (int j=0; j<boundY; j++) {
+		if(labyrinth[i][j].getDangersWumpus() == true){
+		    nbDangers++;
+		}
+	    }
+	}
+
+	return 1.0/nbDangers;
     }
 
 

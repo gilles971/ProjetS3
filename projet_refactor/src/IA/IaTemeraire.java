@@ -3,7 +3,7 @@ package IA;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class IA3 implements Ia {
+public class IaTemeraire implements Ia {
     private int well;
     private int currentX;
     private int currentY;
@@ -55,7 +55,7 @@ public class IA3 implements Ia {
 	    compteur = 0.0;
 
 	    if(c.getVisite()){
-		compteur += 2.0/5.0;	//Si on l'a déjà visité, on évite d'y aller
+		compteur += 3.0/5.0;	//Si on l'a déjà visité, on évite d'y aller
 		//Si on entre dans un nouveau courant d'air, on preferera aller en arrière plutot que de tenter un dangers
 	   	 if(nouveauCourant){
 			compteur -= 1.0/5.0;

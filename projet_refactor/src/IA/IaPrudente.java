@@ -3,7 +3,7 @@ package IA;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class IA3 implements Ia {
+public class IaPrudente implements Ia {
     private int well;
     private int currentX;
     private int currentY;
