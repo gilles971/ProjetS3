@@ -20,7 +20,7 @@ public class IaPrudente implements Ia {
     private boolean wumpusTue;
 
 
-    public IA3(int boundX, int boundY, int arrows, int well, int t) {
+    public IaPrudente(int boundX, int boundY, int arrows, int well, int t) {
 
 	labyrinth = new Case[boundX][boundY];
 
@@ -71,7 +71,7 @@ public class IaPrudente implements Ia {
 			}
 		    }
 		}
-		if (currentY+1 <= this.boundY) {
+		if (currentY+1 < this.boundY) {
 		    if(labyrinth[currentX][currentY+1].getId() == c.getId()){	//Case du bas
 			if(c.getDangersPuit()) {
 			    compteur += this.pourcentageDangersPuit(currentX, currentY+1);		//Si il y a un dangers de puit
@@ -84,14 +84,14 @@ public class IaPrudente implements Ia {
 		if (currentX-1 >= 0) {
 		    if(labyrinth[currentX-1][currentY].getId() == c.getId()){	//Case de gauche
 			if(c.getDangersPuit()) {
-			    compteur += this.pourcentageDangersPuit(currentX-1, currentY-);		//Si il y a un dangers de puit
+			    compteur += this.pourcentageDangersPuit(currentX-1, currentY);		//Si il y a un dangers de puit
 			}
 			if (c.getDangersWumpus()) {
 			    compteur += pDangersWumpus;		//Si il y a un dangers de wumpus
 			}
 		    }
 		}
-		if (currentX+1 <= this.boundX) {
+		if (currentX+1 < this.boundX) {
 		    if(labyrinth[currentX+1][currentY].getId() == c.getId()){ //Case de droite
 			if(c.getDangersPuit()) {
 			    compteur += this.pourcentageDangersPuit(currentX+1, currentY);		//Si il y a un dangers de puit
@@ -167,7 +167,7 @@ public class IaPrudente implements Ia {
 	}
 
 	//Si on est sur la case de la sortie, on l'enregistre
-	if(message.contains("sortie")){
+	if(turn == 0){
 	    posSortie.clear();
 	    posSortie.add(currentX);
 	    posSortie.add(currentY);
@@ -210,13 +210,13 @@ public class IaPrudente implements Ia {
 	    if (currentY-1 >= 0 ) {
 		labyrinth[currentX][currentY-1].setDangersPuit(false);	//Case du haut
 	    }
-	    if (currentY+1 <= this.boundY) {
+	    if (currentY+1 < this.boundY) {
 		labyrinth[currentX][currentY+1].setDangersPuit(false);	//Case du bas
 	    }
 	    if (currentX-1 >= 0) {
 		labyrinth[currentX-1][currentY].setDangersPuit(false);	//Case de gauche
 	    }
-	    if (currentX+1 <= this.boundX) {
+	    if (currentX+1 < this.boundX) {
 		labyrinth[currentX+1][currentY].setDangersPuit(false); //Case de droite
 	    }
 	}
@@ -307,7 +307,7 @@ public class IaPrudente implements Ia {
 				    return "t n";
 				}
 			    }
-			    if (currentY+1 <= this.boundY) {
+			    if (currentY+1 < this.boundY) {
 				if(labyrinth[x][y+1].getId() == wumpusAcote.getId()){	//Case du bas
 				    return "t s";
 				}
@@ -317,7 +317,7 @@ public class IaPrudente implements Ia {
 				    return "t o";
 				}
 			    }
-			    if (currentX+1 <= this.boundX) {
+			    if (currentX+1 < this.boundX) {
 				if(labyrinth[x+1][y].getId() == wumpusAcote.getId()){ //Case de droite
 				    return "t e";
 				}
@@ -360,13 +360,13 @@ public class IaPrudente implements Ia {
 	if (currentY-1 >= 0) {
 	    list.add(labyrinth[currentX][currentY-1]);
 	}
-	if (currentY+1 <= this.boundY) {
+	if (currentY+1 < this.boundY) {
 	    list.add(labyrinth[currentX][currentY+1]);
 	}
 	if (currentX-1 >= 0) {
 	    list.add(labyrinth[currentX-1][currentY]);
 	}
-	if (currentX+1 <= this.boundX) {
+	if (currentX+1 < this.boundX) {
 	    list.add(labyrinth[currentX+1][currentY]);
 	}
 
@@ -384,7 +384,7 @@ public class IaPrudente implements Ia {
 		return "d n";
 	    }
 	}
-	if (currentY+1 <= this.boundY) {
+	if (currentY+1 < this.boundY) {
 	    if(labyrinth[currentX][currentY+1].getId() == caseDirection.getId()){	//Case du bas
 		return "d s";
 	    }
@@ -394,7 +394,7 @@ public class IaPrudente implements Ia {
 		return "d o";
 	    }
 	}
-	if (currentX+1 <= this.boundX) {
+	if (currentX+1 < this.boundX) {
 	    if(labyrinth[currentX+1][currentY].getId() == caseDirection.getId()){ //Case de droite
 		return "d e";
 	    }
@@ -474,7 +474,7 @@ public class IaPrudente implements Ia {
 	Double nbDangers = 0.0;
 	Double nbrCourantDair = 0.0;
 	ArrayList listeDesId = new ArrayList();
-	Case enDouble == null;	
+	Case enDouble = null;	
 
 
 	if(labyrinth[posX][posY].getDangersPuit()){
@@ -486,7 +486,7 @@ public class IaPrudente implements Ia {
 		    if(posY-2 >= 0){
 			if(labyrinth[posX][posY-2].getDangersPuit()){
 			    nbDangers++;
-				if(listeDesId.contains(labyrinth[posX][posY-2].getId()){
+				if(listeDesId.contains(labyrinth[posX][posY-2].getId())){
 					enDouble = labyrinth[posX][posY-2];
 				}else{
 					listeDesId.add(labyrinth[posX][posY-2].getId());
@@ -496,17 +496,17 @@ public class IaPrudente implements Ia {
 		    if(posX-1 >= 0){
 			if(labyrinth[posX-1][posY-1].getDangersPuit()){
 			    nbDangers++;
-				if(listeDesId.contains(labyrinth[posX-1][posY-1].getId()){
+				if(listeDesId.contains(labyrinth[posX-1][posY-1].getId())){
 					enDouble = labyrinth[posX-1][posY-1];
 				}else{
 					listeDesId.add(labyrinth[posX-1][posY-1].getId());
 				}
 			}
 		    }
-		    if(posX+1 <= this.boundX){
+		    if(posX+1 < this.boundX){
 			if(labyrinth[posX+1][posY-1].getDangersPuit()){
 			    nbDangers++;
-				if(listeDesId.contains(labyrinth[posX+1][posY-1].getId()){
+				if(listeDesId.contains(labyrinth[posX+1][posY-1].getId())){
 					enDouble = labyrinth[posX+1][posY-1];
 				}else{
 					listeDesId.add(labyrinth[posX+1][posY-1].getId());
@@ -515,14 +515,14 @@ public class IaPrudente implements Ia {
 		    }
 		}
 	    }
-	    if (posY+1 <= this.boundY) {
+	    if (posY+1 < this.boundY) {
 		if(labyrinth[posX][posY+1].getCourantDair()){
 			nbDangers++;
 			nbrCourantDair++;
-		    if(posY+2 <= this.boundY){
+		    if(posY+2 < this.boundY){
 			if(labyrinth[posX][posY+2].getDangersPuit()){
 			    nbDangers++;
-				if(listeDesId.contains(labyrinth[posX][posY+2].getId()){
+				if(listeDesId.contains(labyrinth[posX][posY+2].getId())){
 					enDouble = labyrinth[posX][posY+2];
 				}else{
 					listeDesId.add(labyrinth[posX][posY+2].getId());
@@ -532,17 +532,17 @@ public class IaPrudente implements Ia {
 		    if(posX-1 >= 0){
 			if(labyrinth[posX-1][posY+1].getDangersPuit()){
 			    nbDangers++;
-				if(listeDesId.contains(labyrinth[posX-1][posY11].getId()){
+				if(listeDesId.contains(labyrinth[posX-1][posY+1].getId())){
 					enDouble = labyrinth[posX-1][posY+1];
 				}else{
 					listeDesId.add(labyrinth[posX-1][posY+1].getId());
 				}
 			}
 		    }
-		    if(posX+1 <= this.boundX){
+		    if(posX+1 < this.boundX){
 			if(labyrinth[posX+1][posY+1].getDangersPuit()){
 			    nbDangers++;
-				if(listeDesId.contains(labyrinth[posX+1][posY+1].getId()){
+				if(listeDesId.contains(labyrinth[posX+1][posY+1].getId())){
 					enDouble = labyrinth[posX+1][posY+1];
 				}else{
 					listeDesId.add(labyrinth[posX+1][posY+1].getId());
@@ -558,7 +558,7 @@ public class IaPrudente implements Ia {
 		    if(posY-1 >= 0){
 			if(labyrinth[posX-1][posY-1].getDangersPuit()){
 			    nbDangers++;
-				if(listeDesId.contains(labyrinth[posX-1][posY-1].getId()){
+				if(listeDesId.contains(labyrinth[posX-1][posY-1].getId())){
 					enDouble = labyrinth[posX-1][posY-1];
 				}else{
 					listeDesId.add(labyrinth[posX-1][posY-1].getId());
@@ -566,10 +566,10 @@ public class IaPrudente implements Ia {
 			}
 		    }
 		
-		    if(posY+1 <= this.boundY){
+		    if(posY+1 < this.boundY){
 			if(labyrinth[posX-1][posY+1].getDangersPuit()){
 			    nbDangers++;
-				if(listeDesId.contains(labyrinth[posX-1][posY+1].getId()){
+				if(listeDesId.contains(labyrinth[posX-1][posY+1].getId())){
 					enDouble = labyrinth[posX-1][posY+1];
 				}else{
 					listeDesId.add(labyrinth[posX-1][posY+1].getId());
@@ -579,7 +579,7 @@ public class IaPrudente implements Ia {
 		    if(posX-2 >= 0){
 			if(labyrinth[posX-2][posY].getDangersPuit()){
 			    nbDangers++;
-				if(listeDesId.contains(labyrinth[posX-2][posY].getId()){
+				if(listeDesId.contains(labyrinth[posX-2][posY].getId())){
 					enDouble = labyrinth[posX-2][posY];
 				}else{
 					listeDesId.add(labyrinth[posX-2][posY].getId());
@@ -588,34 +588,34 @@ public class IaPrudente implements Ia {
 		    }
 		}
 	    }
-	    if (posX+1 <= this.boundX) {
+	    if (posX+1 < this.boundX) {
 		if(labyrinth[posX+1][posY].getCourantDair()){
 			nbDangers++;
 			nbrCourantDair++;
 		    if(posY-1 >= 0){
 			if(labyrinth[posX+1][posY-1].getDangersPuit()){
 			    nbDangers++;
-				if(listeDesId.contains(labyrinth[posX+1][posY-1].getId()){
+				if(listeDesId.contains(labyrinth[posX+1][posY-1].getId())){
 					enDouble = labyrinth[posX+1][posY-1];
 				}else{
 					listeDesId.add(labyrinth[posX+1][posY-1].getId());
 				}
 			}
 		    }
-		    if(posY+1 <= this.boundY){
+		    if(posY+1 < this.boundY){
 			if(labyrinth[posX+1][posY+1].getDangersPuit()){
 			    nbDangers++;
-				if(listeDesId.contains(labyrinth[posX+1][posY+1].getId()){
+				if(listeDesId.contains(labyrinth[posX+1][posY+1].getId())){
 					enDouble = labyrinth[posX+1][posY+1];
 				}else{
 					listeDesId.add(labyrinth[posX+1][posY+1].getId());
 				}
 			}
 		    }
-		    if(posX+2 <= this.boundX){
+		    if(posX+2 < this.boundX){
 			if(labyrinth[posX+2][posY].getDangersPuit()){
 			    nbDangers++;
-				if(listeDesId.contains(labyrinth[posX+2][posY].getId()){
+				if(listeDesId.contains(labyrinth[posX+2][posY].getId())){
 					enDouble = labyrinth[posX+2][posY];
 				}else{
 					listeDesId.add(labyrinth[posX+2][posY].getId());
@@ -632,7 +632,7 @@ public class IaPrudente implements Ia {
 			if(enDouble == null){
 				return 4.0/5.0;
 			}else{
-				if(enDouble.getDangersPuit(){
+				if(enDouble.getDangersPuit()){
 					return 1.0/2.0;
 				}else{
 					return 4.0/5.0;
@@ -644,30 +644,40 @@ public class IaPrudente implements Ia {
 		 }
 		 if(nbrCourantDair == 4){
 			return 1.0;
+	 	}
+
+
+	 	return 0.0;
+
+	 }else{
+	 	return 0.0;
 	 }
 
-	}else{
-	    return 0.0;
-	}
     }
+    
 
     /**
      * Renvoie le pourcentage de dangers wumpus, correspondant à 1 (le nombre de wumpus) sur le nombre de dangers
      */
     public Double pourcentageDangersWumpus(){
 
-	int nbDangers = 0;
+	Double nbDangers = 0.0;
 
 	//Parcours le labyrinth
 	for (int i=0; i<boundX; i++) {
 	    for (int j=0; j<boundY; j++) {
-		if(labyrinth[i][j].getDangersWumpus() == true){
-		    nbDangers++;
-		}
+			if(labyrinth[i][j].getDangersWumpus() == true){
+		    	nbDangers++;
+			}
 	    }
 	}
 
-	return 1.0/nbDangers;
+		if(nbDangers == 0){
+			return 0.0;
+		}else{
+			return 1.0/nbDangers;
+		}
+
     }
 
 

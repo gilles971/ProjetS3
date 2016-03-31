@@ -51,13 +51,18 @@ public class ServerProtocol {
 	    }
 	}
 	else{
+	    if(p.gameOver()){
+	    	return null;
+	    }
 
 	    String ret="";
 	    String[] order=theInput.split("\\s+");
 	    //on vérifie que la commande est standard
+	    if (order.length == 0) return "please sens a message";
 	    if (order[0].equals("d")) {
 		//on déplace le joueur en utilisant les méthodes de partie
 		ret = p.deplacer(theInput);
+
 	    }
 	    if (order[0].equals("t")) {
 		//on tire notre flèche en utilisant les méthodes de partie
@@ -65,6 +70,7 @@ public class ServerProtocol {
 	    }
 	    if (theInput.equals("s")) {
 		ret = p.sortir();
+
 	    }
       if (theInput.equals("h")) {
 		return p.help();
@@ -75,6 +81,7 @@ public class ServerProtocol {
 
 	    //verification des conditions de victoire
 	    //if (p.gameOver()) { return "game end"; }
+
 
 	    return p.getJoueur().getX()+" "+p.getJoueur().getY()+" "+ret; // \t
     	}

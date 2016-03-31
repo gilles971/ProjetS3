@@ -54,6 +54,10 @@ public class WumpusServer {
 
             	  System.out.println("reçu: "+inputLine);
                 outputLine = sp.processInput(inputLine);
+                if (outputLine == null) {
+                    out.println((String)null);
+                    break;
+                }
                 System.out.println("envoyé: "+outputLine);
                 out.println(outputLine);
             }
